@@ -1,0 +1,592 @@
+  QuoteNumber     Original_Quote_Date QuoteConversion_Flag     Field6     
+ Min.   :     1   2014-03-03:   646   Min.   :0.0000       B      :94694  
+ 1st Qu.:108517   2015-03-31:   608   1st Qu.:0.0000       F      :69053  
+ Median :217012   2014-02-24:   600   Median :0.0000       J      :51782  
+ Mean   :217201   2015-03-23:   594   Mean   :0.1875       E      :26063  
+ 3rd Qu.:325905   2015-03-17:   586   3rd Qu.:0.0000       K      :13226  
+ Max.   :434588   2014-03-10:   581   Max.   :1.0000       C      : 5660  
+                  (Other)   :257138                        (Other):  275  
+     Field7          Field8           Field9            Field10     
+ Min.   : 1.00   Min.   :0.8746   Min.   :0.000400   935    :52353  
+ 1st Qu.:11.00   1st Qu.:0.9153   1st Qu.:0.000600   1,113  :44940  
+ Median :23.00   Median :0.9403   Median :0.000600   965    :42372  
+ Mean   :18.29   Mean   :0.9383   Mean   :0.001451   548    :39065  
+ 3rd Qu.:24.00   3rd Qu.:0.9685   3rd Qu.:0.003800   564    :30228  
+ Max.   :28.00   Max.   :1.0101   Max.   :0.004000   1,165  :20071  
+                                                     (Other):31724  
+    Field11      Field12    CoverageField1A  CoverageField1B CoverageField2A 
+ Min.   :1.000   N:241867   Min.   :-1.000   Min.   :-1      Min.   : 1.000  
+ 1st Qu.:1.020   Y: 18886   1st Qu.: 5.000   1st Qu.: 7      1st Qu.: 5.000  
+ Median :1.189              Median : 8.000   Median :13      Median : 8.000  
+ Mean   :1.163              Mean   : 9.013   Mean   :13      Mean   : 9.054  
+ 3rd Qu.:1.266              3rd Qu.:12.000   3rd Qu.:19      3rd Qu.:12.000  
+ Max.   :1.304              Max.   :25.000   Max.   :25      Max.   :25.000  
+                                                                             
+ CoverageField2B CoverageField3A  CoverageField3B CoverageField4A 
+ Min.   : 1.00   Min.   : 1.000   Min.   : 1.00   Min.   : 1.000  
+ 1st Qu.: 7.00   1st Qu.: 5.000   1st Qu.: 7.00   1st Qu.: 5.000  
+ Median :13.00   Median : 8.000   Median :13.00   Median : 8.000  
+ Mean   :13.02   Mean   : 9.053   Mean   :13.01   Mean   : 8.968  
+ 3rd Qu.:19.00   3rd Qu.:12.000   3rd Qu.:19.00   3rd Qu.:12.000  
+ Max.   :25.00   Max.   :25.000   Max.   :25.00   Max.   :25.000  
+                                                                  
+ CoverageField4B CoverageField5A CoverageField5B CoverageField6A
+ Min.   : 1.00   Min.   : 1.00   Min.   : 1.00   Min.   : 1.00  
+ 1st Qu.: 7.00   1st Qu.:13.00   1st Qu.:22.00   1st Qu.:13.00  
+ Median :13.00   Median :13.00   Median :22.00   Median :13.00  
+ Mean   :13.01   Mean   :13.82   Mean   :21.21   Mean   :11.49  
+ 3rd Qu.:19.00   3rd Qu.:13.00   3rd Qu.:22.00   3rd Qu.:13.00  
+ Max.   :25.00   Max.   :25.00   Max.   :25.00   Max.   :25.00  
+                                                                
+ CoverageField6B CoverageField8 CoverageField9  CoverageField11A
+ Min.   : 1.0    T: 93778       E      :85017   Min.   :-1.000  
+ 1st Qu.:23.0    U:   477       D      :49605   1st Qu.: 4.000  
+ Median :23.0    V:   414       G      :32672   Median : 7.000  
+ Mean   :19.2    W:   408       F      :32520   Mean   : 7.809  
+ 3rd Qu.:23.0    X: 21625       K      :27277   3rd Qu.:10.000  
+ Max.   :25.0    Y:143152       J      :16384   Max.   :25.000  
+                 Z:   899       (Other):17278                   
+ CoverageField11B  SalesField1A     SalesField1B  SalesField2A   
+ Min.   :-1.00    Min.   : 1.000   Min.   : 1    Min.   :-1.000  
+ 1st Qu.: 7.00    1st Qu.: 3.000   1st Qu.: 7    1st Qu.: 3.000  
+ Median :13.00    Median : 4.000   Median :13    Median : 4.000  
+ Mean   :12.98    Mean   : 6.224   Mean   :13    Mean   : 5.734  
+ 3rd Qu.:19.00    3rd Qu.: 8.000   3rd Qu.:19    3rd Qu.: 7.000  
+ Max.   :25.00    Max.   :25.000   Max.   :25    Max.   :25.000  
+                                                                 
+  SalesField2B    SalesField3     SalesField4     SalesField5     SalesField6
+ Min.   :-1.00   Min.   :0.000   Min.   :1.000   Min.   :1.000   Min.   : 1  
+ 1st Qu.: 7.00   1st Qu.:0.000   1st Qu.:4.000   1st Qu.:3.000   1st Qu.:11  
+ Median :13.00   Median :1.000   Median :5.000   Median :5.000   Median :11  
+ Mean   :12.98   Mean   :0.745   Mean   :4.343   Mean   :4.225   Mean   :14  
+ 3rd Qu.:19.00   3rd Qu.:1.000   3rd Qu.:5.000   3rd Qu.:5.000   3rd Qu.:20  
+ Max.   :25.00   Max.   :1.000   Max.   :5.000   Max.   :5.000   Max.   :24  
+                                                                             
+ SalesField7  SalesField8     SalesField9     SalesField10    
+ K:50261     Min.   :    1   Min.   :0.000   Min.   : 0.0000  
+ M:16045     1st Qu.:16905   1st Qu.:0.000   1st Qu.: 0.0000  
+ P:49251     Median :33864   Median :0.000   Median : 0.0000  
+ Q:41015     Mean   :33735   Mean   :0.147   Mean   : 0.3407  
+ R:20779     3rd Qu.:50617   3rd Qu.:0.000   3rd Qu.: 0.0000  
+ T:45154     Max.   :67164   Max.   :1.000   Max.   :21.0000  
+ V:38248                                                      
+  SalesField11      SalesField12     SalesField13      SalesField14     
+ Min.   : 0.0000   Min.   : 0.000   Min.   :0.00000   Min.   : 0.00000  
+ 1st Qu.: 0.0000   1st Qu.: 0.000   1st Qu.:0.00000   1st Qu.: 0.00000  
+ Median : 0.0000   Median : 0.000   Median :0.00000   Median : 0.00000  
+ Mean   : 0.5979   Mean   : 0.624   Mean   :0.06362   Mean   : 0.09553  
+ 3rd Qu.: 1.0000   3rd Qu.: 1.000   3rd Qu.:0.00000   3rd Qu.: 0.00000  
+ Max.   :32.0000   Max.   :32.000   Max.   :7.00000   Max.   :14.00000  
+                                                                        
+  SalesField15      PersonalField1   PersonalField2   PersonalField4A
+ Min.   : 0.00000   Min.   :0.0000   Min.   :0.0000   Min.   :-1.00  
+ 1st Qu.: 0.00000   1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.: 5.00  
+ Median : 0.00000   Median :1.0000   Median :1.0000   Median : 9.00  
+ Mean   : 0.09819   Mean   :0.7265   Mean   :0.6992   Mean   : 9.73  
+ 3rd Qu.: 0.00000   3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:14.00  
+ Max.   :14.00000   Max.   :1.0000   Max.   :1.0000   Max.   :25.00  
+                                                                     
+ PersonalField4B PersonalField5   PersonalField6   PersonalField7
+ Min.   :-1.00   Min.   : 1.000   Min.   :0.0000    :   113      
+ 1st Qu.: 5.00   1st Qu.: 6.000   1st Qu.:0.0000   N:259379      
+ Median :12.00   Median : 7.000   Median :0.0000   Y:  1261      
+ Mean   :11.94   Mean   : 6.631   Mean   :0.3703                 
+ 3rd Qu.:19.00   3rd Qu.: 7.000   3rd Qu.:1.0000                 
+ Max.   :25.00   Max.   :10.000   Max.   :1.0000                 
+                                                                 
+ PersonalField8 PersonalField9  PersonalField10A PersonalField10B
+ Min.   :1      Min.   :1.000   Min.   :-1.000   Min.   :-1.00   
+ 1st Qu.:1      1st Qu.:2.000   1st Qu.: 4.000   1st Qu.: 2.00   
+ Median :1      Median :2.000   Median : 6.000   Median :10.00   
+ Mean   :1      Mean   :2.152   Mean   : 6.923   Mean   :10.14   
+ 3rd Qu.:1      3rd Qu.:2.000   3rd Qu.: 9.000   3rd Qu.:18.00   
+ Max.   :3      Max.   :3.000   Max.   :25.000   Max.   :25.00   
+                                                                 
+ PersonalField11   PersonalField12 PersonalField13 PersonalField14 
+ Min.   :0.00000   Min.   :1.000   Min.   :1.000   Min.   : 1.000  
+ 1st Qu.:0.00000   1st Qu.:1.000   1st Qu.:2.000   1st Qu.: 2.000  
+ Median :0.00000   Median :1.000   Median :2.000   Median : 3.000  
+ Mean   :0.02356   Mean   :2.204   Mean   :1.992   Mean   : 2.954  
+ 3rd Qu.:0.00000   3rd Qu.:4.000   3rd Qu.:2.000   3rd Qu.: 4.000  
+ Max.   :4.00000   Max.   :5.000   Max.   :4.000   Max.   :54.000  
+                                                                   
+ PersonalField15 PersonalField16  PersonalField17  PersonalField18 
+ Min.   : 1.00   ZA     :124015   ZE     :124015   XR     :124015  
+ 1st Qu.: 8.00   XR     : 15051   XV     : 20857   YP     : 31893  
+ Median :18.00   XJ     : 10153   XS     : 15733   ZW     : 19032  
+ Mean   :16.17   XM     :  9767   YY     : 12619   XF     : 15797  
+ 3rd Qu.:24.00   XD     :  8143   ZK     : 10780   YI     :  7283  
+ Max.   :24.00   XH     :  7899   ZH     :  6925   XQ     :  5936  
+                 (Other): 85725   (Other): 69824   (Other): 56797  
+ PersonalField19  PersonalField22 PersonalField23   PersonalField24   
+ XD     :124015   Min.   :1.000   Min.   : 0.0000   Min.   : 0.00000  
+ XC     : 70489   1st Qu.:1.000   1st Qu.: 0.0000   1st Qu.: 0.00000  
+ XX     : 13690   Median :1.000   Median : 0.0000   Median : 0.00000  
+ ZQ     :  8282   Mean   :1.049   Mean   : 0.0257   Mean   : 0.03175  
+ YF     :  5487   3rd Qu.:1.000   3rd Qu.: 0.0000   3rd Qu.: 0.00000  
+ ZN     :  4193   Max.   :7.000   Max.   :14.0000   Max.   :14.00000  
+ (Other): 34597                                                       
+ PersonalField25   PersonalField26    PersonalField27   PersonalField28
+ Min.   : 0.0000   Min.   : 0.00000   Min.   : 0.0000   Min.   :1.000  
+ 1st Qu.: 0.0000   1st Qu.: 0.00000   1st Qu.: 0.0000   1st Qu.:1.000  
+ Median : 0.0000   Median : 0.00000   Median : 1.0000   Median :1.000  
+ Mean   : 0.0369   Mean   : 0.04419   Mean   : 0.5489   Mean   :1.511  
+ 3rd Qu.: 0.0000   3rd Qu.: 0.00000   3rd Qu.: 1.0000   3rd Qu.:2.000  
+ Max.   :14.0000   Max.   :14.00000   Max.   :23.0000   Max.   :7.000  
+                                                                       
+ PersonalField29 PersonalField30    PersonalField31   PersonalField32  
+ Min.   :1.000   Min.   : 0.00000   Min.   : 0.0000   Min.   : 0.0000  
+ 1st Qu.:1.000   1st Qu.: 0.00000   1st Qu.: 0.0000   1st Qu.: 0.0000  
+ Median :1.000   Median : 0.00000   Median : 0.0000   Median : 0.0000  
+ Mean   :1.522   Mean   : 0.05597   Mean   : 0.2968   Mean   : 0.4702  
+ 3rd Qu.:2.000   3rd Qu.: 0.00000   3rd Qu.: 1.0000   3rd Qu.: 1.0000  
+ Max.   :7.000   Max.   :22.00000   Max.   :23.0000   Max.   :23.0000  
+                                                                       
+ PersonalField33   PersonalField34 PersonalField35    PersonalField36   
+ Min.   : 0.0000   Min.   :1.000   Min.   :0.000000   Min.   :0.000000  
+ 1st Qu.: 0.0000   1st Qu.:1.000   1st Qu.:0.000000   1st Qu.:0.000000  
+ Median : 0.0000   Median :1.000   Median :0.000000   Median :0.000000  
+ Mean   : 0.4977   Mean   :1.008   Mean   :0.003294   Mean   :0.004011  
+ 3rd Qu.: 1.0000   3rd Qu.:1.000   3rd Qu.:0.000000   3rd Qu.:0.000000  
+ Max.   :23.0000   Max.   :7.000   Max.   :5.000000   Max.   :5.000000  
+                                                                        
+ PersonalField37    PersonalField38    PersonalField39    PersonalField40 
+ Min.   :0.000000   Min.   :0.000000   Min.   :0.000000   Min.   :0.0000  
+ 1st Qu.:0.000000   1st Qu.:0.000000   1st Qu.:0.000000   1st Qu.:0.0000  
+ Median :0.000000   Median :0.000000   Median :0.000000   Median :0.0000  
+ Mean   :0.004901   Mean   :0.005825   Mean   :0.001154   Mean   :0.0015  
+ 3rd Qu.:0.000000   3rd Qu.:0.000000   3rd Qu.:0.000000   3rd Qu.:0.0000  
+ Max.   :5.000000   Max.   :5.000000   Max.   :8.000000   Max.   :9.0000  
+                                                                          
+ PersonalField41   PersonalField42    PersonalField43 PersonalField44   
+ Min.   :0.00000   Min.   :0.000000   Min.   :1.000   Min.   : 0.00000  
+ 1st Qu.:0.00000   1st Qu.:0.000000   1st Qu.:1.000   1st Qu.: 0.00000  
+ Median :0.00000   Median :0.000000   Median :1.000   Median : 0.00000  
+ Mean   :0.00181   Mean   :0.002343   Mean   :1.003   Mean   : 0.05987  
+ 3rd Qu.:0.00000   3rd Qu.:0.000000   3rd Qu.:1.000   3rd Qu.: 0.00000  
+ Max.   :9.00000   Max.   :9.000000   Max.   :7.000   Max.   :22.00000  
+                                                                        
+ PersonalField45   PersonalField46  PersonalField47   PersonalField48
+ Min.   : 0.0000   Min.   : 0.000   Min.   : 0.0000   Min.   :1.000  
+ 1st Qu.: 0.0000   1st Qu.: 0.000   1st Qu.: 0.0000   1st Qu.:1.000  
+ Median : 0.0000   Median : 0.000   Median : 0.0000   Median :1.000  
+ Mean   : 0.3016   Mean   : 0.476   Mean   : 0.5047   Mean   :1.531  
+ 3rd Qu.: 1.0000   3rd Qu.: 1.000   3rd Qu.: 1.0000   3rd Qu.:2.000  
+ Max.   :23.0000   Max.   :23.000   Max.   :23.0000   Max.   :7.000  
+                                                                     
+ PersonalField49    PersonalField50    PersonalField51    PersonalField52   
+ Min.   :0.000000   Min.   :0.000000   Min.   :0.000000   Min.   :0.000000  
+ 1st Qu.:0.000000   1st Qu.:0.000000   1st Qu.:0.000000   1st Qu.:0.000000  
+ Median :0.000000   Median :0.000000   Median :0.000000   Median :0.000000  
+ Mean   :0.001676   Mean   :0.002052   Mean   :0.002332   Mean   :0.002673  
+ 3rd Qu.:0.000000   3rd Qu.:0.000000   3rd Qu.:0.000000   3rd Qu.:0.000000  
+ Max.   :7.000000   Max.   :7.000000   Max.   :7.000000   Max.   :7.000000  
+                                                                            
+ PersonalField53 PersonalField54     PersonalField55     PersonalField56   
+ Min.   :1.000   Min.   : 0.000000   Min.   : 0.000000   Min.   : 0.00000  
+ 1st Qu.:1.000   1st Qu.: 0.000000   1st Qu.: 0.000000   1st Qu.: 0.00000  
+ Median :1.000   Median : 0.000000   Median : 0.000000   Median : 0.00000  
+ Mean   :1.004   Mean   : 0.004882   Mean   : 0.005929   Mean   : 0.00706  
+ 3rd Qu.:1.000   3rd Qu.: 0.000000   3rd Qu.: 0.000000   3rd Qu.: 0.00000  
+ Max.   :7.000   Max.   :12.000000   Max.   :12.000000   Max.   :14.00000  
+                                                                           
+ PersonalField57     PersonalField58 PersonalField59    PersonalField60   
+ Min.   : 0.000000   Min.   :1.00    Min.   :0.000000   Min.   :0.000000  
+ 1st Qu.: 0.000000   1st Qu.:1.00    1st Qu.:0.000000   1st Qu.:0.000000  
+ Median : 0.000000   Median :1.00    Median :0.000000   Median :0.000000  
+ Mean   : 0.008548   Mean   :1.01    Mean   :0.004771   Mean   :0.005791  
+ 3rd Qu.: 0.000000   3rd Qu.:1.00    3rd Qu.:0.000000   3rd Qu.:0.000000  
+ Max.   :14.000000   Max.   :7.00    Max.   :6.000000   Max.   :6.000000  
+                                                                          
+ PersonalField61    PersonalField62    PersonalField63 PersonalField64    
+ Min.   :0.000000   Min.   :0.000000   Min.   :1.00    Min.   :0.0000000  
+ 1st Qu.:0.000000   1st Qu.:0.000000   1st Qu.:1.00    1st Qu.:0.0000000  
+ Median :0.000000   Median :0.000000   Median :1.00    Median :0.0000000  
+ Mean   :0.006612   Mean   :0.007977   Mean   :1.01    Mean   :0.0004679  
+ 3rd Qu.:0.000000   3rd Qu.:0.000000   3rd Qu.:1.00    3rd Qu.:0.0000000  
+ Max.   :6.000000   Max.   :6.000000   Max.   :7.00    Max.   :2.0000000  
+                                                                          
+ PersonalField65     PersonalField66     PersonalField67    PersonalField68
+ Min.   :0.0000000   Min.   :0.0000000   Min.   :0.000000   Min.   :1.000  
+ 1st Qu.:0.0000000   1st Qu.:0.0000000   1st Qu.:0.000000   1st Qu.:1.000  
+ Median :0.0000000   Median :0.0000000   Median :0.000000   Median :1.000  
+ Mean   :0.0006059   Mean   :0.0007708   Mean   :0.001081   Mean   :1.001  
+ 3rd Qu.:0.0000000   3rd Qu.:0.0000000   3rd Qu.:0.000000   3rd Qu.:1.000  
+ Max.   :2.0000000   Max.   :2.0000000   Max.   :2.000000   Max.   :4.000  
+                                                                           
+ PersonalField69    PersonalField70    PersonalField71   PersonalField72   
+ Min.   :0.000000   Min.   :0.000000   Min.   :0.00000   Min.   :0.000000  
+ 1st Qu.:0.000000   1st Qu.:0.000000   1st Qu.:0.00000   1st Qu.:0.000000  
+ Median :0.000000   Median :0.000000   Median :0.00000   Median :0.000000  
+ Mean   :0.000376   Mean   :0.000545   Mean   :0.00066   Mean   :0.000886  
+ 3rd Qu.:0.000000   3rd Qu.:0.000000   3rd Qu.:0.00000   3rd Qu.:0.000000  
+ Max.   :5.000000   Max.   :7.000000   Max.   :7.00000   Max.   :7.000000  
+                                                                           
+ PersonalField73 PersonalField74    PersonalField75   PersonalField76  
+ Min.   :1.000   Min.   : 0.00000   Min.   : 0.0000   Min.   : 0.0000  
+ 1st Qu.:1.000   1st Qu.: 0.00000   1st Qu.: 0.0000   1st Qu.: 0.0000  
+ Median :1.000   Median : 0.00000   Median : 0.0000   Median : 0.0000  
+ Mean   :1.001   Mean   : 0.05874   Mean   : 0.2999   Mean   : 0.4734  
+ 3rd Qu.:1.000   3rd Qu.: 0.00000   3rd Qu.: 1.0000   3rd Qu.: 1.0000  
+ Max.   :7.000   Max.   :22.00000   Max.   :23.0000   Max.   :23.0000  
+                                                                       
+ PersonalField77   PersonalField78 PersonalField79    PersonalField80   
+ Min.   : 0.0000   Min.   :1.000   Min.   : 0.00000   Min.   : 0.00000  
+ 1st Qu.: 0.0000   1st Qu.:1.000   1st Qu.: 0.00000   1st Qu.: 0.00000  
+ Median : 0.0000   Median :1.000   Median : 0.00000   Median : 0.00000  
+ Mean   : 0.5008   Mean   :1.528   Mean   : 0.02684   Mean   : 0.03345  
+ 3rd Qu.: 1.0000   3rd Qu.:2.000   3rd Qu.: 0.00000   3rd Qu.: 0.00000  
+ Max.   :23.0000   Max.   :7.000   Max.   :14.00000   Max.   :14.00000  
+                                                                        
+ PersonalField81   PersonalField82   PersonalField83 PersonalField84 
+ Min.   : 0.0000   Min.   : 0.0000   Min.   :1.000   Min.   :1.00    
+ 1st Qu.: 0.0000   1st Qu.: 0.0000   1st Qu.:1.000   1st Qu.:2.00    
+ Median : 0.0000   Median : 0.0000   Median :1.000   Median :2.00    
+ Mean   : 0.0395   Mean   : 0.0481   Mean   :1.052   Mean   :1.99    
+ 3rd Qu.: 0.0000   3rd Qu.: 0.0000   3rd Qu.:1.000   3rd Qu.:2.00    
+ Max.   :14.0000   Max.   :14.0000   Max.   :7.000   Max.   :8.00    
+                                                     NA's   :124208  
+ PropertyField1A PropertyField1B PropertyField2A   PropertyField2B
+ Min.   :-1.00   Min.   :-1.00   Min.   :-1.0000   Min.   : 2.00  
+ 1st Qu.: 5.00   1st Qu.: 7.00   1st Qu.:-1.0000   1st Qu.: 8.00  
+ Median : 9.00   Median :13.00   Median :-1.0000   Median :13.00  
+ Mean   :10.28   Mean   :13.15   Mean   :-0.3417   Mean   :13.52  
+ 3rd Qu.:15.00   3rd Qu.:20.00   3rd Qu.:-1.0000   3rd Qu.:20.00  
+ Max.   :25.00   Max.   :25.00   Max.   :25.0000   Max.   :25.00  
+                                                                  
+ PropertyField3 PropertyField4 PropertyField5 PropertyField6 PropertyField7 
+  :    81        :    63       N:   116       Min.   :0      O      :74326  
+ N:226966       N:226223       Y:260637       1st Qu.:0      R      :68974  
+ Y: 33706       Y: 34467                      Median :0      J      :35969  
+                                              Mean   :0      D      :28142  
+                                              3rd Qu.:0      S      :16954  
+                                              Max.   :0      N      :12028  
+                                                             (Other):24360  
+ PropertyField8   PropertyField9     PropertyField10 PropertyField11A 
+ Min.   :0.0000   Min.   :0.00e+00   Min.   :0.000   Min.   :-1.0000  
+ 1st Qu.:0.0000   1st Qu.:0.00e+00   1st Qu.:1.000   1st Qu.:-1.0000  
+ Median :1.0000   Median :0.00e+00   Median :1.000   Median :-1.0000  
+ Mean   :0.6656   Mean   :6.52e-05   Mean   :1.006   Mean   :-0.3534  
+ 3rd Qu.:1.0000   3rd Qu.:0.00e+00   3rd Qu.:1.000   3rd Qu.:-1.0000  
+ Max.   :1.0000   Max.   :2.00e+00   Max.   :4.000   Max.   :25.0000  
+                                                                      
+ PropertyField11B PropertyField12 PropertyField13 PropertyField14
+ Min.   :21.0     Min.   :1.000   Min.   :0.000   A: 36277       
+ 1st Qu.:21.0     1st Qu.:2.000   1st Qu.:1.000   B: 28846       
+ Median :21.0     Median :4.000   Median :2.000   C:195586       
+ Mean   :21.4     Mean   :2.959   Mean   :1.731   D:    44       
+ 3rd Qu.:21.0     3rd Qu.:4.000   3rd Qu.:2.000                  
+ Max.   :25.0     Max.   :7.000   Max.   :3.000                  
+                                                                 
+ PropertyField15  PropertyField16A PropertyField16B PropertyField17 
+ Min.   : 1.000   Min.   :-1.000   Min.   :-1       Min.   :0.0000  
+ 1st Qu.: 2.000   1st Qu.: 4.000   1st Qu.: 7       1st Qu.:0.0000  
+ Median : 4.000   Median : 6.000   Median :13       Median :1.0000  
+ Mean   : 3.495   Mean   : 7.714   Mean   :13       Mean   :0.6383  
+ 3rd Qu.: 4.000   3rd Qu.:10.000   3rd Qu.:19       3rd Qu.:1.0000  
+ Max.   :15.000   Max.   :25.000   Max.   :25       Max.   :7.0000  
+                                                                    
+ PropertyField18 PropertyField19  PropertyField20   PropertyField21A
+ Min.   :0.000   Min.   :0.0000   Min.   :0.0e+00   Min.   :-1.000  
+ 1st Qu.:2.000   1st Qu.:0.0000   1st Qu.:0.0e+00   1st Qu.: 5.000  
+ Median :2.000   Median :0.0000   Median :0.0e+00   Median : 8.000  
+ Mean   :2.001   Mean   :0.4192   Mean   :6.9e-05   Mean   : 9.052  
+ 3rd Qu.:2.000   3rd Qu.:1.0000   3rd Qu.:0.0e+00   3rd Qu.:12.000  
+ Max.   :9.000   Max.   :9.0000   Max.   :2.0e+00   Max.   :25.000  
+                                                                    
+ PropertyField21B PropertyField22 PropertyField23 PropertyField24A
+ Min.   :-1.00    Min.   :1.000   Min.   : 1.00   Min.   :-1.000  
+ 1st Qu.: 7.00    1st Qu.:2.000   1st Qu.: 1.00   1st Qu.: 5.000  
+ Median :13.00    Median :2.000   Median : 1.00   Median : 9.000  
+ Mean   :12.99    Mean   :2.005   Mean   : 1.99   Mean   : 9.873  
+ 3rd Qu.:19.00    3rd Qu.:2.000   3rd Qu.: 1.00   3rd Qu.:13.000  
+ Max.   :25.00    Max.   :5.000   Max.   :14.00   Max.   :25.000  
+                                                                  
+ PropertyField24B PropertyField25 PropertyField26A PropertyField26B
+ Min.   :-1       Min.   :0.000   Min.   :-1.0     Min.   :-1.00   
+ 1st Qu.: 7       1st Qu.:1.000   1st Qu.: 6.0     1st Qu.: 7.00   
+ Median :13       Median :1.500   Median : 9.0     Median :13.00   
+ Mean   :13       Mean   :1.632   Mean   :10.2     Mean   :13.04   
+ 3rd Qu.:19       3rd Qu.:2.000   3rd Qu.:14.0     3rd Qu.:19.00   
+ Max.   :25       Max.   :7.000   Max.   :25.0     Max.   :25.00   
+                                                                   
+ PropertyField27  PropertyField28 PropertyField29  PropertyField30
+ Min.   : 1.000   A:  9136        Min.   :0        N:245807       
+ 1st Qu.: 4.000   B:243374        1st Qu.:0        Y: 14946       
+ Median : 6.000   C:  1249        Median :0                       
+ Mean   : 7.389   D:  6994        Mean   :0                       
+ 3rd Qu.:10.000                   3rd Qu.:0                       
+ Max.   :19.000                   Max.   :1                       
+                                  NA's   :200685                  
+ PropertyField31 PropertyField32 PropertyField33 PropertyField34
+ K: 61146         :    70        E: 47359         :    70       
+ M: 10267        N: 69056        F:  9647        N:119498       
+ N: 33298        Y:191627        G: 80649        Y:141185       
+ O:156042                        H:123098                       
+                                                                
+                                                                
+                                                                
+ PropertyField35 PropertyField36 PropertyField37 PropertyField38
+ Min.   :0.000    :   113        N:185976         :  1220       
+ 1st Qu.:1.000   N:248302        Y: 74777        N:254032       
+ Median :2.000   Y: 12338                        Y:  5501       
+ Mean   :1.448                                                  
+ 3rd Qu.:2.000                                                  
+ Max.   :2.000                                                  
+                                                                
+ PropertyField39A PropertyField39B GeographicField1A GeographicField1B
+ Min.   :-1.00    Min.   :-1.00    Min.   :-1.000    Min.   :-1.00    
+ 1st Qu.: 8.00    1st Qu.: 7.00    1st Qu.: 3.000    1st Qu.: 7.00    
+ Median :11.00    Median :13.00    Median : 6.000    Median :13.00    
+ Mean   :11.75    Mean   :13.01    Mean   : 7.321    Mean   :12.99    
+ 3rd Qu.:15.00    3rd Qu.:19.00    3rd Qu.:10.000    3rd Qu.:19.00    
+ Max.   :25.00    Max.   :25.00    Max.   :25.000    Max.   :25.00    
+                                                                      
+ GeographicField2A GeographicField2B GeographicField3A GeographicField3B
+ Min.   :-1.00     Min.   :-1.00     Min.   : 1.00     Min.   : 1       
+ 1st Qu.: 9.00     1st Qu.: 7.00     1st Qu.: 7.00     1st Qu.: 7       
+ Median :14.00     Median :13.00     Median :12.00     Median :13       
+ Mean   :13.63     Mean   :12.94     Mean   :11.94     Mean   :13       
+ 3rd Qu.:18.00     3rd Qu.:19.00     3rd Qu.:17.00     3rd Qu.:19       
+ Max.   :25.00     Max.   :25.00     Max.   :25.00     Max.   :25       
+                                                                        
+ GeographicField4A GeographicField4B GeographicField5A GeographicField5B
+ Min.   : 1.00     Min.   : 1        Min.   :-1.0000   Min.   :-1.00    
+ 1st Qu.: 9.00     1st Qu.: 7        1st Qu.:-1.0000   1st Qu.:13.00    
+ Median :13.00     Median :13        Median :-1.0000   Median :13.00    
+ Mean   :12.99     Mean   :13        Mean   :-0.3474   Mean   :16.13    
+ 3rd Qu.:17.00     3rd Qu.:19        3rd Qu.:-1.0000   3rd Qu.:19.00    
+ Max.   :25.00     Max.   :25        Max.   :25.0000   Max.   :25.00    
+                                                                        
+ GeographicField6A GeographicField6B GeographicField7A GeographicField7B
+ Min.   :-1.000    Min.   :-1.00     Min.   :-1.00     Min.   :-1.00    
+ 1st Qu.: 2.000    1st Qu.: 7.00     1st Qu.: 6.00     1st Qu.: 7.00    
+ Median : 4.000    Median :13.00     Median :10.00     Median :14.00    
+ Mean   : 7.318    Mean   :13.12     Mean   :11.18     Mean   :13.32    
+ 3rd Qu.:12.000    3rd Qu.:19.00     3rd Qu.:15.00     3rd Qu.:19.00    
+ Max.   :25.000    Max.   :25.00     Max.   :25.00     Max.   :25.00    
+                                                                        
+ GeographicField8A GeographicField8B GeographicField9A GeographicField9B
+ Min.   :-1.000    Min.   :-1.00     Min.   :-1.000    Min.   :-1.00    
+ 1st Qu.: 2.000    1st Qu.: 7.00     1st Qu.: 2.000    1st Qu.: 7.00    
+ Median : 5.000    Median :13.00     Median : 6.000    Median :13.00    
+ Mean   : 7.698    Mean   :13.19     Mean   : 8.904    Mean   :13.16    
+ 3rd Qu.:12.000    3rd Qu.:19.00     3rd Qu.:16.000    3rd Qu.:19.00    
+ Max.   :25.000    Max.   :25.00     Max.   :25.000    Max.   :25.00    
+                                                                        
+ GeographicField10A GeographicField10B GeographicField11A GeographicField11B
+ Min.   :-1         Min.   :-1         Min.   :-1.000     Min.   :-1.00     
+ 1st Qu.:-1         1st Qu.:25         1st Qu.: 2.000     1st Qu.: 7.00     
+ Median :-1         Median :25         Median : 4.000     Median :15.00     
+ Mean   :-1         Mean   :25         Mean   : 7.368     Mean   :13.17     
+ 3rd Qu.:-1         3rd Qu.:25         3rd Qu.:11.000     3rd Qu.:19.00     
+ Max.   :-1         Max.   :25         Max.   :25.000     Max.   :25.00     
+                                                                            
+ GeographicField12A GeographicField12B GeographicField13A GeographicField13B
+ Min.   :-1.0       Min.   :-1.00      Min.   :-1.000     Min.   :-1.0      
+ 1st Qu.: 4.0       1st Qu.: 7.00      1st Qu.: 2.000     1st Qu.: 7.0      
+ Median : 9.0       Median :14.00      Median : 5.000     Median :14.0      
+ Mean   :10.7       Mean   :13.31      Mean   : 7.777     Mean   :13.2      
+ 3rd Qu.:16.0       3rd Qu.:19.00      3rd Qu.:11.000     3rd Qu.:19.0      
+ Max.   :25.0       Max.   :25.00      Max.   :25.000     Max.   :25.0      
+                                                                            
+ GeographicField14A GeographicField14B GeographicField15A GeographicField15B
+ Min.   :-1.0000    Min.   :-1.00      Min.   :-1.00      Min.   :-1.00     
+ 1st Qu.:-1.0000    1st Qu.: 7.00      1st Qu.: 8.00      1st Qu.: 7.00     
+ Median :-1.0000    Median :13.00      Median :10.00      Median :13.00     
+ Mean   :-0.3081    Mean   :13.96      Mean   :11.66      Mean   :13.29     
+ 3rd Qu.:-1.0000    3rd Qu.:19.00      3rd Qu.:14.00      3rd Qu.:19.00     
+ Max.   :25.0000    Max.   :25.00      Max.   :25.00      Max.   :25.00     
+                                                                            
+ GeographicField16A GeographicField16B GeographicField17A GeographicField17B
+ Min.   :-1.000     Min.   :-1.00      Min.   :-1.000     Min.   :-1        
+ 1st Qu.: 3.000     1st Qu.: 7.00      1st Qu.: 2.000     1st Qu.: 7        
+ Median : 5.000     Median :13.00      Median : 2.000     Median :13        
+ Mean   : 7.284     Mean   :13.17      Mean   : 5.017     Mean   :13        
+ 3rd Qu.:10.000     3rd Qu.:19.00      3rd Qu.: 4.000     3rd Qu.:19        
+ Max.   :25.000     Max.   :25.00      Max.   :25.000     Max.   :25        
+                                                                            
+ GeographicField18A GeographicField18B GeographicField19A GeographicField19B
+ Min.   :-1.0000    Min.   :-1.00      Min.   :-1.00      Min.   :-1.00     
+ 1st Qu.:-1.0000    1st Qu.: 7.00      1st Qu.: 3.00      1st Qu.: 7.00     
+ Median :-1.0000    Median :13.00      Median :11.00      Median :13.00     
+ Mean   :-0.3401    Mean   :13.04      Mean   :11.84      Mean   :13.03     
+ 3rd Qu.:-1.0000    3rd Qu.:19.00      3rd Qu.:20.00      3rd Qu.:19.00     
+ Max.   :25.0000    Max.   :25.00      Max.   :25.00      Max.   :25.00     
+                                                                            
+ GeographicField20A GeographicField20B GeographicField21A GeographicField21B
+ Min.   :-1.0       Min.   :-1.00      Min.   :-1.0000    Min.   :-1.00     
+ 1st Qu.: 3.0       1st Qu.: 7.00      1st Qu.:-1.0000    1st Qu.: 7.00     
+ Median : 5.0       Median :13.00      Median :-1.0000    Median :13.00     
+ Mean   : 8.5       Mean   :13.03      Mean   :-0.3551    Mean   :13.25     
+ 3rd Qu.:16.0       3rd Qu.:19.00      3rd Qu.:-1.0000    3rd Qu.:19.00     
+ Max.   :25.0       Max.   :25.00      Max.   :25.0000    Max.   :25.00     
+                                                                            
+ GeographicField22A GeographicField22B GeographicField23A GeographicField23B
+ Min.   :-1.0000    Min.   :-1.00      Min.   :-1.0000    Min.   :-1.00     
+ 1st Qu.:-1.0000    1st Qu.:15.00      1st Qu.:-1.0000    1st Qu.: 7.00     
+ Median :-1.0000    Median :15.00      Median :-1.0000    Median :13.00     
+ Mean   :-0.3424    Mean   :17.21      Mean   :-0.3362    Mean   :13.03     
+ 3rd Qu.:-1.0000    3rd Qu.:19.00      3rd Qu.:-1.0000    3rd Qu.:19.00     
+ Max.   :25.0000    Max.   :25.00      Max.   :25.0000    Max.   :25.00     
+                                                                            
+ GeographicField24A GeographicField24B GeographicField25A GeographicField25B
+ Min.   :-1.00      Min.   :-1.00      Min.   :-1.00      Min.   :-1.00     
+ 1st Qu.:13.00      1st Qu.: 8.00      1st Qu.:11.00      1st Qu.: 7.00     
+ Median :16.00      Median :13.00      Median :15.00      Median :13.00     
+ Mean   :15.54      Mean   :13.35      Mean   :14.62      Mean   :13.22     
+ 3rd Qu.:19.00      3rd Qu.:20.00      3rd Qu.:19.00      3rd Qu.:20.00     
+ Max.   :25.00      Max.   :25.00      Max.   :25.00      Max.   :25.00     
+                                                                            
+ GeographicField26A GeographicField26B GeographicField27A GeographicField27B
+ Min.   :-1.00      Min.   :-1.00      Min.   :-1.00      Min.   :-1.00     
+ 1st Qu.: 6.00      1st Qu.: 7.00      1st Qu.:13.00      1st Qu.: 7.00     
+ Median :10.00      Median :13.00      Median :16.00      Median :14.00     
+ Mean   :11.24      Mean   :13.33      Mean   :16.13      Mean   :13.29     
+ 3rd Qu.:16.00      3rd Qu.:20.00      3rd Qu.:21.00      3rd Qu.:20.00     
+ Max.   :25.00      Max.   :25.00      Max.   :25.00      Max.   :25.00     
+                                                                            
+ GeographicField28A GeographicField28B GeographicField29A GeographicField29B
+ Min.   :-1.000     Min.   :-1.00      Min.   :-1.000     Min.   :-1.00     
+ 1st Qu.: 5.000     1st Qu.: 7.00      1st Qu.: 6.000     1st Qu.: 7.00     
+ Median : 8.000     Median :13.00      Median : 9.000     Median :13.00     
+ Mean   : 9.128     Mean   :12.99      Mean   : 9.886     Mean   :12.99     
+ 3rd Qu.:12.000     3rd Qu.:19.00      3rd Qu.:13.000     3rd Qu.:19.00     
+ Max.   :25.000     Max.   :25.00      Max.   :25.000     Max.   :25.00     
+                                                                            
+ GeographicField30A GeographicField30B GeographicField31A GeographicField31B
+ Min.   :-1.000     Min.   :-1         Min.   :-1.00      Min.   :-1.00     
+ 1st Qu.: 6.000     1st Qu.: 7         1st Qu.: 6.00      1st Qu.: 7.00     
+ Median : 8.000     Median :13         Median : 9.00      Median :13.00     
+ Mean   : 8.543     Mean   :13         Mean   : 9.57      Mean   :12.99     
+ 3rd Qu.:10.000     3rd Qu.:19         3rd Qu.:12.00      3rd Qu.:19.00     
+ Max.   :25.000     Max.   :25         Max.   :25.00      Max.   :25.00     
+                                                                            
+ GeographicField32A GeographicField32B GeographicField33A GeographicField33B
+ Min.   :-1.000     Min.   :-1.00      Min.   :-1.000     Min.   :-1.00     
+ 1st Qu.: 5.000     1st Qu.: 7.00      1st Qu.: 6.000     1st Qu.: 7.00     
+ Median : 8.000     Median :13.00      Median : 9.000     Median :13.00     
+ Mean   : 8.974     Mean   :12.99      Mean   : 9.571     Mean   :12.99     
+ 3rd Qu.:12.000     3rd Qu.:19.00      3rd Qu.:12.000     3rd Qu.:19.00     
+ Max.   :25.000     Max.   :25.00      Max.   :25.000     Max.   :25.00     
+                                                                            
+ GeographicField34A GeographicField34B GeographicField35A GeographicField35B
+ Min.   :-1.00      Min.   :-1.00      Min.   :-1.000     Min.   :-1.00     
+ 1st Qu.: 8.00      1st Qu.: 7.00      1st Qu.: 5.000     1st Qu.: 7.00     
+ Median :11.00      Median :13.00      Median : 8.000     Median :13.00     
+ Mean   :11.24      Mean   :12.99      Mean   : 8.722     Mean   :12.99     
+ 3rd Qu.:14.00      3rd Qu.:19.00      3rd Qu.:11.000     3rd Qu.:19.00     
+ Max.   :25.00      Max.   :25.00      Max.   :25.000     Max.   :25.00     
+                                                                            
+ GeographicField36A GeographicField36B GeographicField37A GeographicField37B
+ Min.   :-1.000     Min.   :-1         Min.   :-1.000     Min.   :-1.00     
+ 1st Qu.: 7.000     1st Qu.: 7         1st Qu.: 3.000     1st Qu.: 7.00     
+ Median : 9.000     Median :13         Median : 5.000     Median :13.00     
+ Mean   : 9.837     Mean   :13         Mean   : 6.937     Mean   :12.82     
+ 3rd Qu.:12.000     3rd Qu.:19         3rd Qu.: 9.000     3rd Qu.:19.00     
+ Max.   :25.000     Max.   :25         Max.   :25.000     Max.   :25.00     
+                                                                            
+ GeographicField38A GeographicField38B GeographicField39A GeographicField39B
+ Min.   :-1.000     Min.   :-1         Min.   :-1.000     Min.   :-1        
+ 1st Qu.: 6.000     1st Qu.: 7         1st Qu.: 4.000     1st Qu.: 7        
+ Median : 9.000     Median :13         Median : 7.000     Median :13        
+ Mean   : 9.429     Mean   :13         Mean   : 8.028     Mean   :13        
+ 3rd Qu.:12.000     3rd Qu.:19         3rd Qu.:10.000     3rd Qu.:19        
+ Max.   :25.000     Max.   :25         Max.   :25.000     Max.   :25        
+                                                                            
+ GeographicField40A GeographicField40B GeographicField41A GeographicField41B
+ Min.   :-1.000     Min.   :-1.00      Min.   :-1.00      Min.   :-1.00     
+ 1st Qu.: 3.000     1st Qu.: 7.00      1st Qu.:11.00      1st Qu.: 7.00     
+ Median : 8.000     Median :13.00      Median :15.00      Median :13.00     
+ Mean   : 8.324     Mean   :12.99      Mean   :14.62      Mean   :13.02     
+ 3rd Qu.:11.000     3rd Qu.:19.00      3rd Qu.:23.00      3rd Qu.:19.00     
+ Max.   :25.000     Max.   :25.00      Max.   :25.00      Max.   :25.00     
+                                                                            
+ GeographicField42A GeographicField42B GeographicField43A GeographicField43B
+ Min.   :-1.00      Min.   :-1.00      Min.   :-1.00      Min.   :-1        
+ 1st Qu.: 7.00      1st Qu.: 7.00      1st Qu.: 8.00      1st Qu.: 7        
+ Median :11.00      Median :13.00      Median :10.00      Median :13        
+ Mean   :10.98      Mean   :12.99      Mean   :10.29      Mean   :13        
+ 3rd Qu.:14.00      3rd Qu.:19.00      3rd Qu.:12.00      3rd Qu.:19        
+ Max.   :25.00      Max.   :25.00      Max.   :25.00      Max.   :25        
+                                                                            
+ GeographicField44A GeographicField44B GeographicField45A GeographicField45B
+ Min.   :-1.00      Min.   :-1         Min.   :-1.00      Min.   :-1        
+ 1st Qu.: 9.00      1st Qu.: 7         1st Qu.: 7.00      1st Qu.: 7        
+ Median :13.00      Median :13         Median :10.00      Median :13        
+ Mean   :13.41      Mean   :13         Mean   :10.04      Mean   :13        
+ 3rd Qu.:18.00      3rd Qu.:19         3rd Qu.:12.00      3rd Qu.:19        
+ Max.   :25.00      Max.   :25         Max.   :25.00      Max.   :25        
+                                                                            
+ GeographicField46A GeographicField46B GeographicField47A GeographicField47B
+ Min.   :-1.00      Min.   :-1         Min.   :-1.000     Min.   :-1.00     
+ 1st Qu.:10.00      1st Qu.: 7         1st Qu.: 6.000     1st Qu.: 7.00     
+ Median :11.00      Median :13         Median : 7.000     Median :13.00     
+ Mean   :13.19      Mean   :13         Mean   : 9.706     Mean   :13.12     
+ 3rd Qu.:18.00      3rd Qu.:19         3rd Qu.:12.000     3rd Qu.:19.00     
+ Max.   :25.00      Max.   :25         Max.   :25.000     Max.   :25.00     
+                                                                            
+ GeographicField48A GeographicField48B GeographicField49A GeographicField49B
+ Min.   :-1.00      Min.   :-1.00      Min.   :-1         Min.   :-1.00     
+ 1st Qu.:10.00      1st Qu.: 7.00      1st Qu.:13         1st Qu.: 7.00     
+ Median :15.00      Median :13.00      Median :17         Median :13.00     
+ Mean   :14.38      Mean   :12.94      Mean   :16         Mean   :12.94     
+ 3rd Qu.:19.00      3rd Qu.:19.00      3rd Qu.:20         3rd Qu.:19.00     
+ Max.   :25.00      Max.   :25.00      Max.   :25         Max.   :25.00     
+                                                                            
+ GeographicField50A GeographicField50B GeographicField51A GeographicField51B
+ Min.   :-1.00      Min.   :-1.00      Min.   :-1.00      Min.   :-1.00     
+ 1st Qu.:11.00      1st Qu.: 7.00      1st Qu.: 9.00      1st Qu.: 7.00     
+ Median :16.00      Median :13.00      Median :13.00      Median :13.00     
+ Mean   :14.93      Mean   :12.94      Mean   :13.13      Mean   :12.94     
+ 3rd Qu.:19.00      3rd Qu.:19.00      3rd Qu.:18.00      3rd Qu.:19.00     
+ Max.   :25.00      Max.   :25.00      Max.   :25.00      Max.   :25.00     
+                                                                            
+ GeographicField52A GeographicField52B GeographicField53A GeographicField53B
+ Min.   :-1.00      Min.   :-1.00      Min.   :-1.00      Min.   :-1.00     
+ 1st Qu.: 9.00      1st Qu.: 7.00      1st Qu.:13.00      1st Qu.: 7.00     
+ Median :13.00      Median :13.00      Median :17.00      Median :13.00     
+ Mean   :13.02      Mean   :12.94      Mean   :16.09      Mean   :12.94     
+ 3rd Qu.:18.00      3rd Qu.:19.00      3rd Qu.:21.00      3rd Qu.:19.00     
+ Max.   :25.00      Max.   :25.00      Max.   :25.00      Max.   :25.00     
+                                                                            
+ GeographicField54A GeographicField54B GeographicField55A GeographicField55B
+ Min.   :-1.0       Min.   :-1.00      Min.   :-1.000     Min.   :-1.00     
+ 1st Qu.:10.0       1st Qu.: 7.00      1st Qu.: 4.000     1st Qu.: 7.00     
+ Median :14.0       Median :13.00      Median : 6.000     Median :13.00     
+ Mean   :13.5       Mean   :12.92      Mean   : 8.088     Mean   :12.91     
+ 3rd Qu.:18.0       3rd Qu.:19.00      3rd Qu.:11.000     3rd Qu.:19.00     
+ Max.   :25.0       Max.   :25.00      Max.   :25.000     Max.   :25.00     
+                                                                            
+ GeographicField56A GeographicField56B GeographicField57A GeographicField57B
+ Min.   :-1.0000    Min.   :-1.00      Min.   :-1.00      Min.   :-1        
+ 1st Qu.:-1.0000    1st Qu.: 7.00      1st Qu.:10.00      1st Qu.: 7        
+ Median :-1.0000    Median :13.00      Median :13.00      Median :13        
+ Mean   :-0.3419    Mean   :12.97      Mean   :13.21      Mean   :13        
+ 3rd Qu.:-1.0000    3rd Qu.:19.00      3rd Qu.:17.00      3rd Qu.:19        
+ Max.   :25.0000    Max.   :25.00      Max.   :25.00      Max.   :25        
+                                                                            
+ GeographicField58A GeographicField58B GeographicField59A GeographicField59B
+ Min.   :-1.00      Min.   :-1.00      Min.   :-1.00      Min.   :-1.00     
+ 1st Qu.: 8.00      1st Qu.: 7.00      1st Qu.: 7.00      1st Qu.: 7.00     
+ Median :11.00      Median :13.00      Median :11.00      Median :13.00     
+ Mean   :11.57      Mean   :12.99      Mean   :11.69      Mean   :13.05     
+ 3rd Qu.:15.00      3rd Qu.:19.00      3rd Qu.:15.00      3rd Qu.:19.00     
+ Max.   :25.00      Max.   :25.00      Max.   :25.00      Max.   :25.00     
+                                                                            
+ GeographicField60A GeographicField60B GeographicField61A GeographicField61B
+ Min.   :-1.0000    Min.   :-1.00      Min.   :-1.0000    Min.   :-1.00     
+ 1st Qu.:-1.0000    1st Qu.: 7.00      1st Qu.:-1.0000    1st Qu.: 7.00     
+ Median :-1.0000    Median :13.00      Median :-1.0000    Median :13.00     
+ Mean   :-0.3505    Mean   :12.99      Mean   :-0.3436    Mean   :13.04     
+ 3rd Qu.:-1.0000    3rd Qu.:19.00      3rd Qu.:-1.0000    3rd Qu.:19.00     
+ Max.   :25.0000    Max.   :25.00      Max.   :25.0000    Max.   :25.00     
+                                                                            
+ GeographicField62A GeographicField62B GeographicField63 GeographicField64
+ Min.   :-1.000     Min.   :-1.00       :     2          CA:94725         
+ 1st Qu.:-1.000     1st Qu.: 8.00      N:254712          IL:31724         
+ Median :-1.000     Median :13.00      Y:  6039          NJ:69293         
+ Mean   :-0.341     Mean   :14.12                        TX:65011         
+ 3rd Qu.:-1.000     3rd Qu.:19.00                                         
+ Max.   :25.000     Max.   :25.00                                         
+                                                                          
