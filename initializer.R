@@ -47,10 +47,4 @@ initialize_program <- function(program_name, working_directory, log_file, output
   }else{
     loginfo("Batch session.")
   }
-  
-  tryCatch (setwd(working_directory),
-            error = function(e){
-              logerror("initialize_program: Working directory does not exist.")
-              stop(e)
-            })
 }
