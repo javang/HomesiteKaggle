@@ -22,15 +22,17 @@
 # --------------------------------------------
 
 # --------------------------------------------
+
+require(yaml)
+conf = yaml.load_file("project.conf")
 # Environment variables:
 interactive_session <- interactive()
-conf = yaml.load_file("project.conf")
 
 # --------------------------------------------
 # Load required source files:
 source("initializer.R")
 source("data_explorer.R")
-require(yaml)
+source("clean.R")
 require(data.table)
 
 
@@ -51,6 +53,17 @@ data_preprocessing <- function(homesite){
   homesite$Original_Quote_Date_Year <- as.numeric(format(homesite$Original_Quote_Date_Typed,format="%Y"))
   # Remove quote ID, it is an index variable
   homesite[,QuoteNumber:=NULL]
+  
+  # create factors
+  homesite[,QuoteConversion_Flag:= as.factor(QuoteConversion_Flag)]
+  homesite[,Field6:= as.factor(Field6)]
+  homesite[,Field12:= as.factor(Field12)]
+  homesite[,Field10:= as.numeric(gsub(",", "", Field10))]
+  homesite[,CoverageField5A:= as.factor(CoverageField5A)]
+  homesite[,CoverageField5B:= as.factor(CoverageField5B)]
+  homesite[,CoverageField6A:= as.factor(CoverageField6A)]
+  homesite[,CoverageField6B:= as.factor(CoverageField6B)]
+  
   return(homesite)
 }
 
@@ -60,7 +73,6 @@ binaryze_factor_columns <- function(homesite){
   {
     print(names(homesite[column]))
   }
-  
 }
 
 main <- function(){
@@ -77,11 +89,10 @@ main <- function(){
     
     homesite <- data_preprocessing(homesite)
     numeric_columns <- which(sapply(homesite,is.numeric))
-    univariate_numerical_exploration(homesite, numeric_columns, "Homesite")
-    univariate_visual_exploration(homesite, numeric_columns, "Homesite")
-    
-  
-  
+    # univariate_numerical_exploration(homesite, numeric_columns, "Homesite")
+    # univariate_visual_exploration(homesite, numeric_columns, "Homesite")
+    clean_data(homesite)
+    str(homesite)
 }
 
 main()
