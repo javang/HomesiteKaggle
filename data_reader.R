@@ -56,20 +56,14 @@ data_preprocessing <- function(homesite){
   
   # create factors
   homesite[,QuoteConversion_Flag:= as.factor(QuoteConversion_Flag)]
-
-  # FIELDS
   homesite[,Field6:= as.factor(Field6)]
   homesite[,Field12:= as.factor(Field12)]
   homesite[,Field10:= as.numeric(gsub(",", "", Field10))]
-  
-  # COVERAGE FIELDS
   homesite[,CoverageField5A:= as.factor(CoverageField5A)]
   homesite[,CoverageField5B:= as.factor(CoverageField5B)]
   homesite[,CoverageField6A:= as.factor(CoverageField6A)]
   homesite[,CoverageField6B:= as.factor(CoverageField6B)]
   homesite[,CoverageField6B:= as.factor(CoverageField6B)]
-  
-  # GEOGRAPHIC FIELDS
   homesite[,GeographicField5A:= as.factor(GeographicField5A)]
   homesite[,GeographicField10A:= NULL]
   homesite[,GeographicField10B:= as.factor(GeographicField10B)]
@@ -77,13 +71,7 @@ data_preprocessing <- function(homesite){
   homesite[,GeographicField18A:= as.factor(GeographicField18A)]
   homesite[,GeographicField21A:= as.factor(GeographicField21A)]
   homesite[,GeographicField22A:= as.factor(GeographicField22A)]
-  homesite[,GeographicField23A:= as.factor(GeographicField23A)]
-  homesite[,GeographicField56A:= as.factor(GeographicField56A)]
-  homesite[,GeographicField60A:= as.factor(GeographicField60A)]
-  homesite[,GeographicField61A:= as.factor(GeographicField61A)]
-  homesite[,GeographicField62A:= as.factor(GeographicField62A)]
-  homesite[,GeographicField63:= as.factor(GeographicField63)]
-  homesite[,GeographicField64:= as.factor(GeographicField64)]
+  
   return(homesite)
 }
 
