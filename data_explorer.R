@@ -40,11 +40,15 @@ univariate_numerical_exploration <- function(dataset, col_range, dataset_name){
 
 univariate_visual_exploration <- function(dataset, col_range, dataset_name){
   loginfo(paste("Univariate Visual Exploration for ", dataset_name))
-  par(mfrow = c(2,2))
+  
+
   for (i in col_range){
+    pdf(paste("visualizations/", names(dataset)[i],".pdf", sep = ""), onefile = TRUE)
+    par(mfrow = c(2,2))
     hist(dataset[[i]],main = names(dataset)[i], sub="Histogram")
     plot(density(dataset[[i]], na.rm = TRUE), main = paste("Density for", names(dataset)[i]))
     plot(ecdf(dataset[[i]]), main = paste("ECDF for", names(dataset)[i]))
     qqnorm(dataset[[i]], main = paste("QQnorm for", names(dataset)[i]))
+    dev.off()
   }
 }
