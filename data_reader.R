@@ -63,6 +63,14 @@ data_preprocessing <- function(homesite){
   homesite[,CoverageField5B:= as.factor(CoverageField5B)]
   homesite[,CoverageField6A:= as.factor(CoverageField6A)]
   homesite[,CoverageField6B:= as.factor(CoverageField6B)]
+  homesite[,CoverageField6B:= as.factor(CoverageField6B)]
+  homesite[,GeographicField5A:= as.factor(GeographicField5A)]
+  homesite[,GeographicField10A:= NULL]
+  homesite[,GeographicField10B:= as.factor(GeographicField10B)]
+  homesite[,GeographicField14A:= as.factor(GeographicField14A)]
+  homesite[,GeographicField18A:= as.factor(GeographicField18A)]
+  homesite[,GeographicField21A:= as.factor(GeographicField21A)]
+  homesite[,GeographicField22A:= as.factor(GeographicField22A)]
   
   return(homesite)
 }
