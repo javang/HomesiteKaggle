@@ -74,8 +74,9 @@ main <- function(){
   homesite <- load_data()
   homesite <- data_preprocessing(homesite)
   numeric_columns <- which(sapply(homesite,is.numeric))
-  univariate_numerical_exploration(homesite, numeric_columns, "Homesite")
-  univariate_visual_exploration(homesite, numeric_columns, "Homesite")
+  #univariate_numerical_exploration(homesite, numeric_columns, "Homesite")
+  #univariate_visual_exploration(homesite, numeric_columns, "Homesite")
+  bivariate_numerical_exploration(homesite[,numeric_columns], "Homesite")
 
   
   

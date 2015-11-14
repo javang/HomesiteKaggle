@@ -52,3 +52,18 @@ univariate_visual_exploration <- function(dataset, col_range, dataset_name){
     dev.off()
   }
 }
+
+bivariate_numerical_exploration <- function(dataset, dataset_name){
+  loginfo(paste("Bivariate numerical exploration for",dataset_name))
+  
+  print("*********************************************************************")
+  print(paste("Bivariate numerical exploration for",dataset_name))
+  print("*********************************************************************")
+  
+  print("Variance:")
+  print(var(dataset, na.rm = TRUE))
+  print("Covariance:")
+  print(cov(dataset, use = "complete.obs"))
+  print("Correlation:")
+  print(cor(dataset, use = "complete.obs"))
+}
