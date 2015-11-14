@@ -41,9 +41,10 @@ univariate_numerical_exploration <- function(dataset, col_range, dataset_name){
 univariate_visual_exploration <- function(dataset, col_range, dataset_name){
   loginfo(paste("Univariate Visual Exploration for ", dataset_name))
   for (i in col_range){
-    fileName = paste0(names(dataset)[i],".pdf") 
+    fileName = paste0(names(dataset)[i],".png") 
     outputPath = file.path(conf$general$data_directory, "visualizations",  fileName)
-    pdf(outputPath, onefile = TRUE)
+    # pdf(outputPath, onefile = TRUE)
+    png(outputPath)
     par(mfrow = c(2,2))
     hist(dataset[[i]],main = names(dataset)[i], sub="Histogram")
     plot(density(dataset[[i]], na.rm = TRUE), main = paste("Density for", names(dataset)[i]))
