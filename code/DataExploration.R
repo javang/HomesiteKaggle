@@ -3,4 +3,19 @@
     Course: Deriving Knowledge from data at scale
     Authors:
 '
-sdfsdf
+require(data.table)
+require(logging)
+
+exploreData = function(homesiteData) {
+    ' Basic exploration of the data
+
+    :homesiteData: A data table
+    '    
+}
+
+
+basicConfig()
+homesiteData = fread("~/datasets/homesiteKaggle/train.csv", sep=",")
+
+
+
