@@ -29,7 +29,7 @@ univariate_numerical_exploration <- function(dataset, col_range, dataset_name){
   print("Summary")
   print(summary(dataset))
   for (i in col_range){
-    if(DEBUG){loginfo(paste("Column=",i))}
+    if(conf$general$DEBUG){loginfo(paste("Column=",i))}
     var_name <- names(dataset)[i]
     print(paste("Inner quantile range for ",var_name))
     print(IQR(dataset[[i]], na.rm = TRUE))
@@ -40,10 +40,10 @@ univariate_numerical_exploration <- function(dataset, col_range, dataset_name){
 
 univariate_visual_exploration <- function(dataset, col_range, dataset_name){
   loginfo(paste("Univariate Visual Exploration for ", dataset_name))
-  
-
   for (i in col_range){
-    pdf(paste("visualizations/", names(dataset)[i],".pdf", sep = ""), onefile = TRUE)
+    fileName = paste0(names(dataset)[i],".pdf") 
+    outputPath = file.path(conf$general$data_directory, "visualizations",  fileName)
+    pdf(outputPath, onefile = TRUE)
     par(mfrow = c(2,2))
     hist(dataset[[i]],main = names(dataset)[i], sub="Histogram")
     plot(density(dataset[[i]], na.rm = TRUE), main = paste("Density for", names(dataset)[i]))
