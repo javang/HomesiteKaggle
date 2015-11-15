@@ -53,3 +53,15 @@ univariate_visual_exploration <- function(dataset, col_range, dataset_name){
     dev.off()
   }
 }
+
+
+test_as_factors = function(homesite, columNames, datasetName) {
+    ' Convert to factors all the columns with integers and print the levels.
+    This function intends to check if what we see as integer columns are indeed factors
+    '
+    for (columnName in columNames) {
+        fac = as.factor(homesite[,get(columnName)])
+        txt =  paste(levels(fac), collapse=" ")
+        loginfo(paste("Levels for column", columnName, ":",txt))
+    }
+}

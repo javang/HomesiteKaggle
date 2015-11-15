@@ -62,28 +62,46 @@ data_preprocessing <- function(homesite){
   homesite[,Field12:= as.factor(Field12)]
   homesite[,Field10:= as.numeric(gsub(",", "", Field10))]
   
-  # COVERAGE FIELDS
-  homesite[,CoverageField5A:= as.factor(CoverageField5A)]
-  homesite[,CoverageField5B:= as.factor(CoverageField5B)]
-  homesite[,CoverageField6A:= as.factor(CoverageField6A)]
-  homesite[,CoverageField6B:= as.factor(CoverageField6B)]
-  homesite[,CoverageField6B:= as.factor(CoverageField6B)]
-  
-  # GEOGRAPHIC FIELDS
-  homesite[,GeographicField5A:= as.factor(GeographicField5A)]
-  homesite[,GeographicField10A:= NULL]
-  homesite[,GeographicField10B:= as.factor(GeographicField10B)]
-  homesite[,GeographicField14A:= as.factor(GeographicField14A)]
-  homesite[,GeographicField18A:= as.factor(GeographicField18A)]
-  homesite[,GeographicField21A:= as.factor(GeographicField21A)]
-  homesite[,GeographicField22A:= as.factor(GeographicField22A)]
-  homesite[,GeographicField23A:= as.factor(GeographicField23A)]
-  homesite[,GeographicField56A:= as.factor(GeographicField56A)]
-  homesite[,GeographicField60A:= as.factor(GeographicField60A)]
-  homesite[,GeographicField61A:= as.factor(GeographicField61A)]
-  homesite[,GeographicField62A:= as.factor(GeographicField62A)]
-  homesite[,GeographicField63:= as.factor(GeographicField63)]
-  homesite[,GeographicField64:= as.factor(GeographicField64)]
+#   # COVERAGE FIELDS
+#   homesite[,CoverageField5A:= as.factor(CoverageField5A)]
+#   homesite[,CoverageField5B:= as.factor(CoverageField5B)]
+#   homesite[,CoverageField6A:= as.factor(CoverageField6A)]
+#   homesite[,CoverageField6B:= as.factor(CoverageField6B)]
+#   homesite[,CoverageField6B:= as.factor(CoverageField6B)]
+#   
+#   # GEOGRAPHIC FIELDS
+#   homesite[,GeographicField5A:= as.factor(GeographicField5A)]
+#   homesite[,GeographicField10A:= NULL]
+#   homesite[,GeographicField10B:= as.factor(GeographicField10B)]
+#   homesite[,GeographicField14A:= as.factor(GeographicField14A)]
+#   homesite[,GeographicField18A:= as.factor(GeographicField18A)]
+#   homesite[,GeographicField21A:= as.factor(GeographicField21A)]
+#   homesite[,GeographicField22A:= as.factor(GeographicField22A)]
+#   homesite[,GeographicField23A:= as.factor(GeographicField23A)]
+#   homesite[,GeographicField56A:= as.factor(GeographicField56A)]
+#   homesite[,GeographicField60A:= as.factor(GeographicField60A)]
+#   homesite[,GeographicField61A:= as.factor(GeographicField61A)]
+#   homesite[,GeographicField62A:= as.factor(GeographicField62A)]
+#   homesite[,GeographicField63:= as.factor(GeographicField63)]
+#   homesite[,GeographicField64:= as.factor(GeographicField64)]
+# 
+#   homesite[, PropertyField2A:= as.factor(PropertyField2A)]
+#   homesite[, PropertyField6:= as.factor(PropertyField6)]
+#   homesite[, PropertyField8:= as.factor(PropertyField8)]
+#   homesite[, PropertyField9:= as.factor(PropertyField9)]
+#   homesite[, PropertyField10:= as.factor(PropertyField10)]
+#   homesite[, PropertyField11A:= as.factor(PropertyField11A)]
+#   homesite[, PropertyField11B:= as.factor(PropertyField11B)]
+#   homesite[, PropertyField12:= as.factor(PropertyField12)]
+#   homesite[, PropertyField13:= as.factor(PropertyField13)]
+#   homesite[, PropertyField17:= as.factor(PropertyField17)]
+#   homesite[, PropertyField18:= as.factor(PropertyField18)]
+#   homesite[, PropertyField19:= as.factor(PropertyField19)]
+#   homesite[, PropertyField20:= as.factor(PropertyField20)]
+#   homesite[, PropertyField22:= as.factor(PropertyField22)]
+
+  # 15? (15 values)
+  # 23?  (14 values)
   return(homesite)
 }
 
@@ -106,13 +124,13 @@ main <- function(){
     
     fnData = file.path(conf$general$data_directory, "train.csv")
     homesite <- load_data(fnData)
-    
     homesite <- data_preprocessing(homesite)
-    numeric_columns <- which(sapply(homesite,is.numeric))
+    # numeric_columns <- which(sapply(homesite,is.numeric))
     # univariate_numerical_exploration(homesite, numeric_columns, "Homesite")
     # univariate_visual_exploration(homesite, numeric_columns, "Homesite")
-    clean_data(homesite)
-    str(homesite)
+    columnIndices = which(sapply(homesite, is.integer))
+    integerColumnNames = names(homesite)[columnIndices]  
+    test_as_factors(homesite, integerColumnNames, "Homesite")
 }
 
 main()
