@@ -76,6 +76,66 @@ data_preprocessing <- function(homesite){
   homesite[,SalesField13:= as.factor(SalesField13)]
   homesite[,SalesField14:= as.factor(SalesField14)]
   homesite[,SalesField15:= as.factor(SalesField15)]
+  #PERSONAL FACTORS
+  homesite[,PersonalField1:= as.factor(PersonalField1)]
+  homesite[,PersonalField2:= as.factor(PersonalField2)]
+  homesite[,PersonalField5:= as.factor(PersonalField5)]
+  homesite[,PersonalField6:= as.factor(PersonalField6)]
+  homesite[,PersonalField8:= as.factor(PersonalField8)]
+  homesite[,PersonalField9:= as.factor(PersonalField9)]
+  homesite[,PersonalField11:= as.factor(PersonalField11)]
+  homesite[,PersonalField12:= as.factor(PersonalField12)]
+  homesite[,PersonalField13:= as.factor(PersonalField13)]
+  homesite[,PersonalField22:= as.factor(PersonalField22)]
+  homesite[,PersonalField28:= as.factor(PersonalField28)]
+  homesite[,PersonalField29:= as.factor(PersonalField29)]
+  homesite[,PersonalField34:= as.factor(PersonalField34)]
+  homesite[,PersonalField35:= as.factor(PersonalField35)]
+  homesite[,PersonalField36:= as.factor(PersonalField36)]
+  homesite[,PersonalField37:= as.factor(PersonalField37)]
+  homesite[,PersonalField38:= as.factor(PersonalField38)]
+  homesite[,PersonalField39:= as.factor(PersonalField39)]
+  homesite[,PersonalField40:= as.factor(PersonalField40)]
+  homesite[,PersonalField41:= as.factor(PersonalField41)]
+  homesite[,PersonalField42:= as.factor(PersonalField42)]
+  homesite[,PersonalField43:= as.factor(PersonalField43)]
+  homesite[,PersonalField48:= as.factor(PersonalField48)]
+  homesite[,PersonalField49:= as.factor(PersonalField49)]
+  homesite[,PersonalField50:= as.factor(PersonalField50)]
+  homesite[,PersonalField51:= as.factor(PersonalField51)]
+  homesite[,PersonalField52:= as.factor(PersonalField52)]
+  homesite[,PersonalField53:= as.factor(PersonalField53)]
+  homesite[,PersonalField58:= as.factor(PersonalField58)]
+  homesite[,PersonalField59:= as.factor(PersonalField59)]
+  homesite[,PersonalField60:= as.factor(PersonalField60)]
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   #GEOGRAPHIC FACTORS
