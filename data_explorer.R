@@ -54,7 +54,6 @@ univariate_visual_exploration <- function(dataset, col_range, dataset_name){
   }
 }
 
-
 test_as_factors = function(homesite, columNames, datasetName) {
     ' Convert to factors all the columns with integers and print the levels.
     This function intends to check if what we see as integer columns are indeed factors
@@ -65,3 +64,22 @@ test_as_factors = function(homesite, columNames, datasetName) {
         loginfo(paste("Levels for column", columnName, ":",txt))
     }
 }
+
+
+
+bivariate_numerical_exploration <- function(dataset, dataset_name){
+  loginfo(paste("Bivariate numerical exploration for",dataset_name))
+  
+  print("*********************************************************************")
+  print(paste("Bivariate numerical exploration for",dataset_name))
+  print("*********************************************************************")
+  
+  print("Variance:")
+  print(var(dataset, na.rm = TRUE))
+  print("Covariance:")
+  print(cov(dataset, use = "complete.obs"))
+  print("Correlation:")
+  print(cor(dataset, use = "complete.obs"))
+}
+
+
