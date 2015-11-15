@@ -76,6 +76,7 @@ data_preprocessing <- function(homesite){
   homesite[,SalesField13:= as.factor(SalesField13)]
   homesite[,SalesField14:= as.factor(SalesField14)]
   homesite[,SalesField15:= as.factor(SalesField15)]
+  
   #PERSONAL FACTORS
   homesite[,PersonalField1:= as.factor(PersonalField1)]
   homesite[,PersonalField2:= as.factor(PersonalField2)]
@@ -108,36 +109,22 @@ data_preprocessing <- function(homesite){
   homesite[,PersonalField58:= as.factor(PersonalField58)]
   homesite[,PersonalField59:= as.factor(PersonalField59)]
   homesite[,PersonalField60:= as.factor(PersonalField60)]
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  homesite[,PersonalField61:= as.factor(PersonalField61)]
+  homesite[,PersonalField62:= as.factor(PersonalField62)]
+  homesite[,PersonalField63:= as.factor(PersonalField63)]
+  homesite[,PersonalField64:= as.factor(PersonalField64)]
+  homesite[,PersonalField65:= as.factor(PersonalField65)]
+  homesite[,PersonalField66:= as.factor(PersonalField66)]
+  homesite[,PersonalField67:= as.factor(PersonalField67)]
+  homesite[,PersonalField68:= as.factor(PersonalField68)]
+  homesite[,PersonalField69:= as.factor(PersonalField69)]
+  homesite[,PersonalField70:= as.factor(PersonalField70)]
+  homesite[,PersonalField71:= as.factor(PersonalField71)]
+  homesite[,PersonalField72:= as.factor(PersonalField72)]
+  homesite[,PersonalField73:= as.factor(PersonalField73)]
+  homesite[,PersonalField78:= as.factor(PersonalField78)]
+  homesite[,PersonalField83:= as.factor(PersonalField83)]
+
   #GEOGRAPHIC FACTORS
   homesite[,GeographicField5A:= as.factor(GeographicField5A)]
   homesite[,GeographicField10A:= NULL]
