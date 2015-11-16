@@ -21,7 +21,7 @@
 # --------------------------------------------
 require("FactoMineR")
 require(MASS) # write.matrix
-require(FSelector) 
+require(FSelector)  # 
 source("data_preprocessor.R")
 
 
@@ -97,21 +97,21 @@ factominer_tutorial <- function(){
 splitDataTable = function(dataTable, trainingFraction) {
     numObservations = nrow(dataTable)
     x = runif(numObservations)
-    print(x)
     selected_indices = (x < trainingFraction)
     return(selected_indices)
 }
 
 
 apply_mca = function(homesite) {
-    ' Apply Multiple Component Analysis to a data table object
+    ' Apply Multiple Component Analysis to a data table object. This function
+    is producing results that are difficult to interpret.
     '
     factorColumns = get_factor_features(homesite)
     factorColumnNames = names(homesite)[factorColumns]
     factorsDataTable = homesite[, c(factorColumnNames), with=FALSE]
     factorsDataTable[,QuoteConversion_Flag:=NULL]
     for (i in c(1:10)) {
-        selectedIndices = splitDataTable(factorsDataTable, trainingFraction = 0.0002)
+        selectedIndices = splitDataTable(factorsDataTable, trainingFraction = 0.01)
         trainingTable = factorsDataTable[selectedIndices == TRUE, ]
         mcaAnalysis = MCA(trainingTable, ncp=20)
     fnEig = file.path(conf$general$data_directory, paste0("mca-eigen-",i,".txt"))
@@ -119,4 +119,20 @@ apply_mca = function(homesite) {
     }
 }
 
-apply_mca(homesite)
+# apply_mca(homesite)
+
+apply_chi_square_feature_selection = function(homesite) {
+    ' Apply the chi-square algorithm for dimensionality reduction of categorical
+    values. 
+    '
+    factorColumns = get_factor_features(homesite)
+    factorColumnNames = names(homesite)[factorColumns]
+    factorsDataTable = homesite[, c(factorColumnNames), with=FALSE]
+    selectedIndices = splitDataTable(factorsDataTable, trainingFraction = 1)
+    trainingTable = factorsDataTable[selectedIndices == TRUE, ]
+    trainingTable[, PropertyField29:=NULL] # spurious results with chi.squared
+    formula = QuoteConversion_Flag ~ .
+    DT = chi.squared(formula, trainingTable)
+    retrun(DT)
+}
+
