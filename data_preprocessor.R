@@ -136,7 +136,7 @@ data_preprocessing <- function(homesite){
     for(nf in numericFeatures)  { homesite[,c(nf):=as.integer(homesite[, get(nf)])]}
     
     # Add a level to GeographicField25A    
-    homesite[, GeographicField25A:=as.factor(GeographicField25A)] # imputar moda
+    homesite[, GeographicField25A:=as.factor(GeographicField25A)]
     levels(homesite$GeographicField25A) = append(levels(homesite$GeographicField25A), 3)
     
     homesite[,PersonalField84:= as.factor(PersonalField84)]
