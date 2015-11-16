@@ -54,6 +54,24 @@ factor_analysis <- function(homesite){
 #     print(pca_result$call$col.w)
 }
 
+mca_factor_analysis <- function(homesite){
+    loginfo("Peforming MCA factor analysis")
+    homesite[,Original_Quote_Date:=NULL]
+    homesite[,Original_Quote_Date_Typed:=NULL]
+    homesite[,QuoteConversion_Flag:=NULL]
+    
+    mca_result <- MCA(homesite, quanti.sup = as.vector(get_numeric_features(homesite)), graph = FALSE)
+}
+
+famd_factor_analysis <- function(homesite){
+    loginfo("Peforming FAMD factor analysis")
+    homesite[,Original_Quote_Date:=NULL]
+    homesite[,Original_Quote_Date_Typed:=NULL]
+    homesite[,QuoteConversion_Flag:=NULL]
+    
+    famd_result <- FAMD(homesite, graph = FALSE)
+}
+
 plot_individuals_by_factor <- function(pca_result, homesite){
     loginfo("Plotting individuals according to categorical value.")
 
