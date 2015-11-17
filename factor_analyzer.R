@@ -153,3 +153,5 @@ apply_chi_square_feature_selection = function(homesite, trainingFraction) {
     DT = chi.squared(formula, trainingTable)
     return(DT)
 }
+
+
