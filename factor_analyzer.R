@@ -20,7 +20,9 @@
 # For an overview of the package please review: http://factominer.free.fr/
 # --------------------------------------------
 require("FactoMineR")
-
+require(MASS) # write.matrix
+require(FSelector)  # 
+source("data_preprocessor.R")
 
 
 factor_analysis <- function(homesite){
@@ -108,4 +110,46 @@ factominer_tutorial <- function(){
     #Describe each pricipal component
     print(dimdesc(res.pca, proba = 0.2))
     dev.off()
+}
+
+splitDataTable = function(dataTable, trainingFraction) {
+    numObservations = nrow(dataTable)
+    x = runif(numObservations)
+    selected_indices = (x < trainingFraction)
+    return(selected_indices)
+}
+
+
+apply_mca = function(homesite) {
+    ' Apply Multiple Component Analysis to a data table object. This function
+    is producing results that are difficult to interpret.
+    '
+    factorColumns = get_factor_features(homesite)
+    factorColumnNames = names(homesite)[factorColumns]
+    factorsDataTable = homesite[, c(factorColumnNames), with=FALSE]
+    factorsDataTable[,QuoteConversion_Flag:=NULL]
+    for (i in c(1:10)) {
+        selectedIndices = splitDataTable(factorsDataTable, trainingFraction = 0.01)
+        trainingTable = factorsDataTable[selectedIndices == TRUE, ]
+        mcaAnalysis = MCA(trainingTable, ncp=20)
+        fnEig = file.path(conf$general$data_directory, paste0("mca-eigen-",i,".txt"))
+        write.matrix(mcaAnalysis$eig, file=fnEig, sep='\t')
+    }
+}
+
+# apply_mca(homesite)
+
+apply_chi_square_feature_selection = function(homesite, trainingFraction) {
+    ' Apply the chi-square algorithm for dimensionality reduction of categorical
+    values. 
+    '
+    factorColumns = get_factor_features(homesite)
+    factorColumnNames = names(homesite)[factorColumns]
+    factorsDataTable = homesite[, c(factorColumnNames), with=FALSE]
+    selectedIndices = splitDataTable(factorsDataTable, trainingFraction = trainingFraction)
+    trainingTable = factorsDataTable[selectedIndices == TRUE, ]
+    trainingTable[, PropertyField29:=NULL] # spurious results with chi.squared
+    formula = QuoteConversion_Flag ~ .
+    DT = chi.squared(formula, trainingTable)
+    return(DT)
 }

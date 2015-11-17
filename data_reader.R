@@ -76,11 +76,11 @@ main <- function(){
 #     integerColumnNames = names(testData)[columnIndices]  
     # test_as_factors(testData, integerColumnNames, "Test Data")
     # compare_test_vs_train_factors(homesite, testData)    
-    factor_analysis(homesite)
+    #factor_analysis(homesite)
+    return(homesite)
 
 }
-
-main()
+homesite = main()
 
 
 

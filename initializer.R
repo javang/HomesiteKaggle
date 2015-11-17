@@ -18,6 +18,9 @@
 # Required libraries:
 if(!require("logging")){install.packages("logging")}
 if(!require("FactoMineR")){install.packages("FactoMineR")}
+if(!require("MASS")){install.packages("MASS")}
+if(!require("FSelector")){install.packages("FSelector")}
+
 #if(!require("gdata")){install.packages("gdata")}
 #if(!require("Amelia")){install.packages("Amelia")}
 #if(!require("plyr")){install.packages("plyr")}
