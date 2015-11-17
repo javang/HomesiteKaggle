@@ -32,7 +32,18 @@ create_reduced_numeric_features_pca <- function(homesite, eigenvalues, target_di
 }
 append_reduced_numeric_features<- function(homesite, target_dimensions){
     loginfo("Reducing numeric features with PCA.")
-    pca_result <- PCA(homesite, quali.sup = as.vector(get_factor_features(homesite)), graph = FALSE)
-    z <- create_reduced_numeric_features_pca(homesite, pca_result$eig$eigenvalue[1:target_dimensions],target_dimensions)
+    eigen_file = file.path(conf$general$resources_directory, "pca-eigenvalues.csv")
+    if (!file.exists(eigen_file))
+    {
+        loginfo("Eigen file not found. Calling PCA.")
+        pca_result <- PCA(homesite, quali.sup = as.vector(get_factor_features(homesite)), graph = FALSE)
+        write.csv(pca_result$eig, file = eigen_file)
+        eigenvalues <- pca_result$eig$eigenvalue[1:target_dimensions]
+    }else{
+        loginfo("Eigen file found, reading from it.")
+        eigen_csv <- read.csv(eigen_file)
+        eigenvalues <- eigen_csv$eigenvalue[1:target_dimensions]
+    }
+    z <- create_reduced_numeric_features_pca(homesite, eigenvalues ,target_dimensions)
     return(cbind(homesite, z))
 }
