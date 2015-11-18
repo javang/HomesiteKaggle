@@ -23,7 +23,7 @@ create_reduced_numeric_features_pca <- function(homesite, eigenvalues, target_di
     numeric_column_names <- names(homesite)[numeric_columns]
     numeric_data_table <- homesite[,c(numeric_column_names),with=FALSE]
     #p is a d x k matrix with columns being the k principal components (eigenvalues from pca_result)
-    p <- matrix(rep(eigenvalues, length(numeric_columns)),ncol=target_dimensions, nrow=length(numeric_columns), byrow=TRUE)
+    p <- matrix(rep(eigenvalues, length(numeric_columns)),ncol=target_dimensions, byrow=TRUE) #nrow=length(numeric_columns), 
     #z is the matrix with the lower dimensional representation of the data
     dimension_names <- paste0("num_dim_", 1:target_dimensions)
     names(z) <- dimension_names
@@ -33,8 +33,7 @@ create_reduced_numeric_features_pca <- function(homesite, eigenvalues, target_di
 append_reduced_numeric_features<- function(homesite, target_dimensions){
     loginfo("Reducing numeric features with PCA.")
     eigen_file = file.path(conf$general$resources_directory, "pca-eigenvalues.csv")
-    if (!file.exists(eigen_file))
-    {
+    if (!file.exists(eigen_file)){
         loginfo("Eigen file not found. Calling PCA.")
         pca_result <- PCA(homesite, quali.sup = as.vector(get_factor_features(homesite)), graph = FALSE)
         write.csv(pca_result$eig, file = eigen_file)

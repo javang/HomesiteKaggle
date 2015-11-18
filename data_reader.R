@@ -77,7 +77,7 @@ main <- function(){
     # test_as_factors(testData, integerColumnNames, "Test Data")
     # compare_test_vs_train_factors(homesite, testData)    
     #factor_analysis(homesite)
-    new_homesite <- append_reduced_numeric_features(homesite, 10)
+    new_homesite <- append_reduced_numeric_features(homesite, 42)
     loginfo(ncol(new_homesite))
     #Not returning new_homesite for now
     return(homesite)
