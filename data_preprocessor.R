@@ -28,25 +28,37 @@ get_character_features <- function(dataset){
     return(which(sapply(dataset,is.character)))
 }
 
-
-
 data_preprocessing <- function(homesite){
+    # Set numeric and factors
+    assignDataTypes(homesite)
+    # Add dates
     homesite$Original_Quote_Date_Typed <- as.Date(as.character(homesite$Original_Quote_Date, format = "%Y/%m%/%d"))
     homesite$Original_Quote_Date_Day <- as.numeric(format(homesite$Original_Quote_Date_Typed,format="%d"))
     homesite$Original_Quote_Date_Month <- as.numeric(format(homesite$Original_Quote_Date_Typed,format="%m"))
     homesite$Original_Quote_Date_Year <- as.numeric(format(homesite$Original_Quote_Date_Typed,format="%Y"))
     # Remove quote ID, it is an index variable
     homesite[,QuoteNumber:=NULL]
-    
-    homesite[,QuoteConversion_Flag:= as.factor(QuoteConversion_Flag)]
-    
-    homesite[,Field10:= as.numeric(gsub(",", "", Field10))]
+    # Remove useless values
     homesite[,PropertyField6:=NULL]
     homesite[, GeographicField10A:=NULL]
+    # impute values    
+    m = Mode(homesite$PersonalField84) # impute the mode 
+    homesite[is.na(PersonalField84), PersonalField84:=m] 
+    m = Mode(homesite$PropertyField29) # impute the mode 
+    homesite[is.na(PropertyField29), PropertyField29:=m] 
+    return(homesite)
+}
+
+
+assignDataTypes = function(homesite) {
+    ' Prepare the raw input dataframe with the proper types that we are going to use.
+    We need this because R does not assign the types correctly for the variables
+    that we consider as factors.
+    '
+    homesite[,QuoteConversion_Flag:= as.factor(QuoteConversion_Flag)]
+    homesite[,Field10:= as.numeric(gsub(",", "", Field10))]
     
-    # create factors
-    
-    # COVERAGE FIELDS
+    # Factors
     factorFeatures = c("Field6",  "Field7", "Field12",
                        "CoverageField1A", "CoverageField1B", "CoverageField2A", "CoverageField2B",
                        "CoverageField3A", "CoverageField3B", "CoverageField4A", "CoverageField4B",
@@ -130,23 +142,14 @@ data_preprocessing <- function(homesite){
         "PersonalField82",
         
         "PropertyField23", "PropertyField27"
-        
     )
-    
     for(nf in numericFeatures)  { homesite[,c(nf):=as.integer(homesite[, get(nf)])]}
     
+    homesite[,PersonalField84:= as.factor(PersonalField84)]
+    homesite[,PropertyField29:= as.factor(PropertyField29)]
     # Add a level to GeographicField25A    
     homesite[, GeographicField25A:=as.factor(GeographicField25A)]
     levels(homesite$GeographicField25A) = append(levels(homesite$GeographicField25A), 3)
-    
-    homesite[,PersonalField84:= as.factor(PersonalField84)]
-    m = Mode(homesite$PersonalField84) # impute the mode 
-    homesite[is.na(PersonalField84), PersonalField84:=m] 
-    homesite[,PropertyField29:= as.factor(PropertyField29)]
-    m = Mode(homesite$PropertyField29) # impute the mode 
-    homesite[is.na(PropertyField29), PropertyField29:=m] 
-    
-    return(homesite)
 }
 
 Mode <- function(x) {

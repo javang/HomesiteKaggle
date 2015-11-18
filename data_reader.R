@@ -35,18 +35,8 @@ source("data_explorer.R")
 source("clean.R")
 source("data_preprocessor.R")
 source("factor_analyzer.R")
+source("utility.R")
 require(data.table)
-
-
-
-# --------------------------------------------
-# Data loading functions
-load_data <- function(fnData) {
-  homesite = fread(fnData, sep=",", stringsAsFactors=TRUE)
-  return(homesite)
-}
-
-
 
 
 main <- function(){
@@ -76,10 +66,13 @@ main <- function(){
 #     integerColumnNames = names(testData)[columnIndices]  
     # test_as_factors(testData, integerColumnNames, "Test Data")
     # compare_test_vs_train_factors(homesite, testData)    
-    # factor_analysis(homesite)
+    #factor_analysis(homesite)
+    new_homesite <- append_reduced_numeric_features(homesite, 42)
+    loginfo(ncol(new_homesite))
+    #Not returning new_homesite for now
     return(homesite)
-}
 
+}
 homesite = main()
 
 

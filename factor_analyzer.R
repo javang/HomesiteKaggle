@@ -23,6 +23,7 @@ require("FactoMineR")
 require(MASS) # write.matrix
 require(FSelector)  # 
 source("data_preprocessor.R")
+source("utility.R")
 
 
 factor_analysis <- function(homesite){
@@ -54,6 +55,24 @@ factor_analysis <- function(homesite){
 #     print(pca_result$call$ecart.type)
 #     print(pca_result$call$row.w)
 #     print(pca_result$call$col.w)
+}
+
+mca_factor_analysis <- function(homesite){
+    loginfo("Peforming MCA factor analysis")
+    homesite[,Original_Quote_Date:=NULL]
+    homesite[,Original_Quote_Date_Typed:=NULL]
+    homesite[,QuoteConversion_Flag:=NULL]
+    
+    mca_result <- MCA(homesite, quanti.sup = as.vector(get_numeric_features(homesite)), graph = FALSE)
+}
+
+famd_factor_analysis <- function(homesite){
+    loginfo("Peforming FAMD factor analysis")
+    homesite[,Original_Quote_Date:=NULL]
+    homesite[,Original_Quote_Date_Typed:=NULL]
+    homesite[,QuoteConversion_Flag:=NULL]
+    
+    famd_result <- FAMD(homesite, graph = FALSE)
 }
 
 plot_individuals_by_factor <- function(pca_result, homesite){
@@ -94,12 +113,6 @@ factominer_tutorial <- function(){
     dev.off()
 }
 
-splitDataTable = function(dataTable, trainingFraction) {
-    numObservations = nrow(dataTable)
-    x = runif(numObservations)
-    selected_indices = (x < trainingFraction)
-    return(selected_indices)
-}
 
 
 apply_mca = function(homesite) {
@@ -114,7 +127,7 @@ apply_mca = function(homesite) {
         selectedIndices = splitDataTable(factorsDataTable, trainingFraction = 0.01)
         trainingTable = factorsDataTable[selectedIndices == TRUE, ]
         mcaAnalysis = MCA(trainingTable, ncp=20)
-    fnEig = file.path(conf$general$data_directory, paste0("mca-eigen-",i,".txt"))
+        fnEig = file.path(conf$general$data_directory, paste0("mca-eigen-",i,".txt"))
         write.matrix(mcaAnalysis$eig, file=fnEig, sep='\t')
     }
 }
@@ -128,11 +141,12 @@ apply_chi_square_feature_selection = function(homesite) {
     factorColumns = get_factor_features(homesite)
     factorColumnNames = names(homesite)[factorColumns]
     factorsDataTable = homesite[, c(factorColumnNames), with=FALSE]
-    selectedIndices = splitDataTable(factorsDataTable, trainingFraction = 1)
+    selectedIndices = splitDataTable(factorsDataTable, trainingFraction = trainingFraction)
     trainingTable = factorsDataTable[selectedIndices == TRUE, ]
     trainingTable[, PropertyField29:=NULL] # spurious results with chi.squared
     formula = QuoteConversion_Flag ~ .
     DT = chi.squared(formula, trainingTable)
     retrun(DT)
 }
+
 
