@@ -36,6 +36,8 @@ source("clean.R")
 source("data_preprocessor.R")
 source("factor_analyzer.R")
 source("utility.R")
+source("feature_constructor.R")
+
 require(data.table)
 
 
@@ -67,8 +69,14 @@ main <- function(){
     # test_as_factors(testData, integerColumnNames, "Test Data")
     # compare_test_vs_train_factors(homesite, testData)    
     #factor_analysis(homesite)
-    new_homesite <- append_reduced_numeric_features(homesite, 42)
-    loginfo(ncol(new_homesite))
+    #new_homesite <- append_reduced_numeric_features(homesite, 42)
+    reduced_homesite <- create_reduced_dataset(homesite, 10, 145)
+    dataDir = conf$general$data_directory
+    splitDataset(reduced_homesite, 0.6, 0.2, 
+                 file.path(dataDir, conf$input$fn_reduced_training),
+                 file.path(dataDir, conf$input$fn_reduced_testing),
+                 file.path(dataDir, conf$input$fn_reduced_cross_val))
+    
     #Not returning new_homesite for now
     return(homesite)
 
