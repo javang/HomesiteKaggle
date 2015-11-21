@@ -69,13 +69,15 @@ create_reduced_dataset <- function(homesite, target_numeric_dimensions, target_c
     loginfo("Creating a dimension reduced dataset, from the original dataset")
     loginfo("to PCA reduced numeric features")
     loginfo("and chi squared reduced categorical features.")
-    target_dimensions <- 1
+
     pca_result <- pca_factor_analysis(homesite) #decouple by persisting pca_results
     eigenvectors <- pca_result$loadings
     pca_reduced_features <- pca_dimension_reduction(homesite, eigenvectors, target_numeric_dimensions)
     
     chi_squared_reduced_features <- chi_squared_feature_reduction(homesite, target_categorical_features) #decouple by persisting indexes 
-    reduced_dataset <- cbind(pca_reduced_features, chi_squared_reduced_features)
+    reduced_dataset <- cbind(homesite[,conf$model$label_field, with=FALSE], 
+                             pca_reduced_features, 
+                             chi_squared_reduced_features)
     return(as.data.table(reduced_dataset))
     
 }

@@ -70,9 +70,13 @@ main <- function(){
     # compare_test_vs_train_factors(homesite, testData)    
     #factor_analysis(homesite)
     #new_homesite <- append_reduced_numeric_features(homesite, 42)
-    reduced_homesite <- create_reduced_dataset(homesite, 10, 145)
+    reduced_homesite <- create_reduced_dataset(homesite, 
+                                               conf$dimension_reduction$n_numeric_features_to_keep, 
+                                               conf$dimension_reduction$n_categorical_features_to_keep)
     dataDir = conf$general$data_directory
-    splitDataset(reduced_homesite, 0.6, 0.2, 
+    splitDataset(reduced_homesite,
+                 conf$dataset_splitting$train_fraction, 
+                 conf$dataset_splitting$test_fraction, 
                  file.path(dataDir, conf$input$fn_reduced_training),
                  file.path(dataDir, conf$input$fn_reduced_testing),
                  file.path(dataDir, conf$input$fn_reduced_cross_val))
