@@ -81,6 +81,13 @@ main <- function(){
                  file.path(dataDir, conf$input$fn_reduced_testing),
                  file.path(dataDir, conf$input$fn_reduced_cross_val))
     
+    splitDataset(homesite,
+                 conf$dataset_splitting$train_fraction, 
+                 conf$dataset_splitting$test_fraction, 
+                 file.path(dataDir, conf$input$fn_model_training),
+                 file.path(dataDir, conf$input$fn_model_testing),
+                 file.path(dataDir, conf$input$fn_model_cross_val))
+    
     #Not returning new_homesite for now
     return(homesite)
 

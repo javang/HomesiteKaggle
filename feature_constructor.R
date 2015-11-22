@@ -61,7 +61,7 @@ append_reduced_numeric_features<- function(homesite, target_dimensions){
 
 chi_squared_feature_reduction <- function(homesite, target_categorical_features){
     chi_squared_result <- apply_chi_square_feature_selection(homesite, 0.1)
-    features_to_keep <- row.names(chi_squared_result)[1:target_categorical_features]
+    features_to_keep <- row.names(chi_squared_result[order(-chi_squared_result$attr_importance),,drop=FALSE])[1:target_categorical_features]#row.names(chi_squared_result)[1:target_categorical_features]
     return(homesite[,features_to_keep, with = FALSE])
 }
 
