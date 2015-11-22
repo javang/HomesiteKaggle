@@ -28,9 +28,6 @@ source("utility.R")
 
 factor_analysis <- function(homesite){
     loginfo("Peforming factor analysis")
-    homesite[,Original_Quote_Date:=NULL]
-    homesite[,Original_Quote_Date_Typed:=NULL]
-
     #Executing the following line of code is very slow, uncomment on an as-needed basis:    
     #print(pca_result, file = "pca_result2.txt", sep = "\t")
     pca_result <- PCA(homesite, quali.sup = as.vector(get_factor_features(homesite)))
@@ -58,11 +55,10 @@ factor_analysis <- function(homesite){
 }
 
 pca_factor_analysis <- function(homesite){
-    loginfo("Peforming MCA factor analysis")
-    homesite[,Original_Quote_Date:=NULL]
-    homesite[,Original_Quote_Date_Typed:=NULL]
+    ' Runs PCA on the input dataset and returns the result
+    '
+    loginfo("Peforming Principal Component analysis")
     numeric_columns <- get_numeric_features(homesite)
-    
     pca_result <- princomp(homesite[,numeric_columns, with=FALSE], cor = TRUE, scores = TRUE)
     #write.csv(pca_result$scores)
     return(pca_result)
@@ -145,8 +141,8 @@ apply_mca = function(homesite) {
 
 # apply_mca(homesite)
 
-bernoulli_sampling <- function(dt, training_fraction, p){
-    dt[runif(100)<p,]
+bernoulli_sampling <- function(dt, trainingFraction){
+    dt[runif(100)<trainingFraction,]
 }
 
 apply_chi_square_feature_selection = function(homesite, trainingFraction) {
@@ -158,7 +154,7 @@ apply_chi_square_feature_selection = function(homesite, trainingFraction) {
     factorsDataTable = homesite[, c(factorColumnNames), with=FALSE]
     #selectedIndices = splitDataTable(factorsDataTable, trainingFraction = trainingFraction)
     #trainingTable = factorsDataTable[selectedIndices == TRUE, ]
-    trainingTable = bernoulli_sampling(factorsDataTable, trainingFraction, 0.1)
+    trainingTable = bernoulli_sampling(factorsDataTable, trainingFraction= 0.1)
     trainingTable[, PropertyField29:=NULL] # spurious results with chi.squared
     formula = QuoteConversion_Flag ~ .
     DT = chi.squared(formula, trainingTable)

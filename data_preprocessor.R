@@ -36,6 +36,9 @@ data_preprocessing <- function(homesite){
     homesite$Original_Quote_Date_Day <- as.numeric(format(homesite$Original_Quote_Date_Typed,format="%d"))
     homesite$Original_Quote_Date_Month <- as.numeric(format(homesite$Original_Quote_Date_Typed,format="%m"))
     homesite$Original_Quote_Date_Year <- as.numeric(format(homesite$Original_Quote_Date_Typed,format="%Y"))
+    # Remove the original date fields after extracting the day, month and year
+    homesite[,Original_Quote_Date:=NULL]
+    homesite[,Original_Quote_Date_Typed:=NULL]
     # Remove quote ID, it is an index variable
     homesite[,QuoteNumber:=NULL]
     # Remove useless values
@@ -49,7 +52,6 @@ data_preprocessing <- function(homesite){
     return(homesite)
 }
 
-
 assignDataTypes = function(homesite) {
     ' Prepare the raw input dataframe with the proper types that we are going to use.
     We need this because R does not assign the types correctly for the variables
@@ -58,7 +60,41 @@ assignDataTypes = function(homesite) {
     homesite[,QuoteConversion_Flag:= as.factor(QuoteConversion_Flag)]
     homesite[,Field10:= as.numeric(gsub(",", "", Field10))]
     
-    # Factors
+    ############## FACTORS ##############
+    # Set all the features that we want to use as factors
+    factorFeatures = getSelectedFactorFeatures()
+    for(nf in factorFeatures)  { homesite[,c(nf):=as.factor(homesite[, get(nf)])]}
+    # Add a level to GeographicField25A    
+    levels(homesite$GeographicField25A) = append(levels(homesite$GeographicField25A), 3)
+    # Ensure proper levels for GeographicField10B (Some splits of the data do not have both values)
+    levels(homesite$GeographicField10B) = c("-1","25")
+    
+    ############## NUMERIC ##############
+    numericFeatures = c(
+        "SalesField8" , "SalesField10", "SalesField11", "SalesField12", 
+        "SalesField13", "SalesField14", "SalesField15",
+        
+        "PersonalField5", "PersonalField14", "PersonalField23", "PersonalField24",  
+        "PersonalField25", "PersonalField26", "PersonalField27", "PersonalField30",
+        "PersonalField31", "PersonalField32", "PersonalField33", "PersonalField44",
+        "PersonalField45", "PersonalField46", "PersonalField47", "PersonalField49",
+        "PersonalField50", "PersonalField51", "PersonalField52", "PersonalField54",
+        "PersonalField55", "PersonalField56", "PersonalField57", "PersonalField54",
+        "PersonalField66", "PersonalField67", "PersonalField69", "PersonalField70",
+        "PersonalField74", "PersonalField75", "PersonalField76", "PersonalField77",
+        "PersonalField79", "PersonalField79", "PersonalField80", "PersonalField81",
+        "PersonalField82",
+        
+        "PropertyField23", "PropertyField27"
+    )
+    for(nf in numericFeatures)  { homesite[,c(nf):=as.integer(homesite[, get(nf)])]}
+    
+}
+
+
+getSelectedFactorFeatures = function() {
+    ' The names of the features that we have considered as factors
+    '
     factorFeatures = c("Field6",  "Field7", "Field12",
                        "CoverageField1A", "CoverageField1B", "CoverageField2A", "CoverageField2B",
                        "CoverageField3A", "CoverageField3B", "CoverageField4A", "CoverageField4B",
@@ -80,7 +116,7 @@ assignDataTypes = function(homesite) {
                        "PersonalField53", "PersonalField58", "PersonalField59", "PersonalField60",
                        "PersonalField61", "PersonalField62", "PersonalField63", "PersonalField64",
                        "PersonalField65", "PersonalField68", "PersonalField71", "PersonalField72",
-                       "PersonalField73", "PersonalField78", "PersonalField83",
+                       "PersonalField73", "PersonalField78", "PersonalField83","PersonalField84",
                        
                        "PropertyField1A", "PropertyField1B", "PropertyField2A", "PropertyField2B", 
                        "PropertyField3",  "PropertyField4", "PropertyField5", "PropertyField7",
@@ -88,8 +124,8 @@ assignDataTypes = function(homesite) {
                        "PropertyField11B", "PropertyField12", "PropertyField13",  "PropertyField14",
                        "PropertyField15", "PropertyField16A", "PropertyField16B", "PropertyField17",
                        "PropertyField18", "PropertyField19", "PropertyField20", "PropertyField21A",
-                       "PropertyField21B", "PropertyField22", "PropertyField26A",
-                       "PropertyField26B", "PropertyField28", "PropertyField30", "PropertyField31",
+                       "PropertyField21B", "PropertyField22", "PropertyField26A","PropertyField26B", 
+                       "PropertyField28", "PropertyField29" ,"PropertyField30", "PropertyField31",
                        "PropertyField32", "PropertyField33", "PropertyField34", "PropertyField35",
                        "PropertyField36", "PropertyField37", "PropertyField38", "PropertyField39A",
                        "PropertyField39B",
@@ -103,7 +139,7 @@ assignDataTypes = function(homesite) {
                        "GeographicField14A", "GeographicField14B", "GeographicField15A", "GeographicField15B",
                        "GeographicField16A", "GeographicField16B", "GeographicField17A", "GeographicField17B",
                        "GeographicField18B", "GeographicField19A", "GeographicField19B", "GeographicField20A",
-                       "GeographicField20B", "GeographicField21A", "GeographicField21B", "GeographicField22A",
+                       "GeographicField20B", "GeographicField21A", "GeographicField21B", "GeographicField22A", "GeographicField25A",
                        "GeographicField25B", "GeographicField26A", "GeographicField26B", "GeographicField27B",
                        "GeographicField28A", "GeographicField28B", "GeographicField29A", "GeographicField29B",
                        "GeographicField30A", "GeographicField31A", "GeographicField32A", "GeographicField32B",
@@ -124,32 +160,7 @@ assignDataTypes = function(homesite) {
                        "GeographicField61A", "GeographicField61B", "GeographicField62A", "GeographicField62B",
                        "GeographicField63", "GeographicField64"
     )
-    for(nf in factorFeatures)  { homesite[,c(nf):=as.factor(homesite[, get(nf)])]}
-    
-    numericFeatures = c(
-        "SalesField8" , "SalesField10", "SalesField11", "SalesField12", 
-        "SalesField13", "SalesField14", "SalesField15",
-        
-        "PersonalField5", "PersonalField14", "PersonalField23", "PersonalField24",  
-        "PersonalField25", "PersonalField26", "PersonalField27", "PersonalField30",
-        "PersonalField31", "PersonalField32", "PersonalField33", "PersonalField44",
-        "PersonalField45", "PersonalField46", "PersonalField47", "PersonalField49",
-        "PersonalField50", "PersonalField51", "PersonalField52", "PersonalField54",
-        "PersonalField55", "PersonalField56", "PersonalField57", "PersonalField54",
-        "PersonalField66", "PersonalField67", "PersonalField69", "PersonalField70",
-        "PersonalField74", "PersonalField75", "PersonalField76", "PersonalField77",
-        "PersonalField79", "PersonalField79", "PersonalField80", "PersonalField81",
-        "PersonalField82",
-        
-        "PropertyField23", "PropertyField27"
-    )
-    for(nf in numericFeatures)  { homesite[,c(nf):=as.integer(homesite[, get(nf)])]}
-    
-    homesite[,PersonalField84:= as.factor(PersonalField84)]
-    homesite[,PropertyField29:= as.factor(PropertyField29)]
-    # Add a level to GeographicField25A    
-    homesite[, GeographicField25A:=as.factor(GeographicField25A)]
-    levels(homesite$GeographicField25A) = append(levels(homesite$GeographicField25A), 3)
+    return(factorFeatures)
 }
 
 Mode <- function(x) {
