@@ -4,15 +4,15 @@
 # Deriving Knowledge from Data at Scale - DATASCI 450
 #
 # Final Project:
-# Response to Homesite Quote Conversion Kaggle Challenge  
+# Response to Homesite Quote Conversion Kaggle Challenge
 #
 # learning_curves - Create learning curves for a model
 #
 # Project participants:
 # Javier Velázquez
 # Marciano Moreno
-# 
-# Notes: 
+#
+# Notes:
 # TODO: Persist eigenvalues and read them from file instead of calling PCA each time.
 # --------------------------------------------
 
@@ -20,6 +20,7 @@ source("utility.R")
 source("data_preprocessor.R")
 require(randomForest)
 require(ROCR) # prediction, performance
+require(doMC)
 require(glmnet)
 require(yaml)
 conf = yaml.load_file("project.conf")
@@ -30,30 +31,49 @@ trainModel = function(trainData) {
     '
     formula = QuoteConversion_Flag ~ Field6 + Field7 + Field12
     model <- randomForest(formula, data=trainData, importance=TRUE,
-                          proximity=TRUE, ntree=100, mtry=2)    
+                          proximity=TRUE, ntree=100, mtry=2)
     return(model)
 }
 
-trainLogisticRegression = function(modelTrainData) {
-    ' Train a lasso/ridge regression with the model data. First remove the 
+trainLogisticRegression = function(modelTrainData, indices) {
+    ' Train a lasso/ridge regression with the model data. First remove the
     target variable QuoteConversion_Flag when building the model model.matrix
     '
-    indices = get_factor_features(modelTrainData)
-    featureNames = names(modelTrainData)[indices]
-    remove = c( "QuoteConversion_Flag", "PropertyField6", "GeographicField10A") # QuoteConversion_Flag is the variable to predict, the others are NOT NEEDED FOR FINAL PREPARED INPUT
+    modelMatrix = getModelMatrix(modelTrainData[indices,])
+    registerDoMC(cores=4)
+    model = cv.glmnet(modelMatrix, modelTrainData[indices,QuoteConversion_Flag],
+                   family="binomial", alpha=0.5, nlambda=15, nfolds=5)
+    return(model)
+}
+
+getModelMatrix = function(data) {
+    featureNames = names(data)
+    remove = c("QuoteConversion_Flag") # QuoteConversion_Flag is the target variable. Remove it to prepare model
     featureNames = featureNames[! featureNames %in% remove]# NOT NEEDED FOR FINAL PREPARED INPUT
-    
     formula = as.formula(paste("~ ",paste(featureNames, collapse="+"),sep = ""))
     options(na.action="na.fail")
-    modelMatrix = model.matrix(formula, data=modelTrainData)
-    model = glmnet(modelMatrix, modelTrainData[,QuoteConversion_Flag],
-                   family="binomial", alpha=0.5, nlambda=100)
-    return(model)
+    modelMatrix = model.matrix(formula, data=data)
+    return(modelMatrix)
+}
+
+evaluateLogisticRegression = function(model, testData) {
+    ' Calculate the F-measure of performance for the classification model
+    created with the glmnet package
+    '
+    modelMatrix = getModelMatrix(testData)
+    modelPredictions = predict(model, modelMatrix, type="response", s= model$lambda.min)
+    pred = prediction(modelPredictions,testData[,QuoteConversion_Flag])
+    perf = performance(pred, measure = "f")
+    # print(perf)
+    cutoff = 0.5
+    cutoffIndex = which(abs(perf@x.values[[1]] - cutoff) < 0.001)
+    f = perf@y.values[[1]][cutoffIndex]
+    return(f) # value of f
 }
 
 evaluateModel = function(model, testData) {
     modelPredictions = predict(model, testData)
-    pred = prediction(as.integer(modelPredictions), 
+    pred = prediction(as.integer(modelPredictions),
                       as.integer(testData[,QuoteConversion_Flag]))
     perf = performance(pred, measure = "f")
     # print(perf)
@@ -61,22 +81,14 @@ evaluateModel = function(model, testData) {
 }
 
 createLearningCurves = function() {
+    '
+    '
     dataDir = conf$general$data_directory
-    modelTrainData = load_data(file.path(dataDir, "reduced_training_labeled", "reduced_training.csv"))
-    assignDataTypes(modelTrainData)
-    modelTestData = load_data(file.path(dataDir, conf$input$fn_model_testing))
-    assignDataTypes(modelTestData)
-    
-    # Remove useless values (NOT NEEDED WHEN WE PREPARE THE FINAL VALUES)
-    modelTrainData[,PropertyField6:=NULL]
-    modelTrainData[, GeographicField10A:=NULL]
-    # Impute
-    m = Mode(modelTrainData$PersonalField84) # impute the mode 
-    modelTrainData[is.na(PersonalField84), PersonalField84:=m] 
-    m = Mode(modelTrainData$PropertyField29) # impute the mode 
-    modelTrainData[is.na(PropertyField29), PropertyField29:=m] 
-    
-    # modelCrossValidation = load_data(file.path(dataDir, conf$input$fn_model_cross_val))
+    fnReducedTraining = file.path(dataDir, conf$input$fn_reduced_training)
+    modelTrainData = load_data(fnReducedTraining, stringsAsFactors = TRUE)
+    fnReducedTesting = file.path(dataDir, conf$input$fn_reduced_testing)
+    modelTestData = load_data(fnReducedTesting, stringsAsFactors = TRUE)
+
     dataPointsFractions = seq(0.01,0.05,0.01)
     nrows = nrow(modelTrainData)
     numCurvePoints = length(dataPointsFractions)
@@ -84,12 +96,11 @@ createLearningCurves = function() {
     testFs = rep(0, numCurvePoints)
     for (i in c(1:numCurvePoints)) {
         indices = randomSelect(nrows, dataPointsFractions[i])
-        # model = trainModel(modelTrainData[indices,])
-        model = trainLogisticRegression(modelTrainData)
-        
-        trainF = evaluateModel(model, modelTrainData[indices,]) # evaluate the model on the data used to create
+        model = trainLogisticRegression(modelTrainData, indices)
+        trainF = evaluateLogisticRegression(model, modelTrainData[indices,]) # evaluate the model on the data used to create
         trainFs[i] = trainF
-        testF = evaluateModel(model, modelTestData) # evalue on the test data
+        indices = randomSelect(nrow(modelTestData), dataPointsFractions[i])
+        testF = evaluateLogisticRegression(model, modelTestData[indices,]) # evalue on the test data
         testFs[i] = testF
     }
     plot(dataPointsFractions, testFs)

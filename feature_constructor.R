@@ -42,24 +42,6 @@ pca_dimension_reduction <- function(homesite, eigenvectors, target_dimensions){
     return(as.data.table(z))
 }
 
-#Deprecating: 
-append_reduced_numeric_features<- function(homesite, target_dimensions){
-    loginfo("Reducing numeric features with PCA.")
-    eigen_file = file.path(conf$general$resources_directory, "pca-eigenvalues.csv")
-    if (!file.exists(eigen_file)){
-        loginfo("Eigen file not found. Calling PCA.")
-        pca_result <- PCA(homesite, quali.sup = as.vector(get_factor_features(homesite)), graph = FALSE)
-        write.csv(pca_result$eig, file = eigen_file)
-        eigenvalues <- pca_result$eig$eigenvalue[1:target_dimensions]
-    }else{
-        loginfo("Eigen file found, reading from it.")
-        eigen_csv <- read.csv(eigen_file)
-        eigenvalues <- eigen_csv$eigenvalue[1:target_dimensions]
-    }
-    z <- create_reduced_numeric_features_pca(homesite, eigenvalues ,target_dimensions)
-    return(cbind(homesite, z))
-}
-
 chi_squared_feature_reduction <- function(homesite, target_categorical_features){
     chi_squared_result <- apply_chi_square_feature_selection(homesite, 0.1)
     sortingIndices = order(chi_squared_result, decreasing = TRUE)
@@ -72,16 +54,13 @@ create_reduced_dataset <- function(homesite, target_numeric_dimensions, target_c
     ' Feature selection based on reducing the dimensionality of the continuous 
     variables using PCA and reducing the number of categorical values by
     applying the chi-squared algorithm 
-    
     '
     loginfo("Creating a dimension reduced dataset, from the original dataset")
     loginfo("to PCA reduced numeric features")
     loginfo("and chi squared reduced categorical features.")
-
     pca_result <- pca_factor_analysis(homesite) #decouple by persisting pca_results
     eigenvectors <- pca_result$loadings
     pca_reduced_features <- pca_dimension_reduction(homesite, eigenvectors, target_numeric_dimensions)
-    
     chi_squared_reduced_features <- chi_squared_feature_reduction(homesite, target_categorical_features) #decouple by persisting indexes 
     reduced_dataset = as.data.table(cbind(QuoteConversion_Flag=homesite$QuoteConversion_Flag, pca_reduced_features,chi_squared_reduced_features))
     return(reduced_dataset)

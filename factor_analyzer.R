@@ -142,6 +142,7 @@ apply_mca = function(homesite) {
 # apply_mca(homesite)
 
 bernoulli_sampling <- function(dt, trainingFraction){
+    #Refactoring candidate
     values = runif(nrow(dt))
     val = dt[values < trainingFraction,]
     return(val)

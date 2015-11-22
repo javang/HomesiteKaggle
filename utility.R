@@ -14,10 +14,15 @@
 # --------------------------------------------
 require(data.table)
 
-load_data <- function(fnData) {
+load_data <- function(fnData, stringsAsFactors=FALSE) {
     ' Data loading function.
     '
-    homesite = fread(fnData, sep=",", stringsAsFactors=TRUE)
+    homesite = fread(fnData, sep=",", stringsAsFactors=TRUE) # fread ignores stringsAsFactors.
+    if (stringsAsFactors == TRUE) {
+            types <- data.frame(sapply(homesite, class))
+            chrFeatures <- row.names(types)[types[[1]] == 'character'] 
+            homesite[,(chrFeatures):=lapply(.SD, as.factor),.SDcols=chrFeatures]            
+    }
     return(homesite)
 }
 
@@ -47,9 +52,9 @@ splitDataset = function(dataTable, trainFraction, testFraction,
     Each of the datasets is written to a different file.
     '
     splits = splitIndices(nrow(dataTable), trainFraction, testFraction)
-    write.csv(dataTable[splits$train_ind,], fnTrain)
-    write.csv(dataTable[splits$test_ind,], fnTest)
-    write.csv(dataTable[splits$cv_ind,], fnCrossValidation)
+    write.csv(dataTable[splits$train_ind,], fnTrain, row.names = FALSE)
+    write.csv(dataTable[splits$test_ind,], fnTest, row.names = FALSE)
+    write.csv(dataTable[splits$cv_ind,], fnCrossValidation, row.names = FALSE)
 }
 
 
