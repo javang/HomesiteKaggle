@@ -66,9 +66,10 @@ evaluateLogisticRegression = function(model, testData) {
     perf = performance(pred, measure = "f")
     # print(perf)
     cutoff = 0.5
-    cutoffIndex = which(abs(perf@x.values[[1]] - cutoff) < 0.001)
+    cutoffIndex = which(abs(perf@x.values[[1]] - cutoff) < 0.01)
     f = perf@y.values[[1]][cutoffIndex]
-    return(f) # value of f
+    approxF = mean(f) # use the mean, in case there are more than 0 values
+    return(approxF) # value of f
 }
 
 evaluateModel = function(model, testData) {
@@ -105,3 +106,13 @@ createLearningCurves = function() {
     }
     plot(dataPointsFractions, testFs)
 }
+
+
+
+blah = sapply(testDataTest,levels)
+
+train = data.frame(factor1=c(1,2,3,4,2,4,3,1), factor2=c("a", "b", "c", "d", "a", "c", "b", "a"), value=c(1,0,1,1,0,1,0,1))
+test = data.frame(factor1=c(4,2,4,1), factor2=c("a", "b", "c", "a"))
+
+train
+
