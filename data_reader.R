@@ -37,7 +37,6 @@ source("data_preprocessor.R")
 source("factor_analyzer.R")
 source("utility.R")
 source("feature_constructor.R")
-
 require(data.table)
 
 
