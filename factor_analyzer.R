@@ -148,14 +148,14 @@ bernoulli_sampling <- function(dt, trainingFraction){
     return(val)
 }
 
-apply_chi_square_feature_selection = function(homesite, trainingFraction) {
+apply_chi_square_feature_selection = function(homesite, trainingFraction=0.3) {
     ' Apply the chi-square algorithm for dimensionality reduction of categorical
     values. 
     '
     factorColumns = get_factor_features(homesite)
     factorColumnNames = names(homesite)[factorColumns]
     factorsDataTable = homesite[, c(factorColumnNames), with=FALSE]
-    trainingTable = bernoulli_sampling(factorsDataTable, trainingFraction= 0.3)
+    trainingTable = bernoulli_sampling(factorsDataTable, trainingFraction)
     formula = QuoteConversion_Flag ~ .
     DT = chi.squared(formula, trainingTable)
     return(DT)

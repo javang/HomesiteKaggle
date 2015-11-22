@@ -44,17 +44,31 @@ splitIndices = function(numObservations, trainFraction, testFraction) {
 }
 
 splitDataset = function(dataTable, trainFraction, testFraction,
-                        fnTrain, fnTest, fnCrossValidation) {
+                        fnTrain, fnTest, fnCrossValidation,
+                        writeToRData=FALSE) {
     ' Splits a dataset for training into 3 datasets:
         - A model dataset. The data that is going to be used to create models
         - A test dataset. A dataset to evaluate models and optimize hyperparameters.
         - A cross-validation dataset. A dataset to evaluate how the model generalizes
     Each of the datasets is written to a different file.
     '
+    loginfo("Splitting dataset into train, test, and cross-validation")
     splits = splitIndices(nrow(dataTable), trainFraction, testFraction)
-    write.csv(dataTable[splits$train_ind,], fnTrain, row.names = FALSE)
-    write.csv(dataTable[splits$test_ind,], fnTest, row.names = FALSE)
-    write.csv(dataTable[splits$cv_ind,], fnCrossValidation, row.names = FALSE)
+    if (writeToRData==TRUE) {
+        loginfo("Saving datasets to RData files")
+        modelTrainData = dataTable[splits$train_ind,]
+        save(modelTrainData, file=fnTrain)
+        modelTestData = dataTable[splits$test_ind,]
+        save(modelTestData, file=fnTest)
+        modelXvalidationData = dataTable[splits$cv_ind,]
+        save(modelXvalidationData, file=fnCrossValidation)
+    } else {
+        loginfo("Saving datasets to csv files")
+        write.csv(dataTable[splits$train_ind,], fnTrain, row.names = FALSE)
+        write.csv(dataTable[splits$test_ind,], fnTest, row.names = FALSE)
+        write.csv(dataTable[splits$cv_ind,], fnCrossValidation, row.names = FALSE)
+    }
 }
+
 
 

@@ -43,10 +43,9 @@ pca_dimension_reduction <- function(homesite, eigenvectors, target_dimensions){
 }
 
 chi_squared_feature_reduction <- function(homesite, target_categorical_features){
-    chi_squared_result <- apply_chi_square_feature_selection(homesite, 0.1)
+    chi_squared_result <- apply_chi_square_feature_selection(homesite, trainingFraction=0.3)
     sortingIndices = order(chi_squared_result, decreasing = TRUE)
-    n = conf$dimension_reduction$n_categorical_features_to_keep
-    selectedFeatures = row.names(chi_squared_result)[sortingIndices[1:n]]
+    selectedFeatures = row.names(chi_squared_result)[sortingIndices[1:target_categorical_features]]
     return(homesite[,selectedFeatures, with = FALSE])
 }
 
@@ -60,6 +59,8 @@ create_reduced_dataset <- function(homesite, target_numeric_dimensions, target_c
     loginfo("and chi squared reduced categorical features.")
     pca_result <- pca_factor_analysis(homesite) #decouple by persisting pca_results
     eigenvectors <- pca_result$loadings
+    dataDir = conf$general$data_directory
+    write.csv(eigenvectors, file.path(dataDir, "PCAloadings.txt"))
     pca_reduced_features <- pca_dimension_reduction(homesite, eigenvectors, target_numeric_dimensions)
     chi_squared_reduced_features <- chi_squared_feature_reduction(homesite, target_categorical_features) #decouple by persisting indexes 
     reduced_dataset = as.data.table(cbind(QuoteConversion_Flag=homesite$QuoteConversion_Flag, pca_reduced_features,chi_squared_reduced_features))

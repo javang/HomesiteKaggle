@@ -31,6 +31,7 @@ get_character_features <- function(dataset){
 data_preprocessing <- function(homesite){
     # Set numeric and factors
     assignDataTypes(homesite)
+    
     # Add dates
     homesite$Original_Quote_Date_Typed <- as.Date(as.character(homesite$Original_Quote_Date, format = "%Y/%m%/%d"))
     homesite$Original_Quote_Date_Day <- as.numeric(format(homesite$Original_Quote_Date_Typed,format="%d"))
@@ -63,7 +64,8 @@ assignDataTypes = function(homesite) {
     ############## FACTORS ##############
     # Set all the features that we want to use as factors
     factorFeatures = getSelectedFactorFeatures()
-    for(nf in factorFeatures)  { homesite[,c(nf):=as.factor(homesite[, get(nf)])]}
+    homesite[,(factorFeatures):=lapply(.SD, as.factor),.SDcols=factorFeatures]            
+    
     # Add a level to GeographicField25A    
     levels(homesite$GeographicField25A) = append(levels(homesite$GeographicField25A), 3)
     # Ensure proper levels for GeographicField10B (Some splits of the data do not have both values)
@@ -79,15 +81,15 @@ assignDataTypes = function(homesite) {
         "PersonalField31", "PersonalField32", "PersonalField33", "PersonalField44",
         "PersonalField45", "PersonalField46", "PersonalField47", "PersonalField49",
         "PersonalField50", "PersonalField51", "PersonalField52", "PersonalField54",
-        "PersonalField55", "PersonalField56", "PersonalField57", "PersonalField54",
+        "PersonalField55", "PersonalField56", "PersonalField57", 
         "PersonalField66", "PersonalField67", "PersonalField69", "PersonalField70",
         "PersonalField74", "PersonalField75", "PersonalField76", "PersonalField77",
-        "PersonalField79", "PersonalField79", "PersonalField80", "PersonalField81",
+        "PersonalField79", "PersonalField80", "PersonalField81",
         "PersonalField82",
         
         "PropertyField23", "PropertyField27"
     )
-    for(nf in numericFeatures)  { homesite[,c(nf):=as.integer(homesite[, get(nf)])]}
+    homesite[,(numericFeatures):=lapply(.SD, as.numeric),.SDcols=numericFeatures]            
 }
 
 

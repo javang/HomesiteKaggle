@@ -73,24 +73,18 @@ main <- function(){
                                                conf$dimension_reduction$n_numeric_features_to_keep, 
                                                conf$dimension_reduction$n_categorical_features_to_keep)
     dataDir = conf$general$data_directory
+    
+    source("utility.R")
     splitDataset(reduced_homesite,
                  conf$dataset_splitting$train_fraction, 
                  conf$dataset_splitting$test_fraction, 
                  file.path(dataDir, conf$input$fn_reduced_training),
                  file.path(dataDir, conf$input$fn_reduced_testing),
-                 file.path(dataDir, conf$input$fn_reduced_cross_val))
-    
-    splitDataset(homesite,
-                 conf$dataset_splitting$train_fraction, 
-                 conf$dataset_splitting$test_fraction, 
-                 file.path(dataDir, conf$input$fn_model_training),
-                 file.path(dataDir, conf$input$fn_model_testing),
-                 file.path(dataDir, conf$input$fn_model_cross_val))
+                 file.path(dataDir, conf$input$fn_reduced_cross_val),
+                 writeToRData=TRUE)
     
     #Not returning new_homesite for now
     return(homesite)
 }
 homesite = main()
-
-
 
