@@ -62,11 +62,18 @@ append_reduced_numeric_features<- function(homesite, target_dimensions){
 
 chi_squared_feature_reduction <- function(homesite, target_categorical_features){
     chi_squared_result <- apply_chi_square_feature_selection(homesite, 0.1)
-    features_to_keep <- row.names(chi_squared_result)[1:target_categorical_features]
-    return(homesite[,features_to_keep, with = FALSE])
+    sortingIndices = order(chi_squared_result, decreasing = TRUE)
+    n = conf$dimension_reduction$n_categorical_features_to_keep
+    selectedFeatures = row.names(chi_squared_result)[sortingIndices[1:n]]
+    return(homesite[,selectedFeatures, with = FALSE])
 }
 
 create_reduced_dataset <- function(homesite, target_numeric_dimensions, target_categorical_features){
+    ' Feature selection based on reducing the dimensionality of the continuous 
+    variables using PCA and reducing the number of categorical values by
+    applying the chi-squared algorithm 
+    
+    '
     loginfo("Creating a dimension reduced dataset, from the original dataset")
     loginfo("to PCA reduced numeric features")
     loginfo("and chi squared reduced categorical features.")
@@ -76,10 +83,8 @@ create_reduced_dataset <- function(homesite, target_numeric_dimensions, target_c
     pca_reduced_features <- pca_dimension_reduction(homesite, eigenvectors, target_numeric_dimensions)
     
     chi_squared_reduced_features <- chi_squared_feature_reduction(homesite, target_categorical_features) #decouple by persisting indexes 
-    reduced_dataset <- cbind(homesite[,conf$model$label_field, with=FALSE], 
-                             pca_reduced_features, 
-                             chi_squared_reduced_features)
-    return(as.data.table(reduced_dataset))
+    reduced_dataset = as.data.table(cbind(QuoteConversion_Flag=homesite$QuoteConversion_Flag, pca_reduced_features,chi_squared_reduced_features))
+    return(reduced_dataset)
 }
 
 

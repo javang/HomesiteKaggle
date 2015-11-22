@@ -45,7 +45,7 @@ data_preprocessing <- function(homesite){
     homesite[,PropertyField6:=NULL]
     homesite[, GeographicField10A:=NULL]
     # impute values    
-    m = Mode(homesite[!is.na(PropertyField84), PropertyField84]) # impute the mode 
+    m = Mode(homesite[!is.na(PersonalField84), PersonalField84]) # impute the mode 
     homesite[is.na(PersonalField84), PersonalField84:=m] 
     m = Mode(homesite[!is.na(PropertyField29), PropertyField29]) # impute the mode 
     homesite[is.na(PropertyField29), PropertyField29:=m] 
@@ -88,7 +88,6 @@ assignDataTypes = function(homesite) {
         "PropertyField23", "PropertyField27"
     )
     for(nf in numericFeatures)  { homesite[,c(nf):=as.integer(homesite[, get(nf)])]}
-    
 }
 
 

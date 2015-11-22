@@ -82,7 +82,6 @@ main <- function(){
     
     #Not returning new_homesite for now
     return(homesite)
-
 }
 homesite = main()
 
