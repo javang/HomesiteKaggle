@@ -39,10 +39,11 @@ if(!require("FSelector")){install.packages("FSelector")}
 
 initialize_program <- function(program_name, working_directory, log_file, output_logs_to_console, interactive_session)
 {
-  if (output_logs_to_console){
     basicConfig(level = 'INFO')
-  }
-  addHandler(writeToFile, level = "INFO", file = log_file)
+    addHandler(writeToFile, level = "INFO", file = log_file)
+    if (output_logs_to_console){
+        addHandler(writeToConsole, level = "INFO")
+    }
   
   loginfo(paste("*********************", program_name, "************************"))
   

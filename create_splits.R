@@ -17,10 +17,10 @@ source("utility.R")
 
 conf = yaml.load_file("project.conf")
 dataDir = conf$general$data_directory
-fnTrain = file.path(dataDir, conf$input$whole_train_data)
+fnTrain = file.path(dataDir, "train.preprocessed.csv")
 dt = load_data(fnTrain)
 splitDataset(dt, 0.60, 0.20,
-             file.path(dataDir, conf$input$fn_model_training),
-             file.path(dataDir, conf$input$fn_model_testing),
-             file.path(dataDir, conf$input$fn_model_cross_val))
+             file.path(dataDir, "model.train.csv"),
+             file.path(dataDir, "model.test.csv"),
+             file.path(dataDir, "model.crossval.csv"))
              

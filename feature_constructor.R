@@ -41,6 +41,7 @@ pca_dimension_reduction <- function(homesite, eigenvectors, target_dimensions){
     z <- as.matrix(numeric_data_table) %*% p
     return(as.data.table(z))
 }
+
 #Deprecating: 
 append_reduced_numeric_features<- function(homesite, target_dimensions){
     loginfo("Reducing numeric features with PCA.")
@@ -79,5 +80,6 @@ create_reduced_dataset <- function(homesite, target_numeric_dimensions, target_c
                              pca_reduced_features, 
                              chi_squared_reduced_features)
     return(as.data.table(reduced_dataset))
-    
 }
+
+
