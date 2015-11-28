@@ -15,6 +15,12 @@
 # --------------------------------------------
 
 # --------------------------------------------
+
+require(yaml)
+conf = yaml.load_file("project.conf")
+# Environment variables:
+interactive_session <- interactive()
+
 # Required libraries:
 if(!require("logging")){install.packages("logging")}
 if(!require("FactoMineR")){install.packages("FactoMineR")}
@@ -52,4 +58,15 @@ initialize_program <- function(program_name, working_directory, log_file, output
   }else{
     loginfo("Batch session.")
   }
+}
+
+
+standardInit = function() {
+    program_name = conf$general$program_name
+    working_directory = conf$general$data_directory
+    log_file = conf$general$log_file
+    output_logs_to_console = conf$general$output_logs_to_console
+    DEBUG = conf$general$DEBUG
+    initialize_program(program_name, working_directory, 
+                       log_file, output_logs_to_console, interactive_session)
 }
