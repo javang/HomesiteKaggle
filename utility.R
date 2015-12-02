@@ -70,5 +70,11 @@ splitDataset = function(dataTable, trainFraction, testFraction,
     }
 }
 
+selectFeatures = function(dataTable, nVariables) {
+    ' Select the first features from a data table
+    '
+    return(dataTable[,1:nVariables, with=FALSE])
+}
+
 
 

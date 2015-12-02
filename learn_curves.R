@@ -101,12 +101,6 @@ evaluateGradientBoostedTrees = function(model, testData) {
     return(approxF) # value of f
 }
 
-selectFeatures = function(dataTable, nVariables) {
-    ' Select the first features from a data table
-    '
-    return(dataTable[,1:nVariables, with=FALSE])
-}
-
 createLearningCurves = function() {
     dataDir = conf$general$data_directory
     load(file.path(dataDir, conf$input$fn_reduced_training)) # loads modelTrainData
