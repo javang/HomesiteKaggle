@@ -43,8 +43,10 @@ pca_dimension_reduction <- function(homesite, eigenvectors, target_dimensions){
 }
 
 chi_squared_feature_reduction <- function(homesite, target_categorical_features){
+    loginfo("Performing feature reduction of categorical variables")
     chi_squared_result <- apply_chi_square_feature_selection(homesite, trainingFraction=0.3)
     sortingIndices = order(chi_squared_result, decreasing = TRUE)
+    loginfo(paste("Selecting the best",target_categorical_features, "features"))
     selectedFeatures = row.names(chi_squared_result)[sortingIndices[1:target_categorical_features]]
     return(homesite[,selectedFeatures, with = FALSE])
 }

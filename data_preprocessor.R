@@ -30,21 +30,10 @@ get_character_features <- function(dataset){
 
 data_preprocessing <- function(homesite){
     # Set numeric and factors
-    assignDataTypes(homesite)
-    
-    # Add dates
-    homesite$Original_Quote_Date_Typed <- as.Date(as.character(homesite$Original_Quote_Date, format = "%Y/%m%/%d"))
-    homesite$Original_Quote_Date_Day <- as.numeric(format(homesite$Original_Quote_Date_Typed,format="%d"))
-    homesite$Original_Quote_Date_Month <- as.numeric(format(homesite$Original_Quote_Date_Typed,format="%m"))
-    homesite$Original_Quote_Date_Year <- as.numeric(format(homesite$Original_Quote_Date_Typed,format="%Y"))
-    # Remove the original date fields after extracting the day, month and year
-    homesite[,Original_Quote_Date:=NULL]
-    homesite[,Original_Quote_Date_Typed:=NULL]
-    # Remove quote ID, it is an index variable
-    homesite[,QuoteNumber:=NULL]
-    # Remove useless values
-    homesite[,PropertyField6:=NULL]
-    homesite[, GeographicField10A:=NULL]
+    homesite = assignDataTypes(homesite)
+    homesite = transformAndClean(homesite)
+    # Target variable
+    homesite[,QuoteConversion_Flag:= as.factor(QuoteConversion_Flag)]
     # impute values    
     m = Mode(homesite[!is.na(PersonalField84), PersonalField84]) # impute the mode 
     homesite[is.na(PersonalField84), PersonalField84:=m] 
@@ -53,12 +42,30 @@ data_preprocessing <- function(homesite){
     return(homesite)
 }
 
+
+transformAndClean = function(dataTable) {
+    ' Remove useless features and transform the dates to numeric values
+    '
+    dataTable[,qt := as.Date(as.character(Original_Quote_Date, format = "%Y/%m%/%d"))]
+    dataTable[,Original_Quote_Date_Day := as.numeric(format(qt,format="%d"))]
+    dataTable[,Original_Quote_Date_Month := as.numeric(format(qt, format="%m"))]
+    dataTable[,Original_Quote_Date_Year := as.numeric(format(qt, format="%Y"))]
+    # Remove the original date fields after extracting the day, month and year
+    dataTable[,Original_Quote_Date:=NULL]
+    dataTable[,qt:=NULL]
+    # Remove quote ID, it is an index variable
+    dataTable[,QuoteNumber:=NULL]
+    # Remove useless values
+    dataTable[,PropertyField6:=NULL]
+    dataTable[, GeographicField10A:=NULL]
+    return(dataTable)
+}
+
 assignDataTypes = function(homesite) {
     ' Prepare the raw input dataframe with the proper types that we are going to use.
     We need this because R does not assign the types correctly for the variables
     that we consider as factors.
     '
-    homesite[,QuoteConversion_Flag:= as.factor(QuoteConversion_Flag)]
     homesite[,Field10:= as.numeric(gsub(",", "", Field10))]
     
     ############## FACTORS ##############
@@ -70,6 +77,14 @@ assignDataTypes = function(homesite) {
     levels(homesite$GeographicField25A) = append(levels(homesite$GeographicField25A), 3)
     # Ensure proper levels for GeographicField10B (Some splits of the data do not have both values)
     levels(homesite$GeographicField10B) = c("-1","25")
+    
+    levels(homesite$PropertyField37) = append(levels(homesite$PropertyField37), " ")
+    levels(homesite$PropertyField2B) = append(levels(homesite$PropertyField2B), "-1")
+    levels(homesite$PropertyField7) = append(levels(homesite$PropertyField7), "T")
+    levels(homesite$PersonalField17) = c(levels(homesite$PersonalField17), c("XF", "XZ", "YO", "ZJ"))
+    levels(homesite$PersonalField16) = c(levels(homesite$PersonalField16), c("XG", "YG", "ZM"))
+    levels(homesite$PersonalField18) = c(levels(homesite$PersonalField18), c("XB"))
+    levels(homesite$PersonalField19) = c(levels(homesite$PersonalField19), c("ZS"))
     
     ############## NUMERIC ##############
     numericFeatures = c(
@@ -90,8 +105,8 @@ assignDataTypes = function(homesite) {
         "PropertyField23", "PropertyField27"
     )
     homesite[,(numericFeatures):=lapply(.SD, as.numeric),.SDcols=numericFeatures]            
+    return(homesite)
 }
-
 
 getSelectedFactorFeatures = function() {
     ' The names of the features that we have considered as factors

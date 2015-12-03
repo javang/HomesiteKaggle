@@ -55,7 +55,7 @@ factor_analysis <- function(homesite){
 }
 
 pca_factor_analysis <- function(homesite){
-    ' Runs PCA on the input dataset and returns the result
+    ' Runs PCA on the input dataset and returns the result (the R object)
     '
     loginfo("Peforming Principal Component analysis")
     numeric_columns <- get_numeric_features(homesite)
@@ -142,7 +142,9 @@ apply_mca = function(homesite) {
 # apply_mca(homesite)
 
 bernoulli_sampling <- function(dt, trainingFraction){
-    #Refactoring candidate
+    ' Select rows from a dataframe. The trainingFraction is the fraction of 
+    rows to select
+    '
     values = runif(nrow(dt))
     val = dt[values < trainingFraction,]
     return(val)
@@ -152,6 +154,7 @@ apply_chi_square_feature_selection = function(homesite, trainingFraction=0.3) {
     ' Apply the chi-square algorithm for dimensionality reduction of categorical
     values. 
     '
+    loginfo(paste("Applying Chi-Squared feature selection on the categorical variables. Fraction:",trainingFraction))
     factorColumns = get_factor_features(homesite)
     factorColumnNames = names(homesite)[factorColumns]
     factorsDataTable = homesite[, c(factorColumnNames), with=FALSE]

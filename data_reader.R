@@ -23,33 +23,22 @@
 
 # --------------------------------------------
 
-require(yaml)
-conf = yaml.load_file("project.conf")
-# Environment variables:
-interactive_session <- interactive()
-
-# --------------------------------------------
-# Load required source files:
 source("initializer.R")
 source("data_explorer.R")
 source("clean.R")
-source("data_preprocessor.R")
-source("factor_analyzer.R")
+source("data_preprocessor.R") # data_preprocessing
 source("utility.R")
-source("feature_constructor.R")
+source("feature_constructor.R") # create_reduced_dataset
 require(data.table)
+require(yaml)
+conf = yaml.load_file("project.conf")
+interactive_session <- interactive()
 
 
 main <- function(){
-    program_name = conf$general$program_name
-    working_directory = conf$general$data_directory
-    log_file = conf$general$log_file
-    output_logs_to_console = conf$general$output_logs_to_console
-    DEBUG = conf$general$DEBUG
-    initialize_program(program_name, working_directory, 
-                       log_file, output_logs_to_console, interactive_session)
-    
-    fnData = file.path(conf$general$data_directory, "train.csv")
+    standardInit()
+    dataDir = conf$general$data_directory
+    fnData = file.path(dataDir, "train.csv")
     homesite <- load_data(fnData)
     homesite <- data_preprocessing(homesite)
 
@@ -70,11 +59,9 @@ main <- function(){
     #factor_analysis(homesite)
     #new_homesite <- append_reduced_numeric_features(homesite, 42)
     reduced_homesite <- create_reduced_dataset(homesite, 
-                                               conf$dimension_reduction$n_numeric_features_to_keep, 
-                                               conf$dimension_reduction$n_categorical_features_to_keep)
-    dataDir = conf$general$data_directory
-    
-    source("utility.R")
+                       conf$dimension_reduction$n_numeric_features_to_keep, 
+                       conf$dimension_reduction$n_categorical_features_to_keep)
+
     splitDataset(reduced_homesite,
                  conf$dataset_splitting$train_fraction, 
                  conf$dataset_splitting$test_fraction, 
