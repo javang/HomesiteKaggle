@@ -13,6 +13,7 @@
 # Marciano Moreno
 # 
 # --------------------------------------------
+source("initializer.R")
 source("utility.R")
 source("data_preprocessor.R")
 source("feature_constructor.R")
@@ -46,9 +47,15 @@ createReducedTestSet = function() {
     
     # Extract the names of the categorical features used from the training dataset. Not very elegant. IMPROVE THIS
     dataDir = conf$general$data_directory
-    load(file.path(dataDir, conf$input$fn_reduced_training)) # loads modelTrainData
-    featureNames = names(modelTrainData)
-    featureNames = featureNames[2:length(featureNames)] # Remove first name is the target feature
+    #Reading feature names from file, the CSV does not have the label
+    #The following code is no longer required--->
+    #load(file.path(dataDir, conf$input$fn_reduced_training)) # loads modelTrainData
+    #featureNames = names(modelTrainData)
+    #featureNames = featureNames[2:length(featureNames)] # Remove first name is the target feature
+    #<---- End unrequired code
+    fnFeatureNames = file.path(dataDir, conf$input$feature_names)
+    featureNames = read.csv(fnFeatureNames, stringsAsFactors = FALSE)
+    featureNames = featureNames[,1]
     categoricalFeatureNames = featureNames[(numPcaDimensions+1):length(featureNames)] # remove the PCA dimensions
     # Create the transformed test dataset and save it as a R object
     homesiteTestData = cbind(pcaCoordinates, 
