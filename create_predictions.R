@@ -60,10 +60,8 @@ standardInit()
 # createReducedTestSet() # run this once
 load(file.path(dataDir, conf$input$fn_reduced_test_data)) # loads homesiteTestData
 
-
 # create predictions
 modelPredictions = predict(fittedModelResults, newdata=homesiteTestData, type="prob")
-
 fnTestData = file.path(dataDir, conf$input$whole_test_data)  
 df = load_data(fnTestData)
 quotenums = df[,QuoteNumber ]
