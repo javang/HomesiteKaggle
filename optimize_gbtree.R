@@ -26,7 +26,7 @@ standardInit()
 dataDir = conf$general$data_directory
 load(file.path(dataDir, conf$input$fn_reduced_training)) # loads modelTrainData
 load(file.path(dataDir, conf$input$fn_reduced_testing)) # loads modelTestData
-#modelTrainData = modelTrainData[1:10000,]
+# modelTrainData = modelTrainData[1:1000,]
 
 # Change levels of the factor  QuoteConversion_Flag (caret complaints if the labels are 0 1)
 levels(modelTrainData$QuoteConversion_Flag)[levels(modelTrainData$QuoteConversion_Flag) == "0"] = "no"
@@ -34,7 +34,11 @@ levels(modelTrainData$QuoteConversion_Flag)[levels(modelTrainData$QuoteConversio
 
 
 # Define the grid to search: nrounds, max_depth, eta
-parametersGrid = expand.grid(max_depth = c(1, 3, 5), nrounds = c(10,20,30), eta = c(0.3))
+# parametersGrid = expand.grid(max_depth = c(2), nrounds = c(3), eta = c(0.3))
+# parametersGrid = expand.grid(max_depth = c(1, 3, 5), nrounds = c(10,20,30), eta = c(0.3))
+# parametersGrid = expand.grid(max_depth = c(5,8,11), nrounds = c(25,50,100), eta = c(0.3,0.5))
+parametersGrid = expand.grid(max_depth = c(5), nrounds = c(150,200,250,500), eta = c(0.3,0.1))
+
 ctrl = trainControl(method = "cv",number=5,
                     classProbs = TRUE,
                     summaryFunction = twoClassSummary

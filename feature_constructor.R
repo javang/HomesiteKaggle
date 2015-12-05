@@ -16,6 +16,7 @@
 # TODO: Persist eigenvalues and read them from file instead of calling PCA each time.
 # --------------------------------------------
 source("factor_analyzer.R")
+source("utility.R")
 
 #eigenvalues <- pca_result$eig$eigenvalue
 create_reduced_numeric_features_pca <- function(homesite, eigenvalues, target_dimensions){
@@ -63,8 +64,15 @@ create_reduced_dataset <- function(homesite, target_numeric_dimensions, target_c
     eigenvectors <- pca_result$loadings
     dataDir = conf$general$data_directory
     write.csv(eigenvectors, file.path(dataDir, "PCAloadings.txt"))
+    
     pca_reduced_features <- pca_dimension_reduction(homesite, eigenvectors, target_numeric_dimensions)
-    chi_squared_reduced_features <- chi_squared_feature_reduction(homesite, target_categorical_features) #decouple by persisting indexes 
+    # chi_squared_reduced_features <- chi_squared_feature_reduction(homesite, target_categorical_features) #decouple by persisting indexes 
+
+        # instead of selecting features, use all of them
+    chi_squared_reduced_features = get_factor_features(homesite)
+    chi_squared_reduced_features = chi_squared_reduced_features[2:length(chi_squared_reduced_features)] # first feature is the target value
+    chi_squared_reduced_features = homesite[,chi_squared_reduced_features, with=FALSE] 
+    
     reduced_dataset = as.data.table(cbind(QuoteConversion_Flag=homesite$QuoteConversion_Flag, pca_reduced_features,chi_squared_reduced_features))
     return(reduced_dataset)
 }

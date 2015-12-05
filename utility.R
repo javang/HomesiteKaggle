@@ -77,4 +77,15 @@ selectFeatures = function(dataTable, nVariables) {
 }
 
 
+get_numeric_features <- function(dataset){
+    return(which(sapply(dataset,is.numeric)))
+}
+
+get_factor_features <- function(dataset){
+    return(which(sapply(dataset,is.factor)))
+}
+
+get_character_features <- function(dataset){
+    return(which(sapply(dataset,is.character)))
+}
 

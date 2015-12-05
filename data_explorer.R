@@ -83,3 +83,44 @@ bivariate_numerical_exploration <- function(dataset, dataset_name){
 }
 
 
+exploreFactors = function() {
+    require(yaml)
+    source("data_processor2.R")
+    conf = yaml.load_file("project.conf")
+    dataDir = conf$general$data_directory
+    fnData = file.path(dataDir, conf$input$whole_train_data)
+    fnTest = file.path(dataDir, conf$input$whole_test_data)
+    homesite <- load_data(fnData)
+    homesite = transformAndClean(homesite)
+    homesite = assignDataTypes(homesite)
+    homesiteTestData = load_data(fnTest)
+    homesiteTestData = transformAndClean(homesiteTestData)
+    homesiteTestData = assignDataTypes(homesiteTestData)
+    compare_test_vs_train_factors(homesite, homesiteTestData)        
+    
+}
+
+compare_test_vs_train_factors = function(homesite, testData) {
+    ' Function to compare the differences in labels between train data and
+    test data after converting integer values to factors'
+    testColumnNames = names(testData)
+    trainColumnNames = names(homesite)
+    for (columnName in testColumnNames) {
+        print(columnName)
+        if ((columnName %in% trainColumnNames) && is.integer(testData[,get(columnName)])) {
+            trainFactor = as.factor(homesite[,get(columnName)])
+            testFactor = as.factor(testData[,get(columnName)])
+            trainLevels = levels(trainFactor)
+            testLevels = levels(testFactor)
+            loginfo(paste("*******************", columnName, "*******************"))
+            loginfo(paste("TRAIN VALUES:",paste(trainLevels, collapse=" ")))
+            loginfo(paste("TEST  VALUES:",paste(testLevels, collapse=" ")))
+            setDiffTrain = setdiff(trainLevels, testLevels)            
+            setDiffTest = setdiff( testLevels, trainLevels)            
+            loginfo(paste("TRAIN VALUES NOT IN TEST:",paste(setDiffTrain, collapse=" ")))
+            loginfo(paste("TEST VALUES NOT IN TRAIN:",paste(setDiffTest, collapse=" ")))
+        }
+    }
+}
+
+
