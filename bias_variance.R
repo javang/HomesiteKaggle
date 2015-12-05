@@ -60,7 +60,7 @@ create_bias_variance_plots <- function(data_point_fraction, number_of_features_l
     ggplot(df) +
         ggtitle(paste("Bias/Variance plot. Support Vector Machine.", length(indices), "observations.")) +
         xlab(paste("Number of features")) +
-        ylab("F-measure") +
+        ylab(metric) +
         geom_point(aes(x=NumberFeatures, y=TrainFMeasure, color="Train")) +
         geom_line(aes(x=NumberFeatures, y=TrainFMeasure, color="Train")) +
         geom_point(aes(x=NumberFeatures, y=TestFMeasure, color="Test")) +
@@ -69,5 +69,11 @@ create_bias_variance_plots <- function(data_point_fraction, number_of_features_l
 
 test <- function(){
     number_of_features_list <- seq(from = 10, to =80, by=10)
-    create_bias_variance_plots(0.001, number_of_features_list, "F-measure")
+    create_bias_variance_plots(0.001, number_of_features_list, "Error rate")
+    create_bias_variance_plots(0.01, number_of_features_list, "Error rate")
+    create_bias_variance_plots(0.1, number_of_features_list, "Error rate")
+    create_bias_variance_plots(0.2, number_of_features_list, "Error rate")
+    create_bias_variance_plots(0.3, number_of_features_list, "Error rate")
+    create_bias_variance_plots(0.4, number_of_features_list, "Error rate")
+    
 }
