@@ -40,16 +40,28 @@ params <- tune.svm(QuoteConversion_Flag~.,
 
 evaluate_svm <- function(model, dataset, metric){
     svm_prediction <- predict(model, dataset[,-1,with=FALSE], probability = TRUE)
-    #perf_result <- performance(svm_prediction, measure = "f")
+    pred <- prediction(as.numeric(svm_prediction), as.numeric(dataset$QuoteConversion_Flag))
     tab <- table(pred = svm_prediction, true = dataset[,QuoteConversion_Flag])
-    fscore_result <- fscore(tab)
-    class_agreement <- classAgreement(tab = tab)
     if(metric=="Diagonal"){
+
+        class_agreement <- classAgreement(tab = tab)
         return(class_agreement$diag)
     }else{
         if(metric=="F-measure"){
+#             auc <- performance(pred, "f")
+#             cutoff = 0.5
+#             cutoffIndex = which(abs(auc@x.values[[1]] - cutoff) < 0.01)
+#             fs <- auc@y.values[[1]][cutoffIndex]
+#             result <- mean(fs)
+            fscore_result <- fscore(tab) #compare the results...
             return(fscore_result)
+        }else{
+            if(metric=="Error rate"){
+                error <- error_rate(tab)
+                #error <- performance(pred, "err") 
+                return(error)
             }
+        }
     }
 }
 
@@ -63,7 +75,13 @@ fscore <- function(tab){
     return(2*((precision*recall)/(precision+recall)))
 }
 
-
+error_rate <- function(tab){
+    tp = tab[2,2]
+    fp = tab[2,1]
+    tn = tab[1,1]
+    fn = tab[1,2]
+    return((fp+fn)/(tp+fp+tn+fn))
+}
 createLearningCurvesSVM = function(dataPointsFractions, numberOfFeatures, evaluation_metric) {
     dataDir = conf$general$data_directory
     load(file.path(dataDir, conf$input$fn_reduced_training)) # loads modelTrainData

@@ -16,13 +16,18 @@
 
 source("svm_model.R")
 
-create_bias_variance_plots <- function(data_point_fraction, number_of_features_list) {
+create_bias_variance_plots <- function(data_point_fraction, number_of_features_list, metric) {
     
     dataDir = conf$general$data_directory
     load(file.path(dataDir, conf$input$fn_reduced_training)) # loads modelTrainData
     load(file.path(dataDir, conf$input$fn_reduced_testing)) # loads modelTestData
     nrows = nrow(modelTrainData)
     indices = randomSelect(nrows, data_point_fraction)
+    
+    numCurvePoints = length(number_of_features_list)
+    trainFs = rep(0, numCurvePoints)
+    testFs = rep(0, numCurvePoints)
+
     
     for(i in 1:length(number_of_features_list)){
 
@@ -31,16 +36,14 @@ create_bias_variance_plots <- function(data_point_fraction, number_of_features_l
         train_dataset = selectFeatures(modelTrainData, number_of_features_list[i])
         test_dataset = selectFeatures(modelTestData, number_of_features_list[i])
 
-        ncols <- ncol(test_dataset)
+
         
-        numCurvePoints = length(number_of_features_list)
-        trainFs = rep(0, numCurvePoints)
-        testFs = rep(0, numCurvePoints)
+
         loginfo(paste("Creating a SVM model using",length(indices), "datapoints and ", number_of_features_list[i], "features"))
-        model <- train_svm(train_dataset, indices)
-        trainF = evaluate_svm(model, train_dataset)
+        model <- train_svm(train_dataset[indices, ])
+        trainF = evaluate_svm(model, train_dataset[indices, ], metric)
         trainFs[i] = trainF
-        testF <- evaluate_svm(model, test_dataset)
+        testF <- evaluate_svm(model, test_dataset, metric)
         testFs[i] = testF
     }
     #fnCurves = file.path(dataDir, paste0("Bias-Variance.SVM.", data_point_fraction, ".Features.txt"))
@@ -53,6 +56,7 @@ create_bias_variance_plots <- function(data_point_fraction, number_of_features_l
 #         close(fileConn)    
 #     }
     df = data.frame("NumberFeatures"=number_of_features_list, "TrainFMeasure"=trainFs, "TestFMeasure"=testFs)
+    write.csv(df, file = "bias_variance.csv")
     ggplot(df) +
         ggtitle(paste("Bias/Variance plot. Support Vector Machine.", length(indices), "observations.")) +
         xlab(paste("Number of features")) +
@@ -64,6 +68,6 @@ create_bias_variance_plots <- function(data_point_fraction, number_of_features_l
 }
 
 test <- function(){
-    number_of_features_list <- seq(from = 10, to =100, by=10)
-    create_bias_variance_plots(0.01, number_of_features_list)
+    number_of_features_list <- seq(from = 10, to =80, by=10)
+    create_bias_variance_plots(0.001, number_of_features_list, "F-measure")
 }
