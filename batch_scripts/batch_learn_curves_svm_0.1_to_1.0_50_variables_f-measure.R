@@ -18,4 +18,5 @@
 # --------------------------------------------
 
 source("svm_model.R")
+print("Generating learning curve...")
 createLearningCurvesSVM(seq(from = 0.1, to = 1.0, by = 0.1),50, "F-measure")
