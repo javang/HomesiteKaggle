@@ -14,7 +14,13 @@
 # 
 # --------------------------------------------
 
+require(e1071)
+require(ggplot2)
 source("svm_model.R")
+source("utility.R")
+require(yaml)
+conf = yaml.load_file("project.conf")
+standardInit()
 
 create_bias_variance_plots <- function(data_point_fraction, number_of_features_list, metric) {
     
@@ -77,3 +83,5 @@ test <- function(){
     create_bias_variance_plots(0.4, number_of_features_list, "Error rate")
     
 }
+number_of_features_list <- seq(from = 10, to =150, by=10)
+create_bias_variance_plots(0.6, number_of_features_list, "Error rate")

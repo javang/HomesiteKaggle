@@ -16,9 +16,14 @@
 
 
 require(e1071)
-source("learn_curves.R")
-
-
+require("ROCR")
+require(ggplot2)
+source("utility.R")
+source("initializer.R")
+#source("learn_curves.R")
+require(yaml)
+conf = yaml.load_file("project.conf")
+standardInit()
 
 train_svm <- function(dataset){
     model <- svm(QuoteConversion_Flag~., 
@@ -84,6 +89,7 @@ error_rate <- function(tab){
 }
 createLearningCurvesSVM = function(dataPointsFractions, numberOfFeatures, evaluation_metric) {
     dataDir = conf$general$data_directory
+    vizDir = conf$general$visualizations_directory
     load(file.path(dataDir, conf$input$fn_reduced_training)) # loads modelTrainData
     load(file.path(dataDir, conf$input$fn_reduced_testing)) # loads modelTestData
     modelTrainData = selectFeatures(modelTrainData, numberOfFeatures) 
@@ -115,7 +121,9 @@ createLearningCurvesSVM = function(dataPointsFractions, numberOfFeatures, evalua
         close(fileConn)    
     }
     df = data.frame("PointsFraction"=dataPointsFractions, "TrainFMeasure"=trainFs, "TestFMeasure"=testFs)
-    ggplot(df) +
+    fnCurvesPlot = file.path(vizDir, paste0("LearningCurves.SVM.", evaluation_metric, ".", numberOfFeatures, ".Features.png"))
+    png(file = fnCurvesPlot)
+    p<-ggplot(df) +
         ggtitle(paste("Support Vector Machine, first", numberOfFeatures, "features")) +
         xlab(paste("Fraction of training points")) +
         ylab(evaluation_metric) +
@@ -123,6 +131,8 @@ createLearningCurvesSVM = function(dataPointsFractions, numberOfFeatures, evalua
         geom_line(aes(x=PointsFraction, y=TrainFMeasure, color="Train")) +
         geom_point(aes(x=PointsFraction, y=TestFMeasure, color="Test")) +
         geom_line(aes(x=PointsFraction, y=TestFMeasure, color="Test")) 
+    print(p)
+    dev.off()
 }
 
 svm_learning_curves <- function(){
