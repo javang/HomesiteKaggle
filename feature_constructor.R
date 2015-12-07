@@ -18,21 +18,6 @@
 source("factor_analyzer.R")
 source("utility.R")
 
-#eigenvalues <- pca_result$eig$eigenvalue
-create_reduced_numeric_features_pca <- function(homesite, eigenvalues, target_dimensions){
-    loginfo("Reducing numeric features with PCA.")
-    numeric_columns <- get_numeric_features(homesite)
-    numeric_column_names <- names(homesite)[numeric_columns]
-    numeric_data_table <- homesite[,c(numeric_column_names),with=FALSE]
-    #p is a d x k matrix with columns being the k principal components (eigenvalues from pca_result)
-    p <- matrix(rep(eigenvalues, length(numeric_columns)),ncol=target_dimensions, byrow=TRUE) #nrow=length(numeric_columns), 
-    #z is the matrix with the lower dimensional representation of the data
-    dimension_names <- paste0("num_dim_", 1:target_dimensions)
-    names(z) <- dimension_names
-    z <- as.matrix(numeric_data_table) %*% p
-    return(as.data.table(z))
-}
-
 pca_dimension_reduction <- function(homesite, eigenvectors, target_dimensions){
     loginfo("Reducing dimensions with PCA.")
     numeric_columns <- get_numeric_features(homesite)
