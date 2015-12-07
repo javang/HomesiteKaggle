@@ -159,7 +159,7 @@ svm_learning_curves_fscore <- function(fnTrainingDataset, fnTestingDataset, vizD
 svm_learning_curves_error_rate <- function(fnTrainingDataset, fnTestingDataset, vizDir){
     
     createLearningCurvesSVM(fnTrainingDataset, fnTestingDataset, c(0.01, 0.015, 0.02, 0.025, 0.03),10, "Error rate", vizDir)
-    createLearningCurvesSVM(fnTrainingDataset, fnTestingDataset, c(0.01, 0.015, 0.02, 0.025, 0.03),20, FALSE, "Error rate", vizDir)
+    createLearningCurvesSVM(fnTrainingDataset, fnTestingDataset, c(0.1, 0.15, 0.2, 0.25, 0.3, .35, .4),30, FALSE, "Error rate", vizDir)
     
     createLearningCurvesSVM(fnTrainingDataset, fnTestingDataset, c(0.1, 0.15, 0.2, 0.25, 0.3),10, "Error rate", vizDir)
     createLearningCurvesSVM(fnTrainingDataset, fnTestingDataset, c(0.1, 0.15, 0.2, 0.25, 0.3),20, FALSE, "Error rate", vizDir)
