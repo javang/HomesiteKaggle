@@ -6,7 +6,8 @@
 # Final Project:
 # Response to Homesite Quote Conversion Kaggle Challenge  
 #
-# factor_analizer.R - Factor Analizer
+# factor_analizer.R - Factor Analizer. Contains functions to analyze features
+# and applying algorithms for dimensionality reduction.
 #
 # Project participants:
 # Javier Velázquez
@@ -22,7 +23,7 @@
 require("FactoMineR")
 require(MASS) # write.matrix
 require(FSelector)  # 
-source("data_preprocessor.R")
+source("data_processor2.R")
 source("utility.R")
 
 
@@ -65,62 +66,41 @@ pca_factor_analysis <- function(homesite){
 }
 
 mca_factor_analysis <- function(homesite){
+    ' Runs MCA on the input dataset and returns the result (the R object)
+    '
     loginfo("Peforming MCA factor analysis")
     homesite[,Original_Quote_Date:=NULL]
     homesite[,Original_Quote_Date_Typed:=NULL]
     homesite[,QuoteConversion_Flag:=NULL]
-    
     mca_result <- MCA(homesite, quanti.sup = as.vector(get_numeric_features(homesite)), graph = FALSE)
+    return(mca_result)
 }
 
 famd_factor_analysis <- function(homesite){
+    ' Runs FAMD on the input dataset and returns the result (the R object)
+    '
     loginfo("Peforming FAMD factor analysis")
     homesite[,Original_Quote_Date:=NULL]
     homesite[,Original_Quote_Date_Typed:=NULL]
     homesite[,QuoteConversion_Flag:=NULL]
-    
     famd_result <- FAMD(homesite, graph = FALSE)
+    retrun(famd)
 }
 
 plot_individuals_by_factor <- function(pca_result, homesite){
+    ' Generate plots for each of the factors created by the PCA analysis'
     loginfo("Plotting individuals according to categorical value.")
-
-    
     factor_features <- get_factor_features(homesite)
-    
     for(i in 1:length(factor_features))
     {
         fileName = paste0(names(factor_features[i]),".png") 
         outputPath = file.path(conf$general$data_directory, "visualizations/PCA",  fileName)
         print(outputPath)
         png(outputPath)
-        
         plot(pca_result, habillage = as.numeric(factor_features[i]))
         dev.off()
     }
 }
-
-factominer_tutorial <- function(){
-    data("decathlon")
-    fileName = paste0("PCA_tutorial_%03d.png") 
-    outputPath = file.path(conf$general$data_directory, "visualizations",  fileName)
-    png(outputPath)
-    
-    res.pca <- PCA(decathlon, quanti.sup = 11:12, quali.sup = 13)
-    #Plot individuals according to categorical value, color individuals by factor specified with habillage
-    plot(res.pca, habillage = 13)
-    #Draw a barplot with the eigen values
-    barplot(res.pca$eig[,1], main = "Eigenvalues", names.arg = paste("Dim", 1:nrow(res.pca$eig), sep=""))
-    #Plot a graph with 2 dimensions
-    plot(res.pca, choix = "var", axes = c(3,4), lim.cos2.var = 0)
-    #Print results
-    print(res.pca, file="pca_result.txt", sep = "\t")
-    #Describe each pricipal component
-    print(dimdesc(res.pca, proba = 0.2))
-    dev.off()
-}
-
-
 
 apply_mca = function(homesite) {
     ' Apply Multiple Component Analysis to a data table object. This function
@@ -139,29 +119,12 @@ apply_mca = function(homesite) {
     }
 }
 
-# apply_mca(homesite)
-
 bernoulli_sampling <- function(dt, trainingFraction){
-    ' Select rows from a dataframe. The trainingFraction is the fraction of 
+    ' Randomly Select rows from a dataframe. The trainingFraction is the fraction of 
     rows to select
     '
     values = runif(nrow(dt))
     val = dt[values < trainingFraction,]
     return(val)
 }
-
-apply_chi_square_feature_selection = function(homesite, trainingFraction=0.3) {
-    ' Apply the chi-square algorithm for dimensionality reduction of categorical
-    values. 
-    '
-    loginfo(paste("Applying Chi-Squared feature selection on the categorical variables. Fraction:",trainingFraction))
-    factorColumns = get_factor_features(homesite)
-    factorColumnNames = names(homesite)[factorColumns]
-    factorsDataTable = homesite[, c(factorColumnNames), with=FALSE]
-    trainingTable = bernoulli_sampling(factorsDataTable, trainingFraction)
-    formula = QuoteConversion_Flag ~ .
-    DT = chi.squared(formula, trainingTable)
-    return(DT)
-}
-
 

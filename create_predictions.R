@@ -5,24 +5,25 @@
 #
 # Final Project:
 # Response to Homesite Quote Conversion Kaggle Challenge  
-#
-# Create predictions for the test set provided by Kaggle
-#
 # Project participants:
 # Javier Velázquez
 # Marciano Moreno
 # 
+# Create predictions for the test set provided by Kaggle
+#
+# THIS FILE IS RUN AS A STANDALONE SCRIPT THAT WILL CREATE PREDICITON TO
+# SUBMIT TO KAGGLE.
 # --------------------------------------------
 source("initializer.R")
 source("utility.R")
-source("data_preprocessor.R")
+source("data_processor2.R")
 source("feature_constructor.R")
 require(yaml)
 conf = yaml.load_file("project.conf")
 
 createReducedTestSet = function() {
     ' Reads the Homesite test dataset provided by Kaggle and:
-        1) Applies to it the same transformations used for the train dataset. 
+        1) Applies to it the same transformations/preprocess used for the train dataset. 
         2) Uses the PCA eigenvectors created from the training set and 
         applies them to the test dataset
         3) Reads the categorical features used for training and extracts them
@@ -64,42 +65,14 @@ createReducedTestSet = function() {
 }
 
 standardInit()
-# createReducedTestSet() # run this once
+createReducedTestSet() # run this once
 load(file.path(dataDir, conf$input$fn_reduced_test_data)) # loads homesiteTestData
-
-############
-# Hacks to fix Values of variables 
-homesiteTestData[PropertyField37 == " ", PropertyField37:="N"]
-homesiteTestData$PropertyField37 = factor(homesiteTestData$PropertyField37)
-homesiteTestData[PropertyField2B == "-1", PropertyField2B:="2"]
-homesiteTestData$PropertyField2B = factor(homesiteTestData$PropertyField2B)
-homesiteTestData[PropertyField7 == "T", PropertyField7:="S"]
-homesiteTestData$PropertyField7 = factor(homesiteTestData$PropertyField7)
-# impute values    
-m = Mode(homesiteTestData[!is.na(PersonalField84), PersonalField84]) # impute the mode 
-homesiteTestData[is.na(PersonalField84), PersonalField84:=m] 
-
-homesiteTestData[PersonalField17 %in% c("XF", "XZ", "YO", "ZJ"), PersonalField17:="XB"]
-homesiteTestData$PersonalField17 = factor(homesiteTestData$PersonalField17)
-
-homesiteTestData[PersonalField16 %in% c("XG", "YG", "ZM"), PersonalField16:="XB"]
-homesiteTestData$PersonalField16 = factor(homesiteTestData$PersonalField16)
-
-homesiteTestData[PersonalField18 %in% c("XB"), PersonalField18:="XC"]
-homesiteTestData$PersonalField18 = factor(homesiteTestData$PersonalField18)
-
-homesiteTestData[PersonalField19 %in% c("ZS"), PersonalField19:="XB"]
-homesiteTestData$PersonalField19 = factor(homesiteTestData$PersonalField19)
-############
-
 
 # create predictions
 modelPredictions = predict(fittedModelResults, newdata=homesiteTestData, type="prob")
-
 fnTestData = file.path(dataDir, conf$input$whole_test_data)  
 df = load_data(fnTestData)
 quotenums = df[,QuoteNumber ]
-p = as.integer(modelPredictions$yes > 0.5)
-preds = data.frame(QuoteNumber=quotenums, QuoteConversion_Flag=p)
+preds = data.frame(QuoteNumber=quotenums, QuoteConversion_Flag=modelPredictions$yes)
 fnPredictions = file.path(dataDir, conf$output$fn_output_predictions)  
 write.csv(preds,file=fnPredictions,row.names = FALSE)

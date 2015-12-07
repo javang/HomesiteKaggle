@@ -18,6 +18,8 @@ require(e1071)
 require(ggplot2)
 source("svm_model.R")
 source("utility.R")
+source("learn_curves.R")
+source("data_processor2.R")
 require(yaml)
 conf = yaml.load_file("project.conf")
 standardInit()
@@ -85,3 +87,63 @@ test <- function(){
 }
 number_of_features_list <- seq(from = 10, to =150, by=10)
 create_bias_variance_plots(0.6, number_of_features_list, "Error rate")
+
+
+
+createGbtBiasVariancePlot = function(modelTrainData, modelTestData,
+                                    data_point_fraction, 
+                                    number_of_features_list, 
+                                    metric) {
+    ' Create a Bias/Variance curve for the GBT algorithm.
+    modelTrainData: data.table with the dataset used to train the model. 
+    modelTestData: data.table with the dataset used to test the model. 
+    data_point_fraction - Fraction of the points in modelTrainData 
+    used to create the curve.
+    '
+    loginfo(paste("Bias-Variance plot for GBT"))
+    nrows = nrow(modelTrainData)
+    indices = randomSelect(nrows, data_point_fraction)
+    numCurvePoints = length(number_of_features_list)
+    trainFs = rep(0, numCurvePoints)
+    testFs = rep(0, numCurvePoints)
+    for(i in 1:length(number_of_features_list)){
+        #Vertical partition of the dataset
+        train_dataset = selectFeatures(modelTrainData, number_of_features_list[i])
+        test_dataset = selectFeatures(modelTestData, number_of_features_list[i])
+        loginfo(paste("Creating a GBT model using",length(indices), 
+                      "datapoints and ", number_of_features_list[i], "features"))
+        model = trainGradientBoostedTrees(train_dataset, indices)
+        trainF = evaluateGradientBoostedTrees(model, train_dataset[indices,])
+        trainFs[i] = trainF
+        testF <- evaluateGradientBoostedTrees(model, test_dataset)
+        testFs[i] = testF
+    }
+    plotBiasVarianceCurve(number_of_features_list, trainFs, testFs,
+                          algorithmName = "Gradient Boosted Trees",
+                          metricName = "F-measure")
+}
+
+
+plotBiasVarianceCurve = function(number_of_features_list, trainFs, testFs, 
+                      algorithmName="Algorithm name not given",
+                      metricName= "Metric name not given") {
+    ' Create a plot of the Bias/Variance curve for the GBT algorithm
+
+    number_of_features_list: A list of number of features used for training.
+    It will be used for the the x-axis.
+    trainFs: Performance Measure (F-Measure) for the training datapoints
+    testFs: Performance Measure (F-Measure) for the testing datapoints
+    '
+    df = data.frame("NumberFeatures"=number_of_features_list,
+                    "TrainFMeasure"=trainFs, "TestFMeasure"=testFs)
+    # save the curve
+    write.csv(df, file = "bias_variance.csv")
+    ggplot(df) +
+        ggtitle(paste("Bias/Variance plot. Algorithm", algorithmName)) +
+        xlab(paste("Number of features")) +
+        ylab(metricName) +
+        geom_point(aes(x=NumberFeatures, y=TrainFMeasure, color="Train")) +
+        geom_line(aes(x=NumberFeatures, y=TrainFMeasure, color="Train")) +
+        geom_point(aes(x=NumberFeatures, y=TestFMeasure, color="Test")) +
+        geom_line(aes(x=NumberFeatures, y=TestFMeasure, color="Test")) 
+}

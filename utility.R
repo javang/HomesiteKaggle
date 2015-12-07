@@ -77,4 +77,22 @@ selectFeatures = function(dataTable, nVariables) {
 }
 
 
+# Data preprocessing functions
+get_numeric_features <- function(dataset){
+    ' Recover the indices of the numeric features from a dataset
+    '
+    return(which(sapply(dataset,is.numeric)))
+}
+
+get_factor_features <- function(dataset){
+    ' Recover the indices of the factor features from a dataset
+    '
+    return(which(sapply(dataset,is.factor)))
+}
+
+get_character_features <- function(dataset){
+    ' Recover the indices of the character features from a dataset
+    '
+    return(which(sapply(dataset,is.character)))
+}
 
