@@ -14,18 +14,18 @@
 # 
 # --------------------------------------------
 
-
-require(e1071)
-require("ROCR")
 require(ggplot2)
 source("utility.R")
 source("initializer.R")
 #source("learn_curves.R")
 require(yaml)
 conf = yaml.load_file("project.conf")
+
+require(e1071)
+require("ROCR")
 standardInit()
 
-train_svm <- function(dataset, probability){
+train_svm_optimal <- function(dataset, probability){
     model <- svm(QuoteConversion_Flag~., 
                  data=dataset, 
                  method="C-classification", 
@@ -37,10 +37,21 @@ train_svm <- function(dataset, probability){
     return (model)
 }
 
+train_svm <- function(dataset, cost, gamma, probability){
+    model <- svm(QuoteConversion_Flag~., 
+                 data = dataset, 
+                 method = "C-Classification",
+                 kernel = "radial",
+                 cost = cost,
+                 gamma = gamma,
+                 probability = probability)
+    return(model)
+}
+
 tune_svm <- function(dataset){
 params <- tune.svm(QuoteConversion_Flag~.,
                    data=dataset, 
-                   gamma = 10^(-6:2), cost = 10^(-1:2))
+                   gamma = 10^(-1:1), cost = 10^(-1:1))
 }
 
 evaluate_svm <- function(model, dataset, probability, metric){

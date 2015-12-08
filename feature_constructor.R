@@ -16,23 +16,17 @@
 # TODO: Persist eigenvalues and read them from file instead of calling PCA each time.
 # --------------------------------------------
 source("factor_analyzer.R")
-
-#eigenvalues <- pca_result$eig$eigenvalue
-create_reduced_numeric_features_pca <- function(homesite, eigenvalues, target_dimensions){
-    loginfo("Reducing numeric features with PCA.")
-    numeric_columns <- get_numeric_features(homesite)
-    numeric_column_names <- names(homesite)[numeric_columns]
-    numeric_data_table <- homesite[,c(numeric_column_names),with=FALSE]
-    #p is a d x k matrix with columns being the k principal components (eigenvalues from pca_result)
-    p <- matrix(rep(eigenvalues, length(numeric_columns)),ncol=target_dimensions, byrow=TRUE) #nrow=length(numeric_columns), 
-    #z is the matrix with the lower dimensional representation of the data
-    dimension_names <- paste0("num_dim_", 1:target_dimensions)
-    names(z) <- dimension_names
-    z <- as.matrix(numeric_data_table) %*% p
-    return(as.data.table(z))
-}
+source("utility.R")
 
 pca_dimension_reduction <- function(homesite, eigenvectors, target_dimensions){
+    ' Transforms the numeric features in a dataset to the PCA features
+    
+    homesite: data.table with the dataset
+    eigenvectors: The eigenvectors of the PCA decomposition
+    target_dimensions: Number of PCA dimensions to keep. 
+    :return: A data.table with the values of the PCA features. The number of 
+    rows is the same as in homesite, and the number of columns is target_dimensions.
+    '
     loginfo("Reducing dimensions with PCA.")
     numeric_columns <- get_numeric_features(homesite)
     numeric_column_names <- names(homesite)[numeric_columns]
@@ -43,6 +37,14 @@ pca_dimension_reduction <- function(homesite, eigenvectors, target_dimensions){
 }
 
 chi_squared_feature_reduction <- function(homesite, target_categorical_features){
+    ' Apply Chi-Squared feature prioritization to a dataset and retain the most
+    significant fetures based on their Chi-Squared importance
+    
+    homesite: A data.table with the dataset
+    target_categorical_features: Number of categorical values to retain. 
+    :return: This function returns a data.table object with the columns given
+    by the categorical variables selected by Chi-Squared.
+    '
     loginfo("Performing feature reduction of categorical variables")
     chi_squared_result <- apply_chi_square_feature_selection(homesite, trainingFraction=0.3)
     sortingIndices = order(chi_squared_result, decreasing = TRUE)
@@ -63,8 +65,15 @@ create_reduced_dataset <- function(homesite, target_numeric_dimensions, target_c
     eigenvectors <- pca_result$loadings
     dataDir = conf$general$data_directory
     write.csv(eigenvectors, file.path(dataDir, "PCAloadings.txt"))
+    
     pca_reduced_features <- pca_dimension_reduction(homesite, eigenvectors, target_numeric_dimensions)
-    chi_squared_reduced_features <- chi_squared_feature_reduction(homesite, target_categorical_features) #decouple by persisting indexes 
+    # chi_squared_reduced_features <- chi_squared_feature_reduction(homesite, target_categorical_features) #decouple by persisting indexes 
+
+        # instead of selecting features, use all of them
+    chi_squared_reduced_features = get_factor_features(homesite)
+    chi_squared_reduced_features = chi_squared_reduced_features[2:length(chi_squared_reduced_features)] # first feature is the target value
+    chi_squared_reduced_features = homesite[,chi_squared_reduced_features, with=FALSE] 
+    
     reduced_dataset = as.data.table(cbind(QuoteConversion_Flag=homesite$QuoteConversion_Flag, pca_reduced_features,chi_squared_reduced_features))
     return(reduced_dataset)
 }
