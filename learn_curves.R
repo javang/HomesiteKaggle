@@ -12,8 +12,6 @@
 # Javier Velázquez
 # Marciano Moreno
 # 
-# Notes: 
-# TODO: Persist eigenvalues and read them from file instead of calling PCA each time.
 # --------------------------------------------
 
 source("utility.R")
@@ -43,25 +41,25 @@ trainLogisticRegression = function(modelTrainData, indices) {
 trainGradientBoostedTrees = function(modelTrainData, indices) {
     ' Train a gradient boosted tree algorithm'
     loginfo("Gradient boosted trees")
-    # gbm does not work well. Always NaNs! Bug?
-    # trainFormula = QuoteConversion_Flag ~ .
-    #     model = gbm(formula = trainFormula, distribution = "adaboost", 
-    #                 data=modelTrainData[indices,], n.trees=100,interaction.depth = 2,
-    #                 shrinkage = 0.001,bag.fraction = 0.5,train.fraction = 1.0,cv.folds=0)
     designMatrix = getSparseModelMatrix(modelTrainData[indices,])
     outputVector = modelTrainData[indices,QuoteConversion_Flag] == 1
-    model = xgboost(data = designMatrix, label = outputVector, max.depth = 6,
-            eta = 1, nthread = 8, nround = 12,objective = "binary:logistic",
-            verbose =2 )
+#     model = xgboost(data = designMatrix, label = outputVector, max.depth = 6,
+#             eta = 1, nthread = 8, nround = 12,objective = "binary:logistic",
+#             verbose =2 )
+    model = xgboost(data = designMatrix, label = outputVector, max.depth = 5,
+                    eta = 0.3, nthread = 8, nround = 100, verbose = 0,
+                    objective = "binary:logistic")
     return(model)
 }
 
 getSparseModelMatrix = function(data) {
+    ' Create the sparse model matrix form a homesite dataset'
     designMatrix = sparse.model.matrix(QuoteConversion_Flag~.-1, data=data)
     return(designMatrix)
 }
 
 getModelMatrix = function(data) {
+    ' Create the model matrix form a homesite dataset'
     featureNames = names(data)
     remove = c("QuoteConversion_Flag") # QuoteConversion_Flag is the target variable. Remove it to prepare model
     featureNames = featureNames[! featureNames %in% remove]
@@ -145,6 +143,3 @@ createLearningCurves = function() {
         geom_line(aes(x=PointsFraction, y=TestFMeasure, color="Test")) 
     }
 
-
-fnData = file.path(dataDir, "LearningCurves.XGB.155.Features.txt") 
-df = read.csv(fnData)

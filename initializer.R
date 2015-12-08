@@ -62,6 +62,7 @@ initialize_program <- function(program_name, working_directory, log_file, output
 
 
 standardInit = function() {
+    ' Perform the program inizialization. It mostly sets up the logging'
     program_name = conf$general$program_name
     working_directory = conf$general$data_directory
     log_file = conf$general$log_file
