@@ -14,21 +14,11 @@
 # 
 # --------------------------------------------
 
-# --------------------------------------------
-# Data preprocessing functions
-get_numeric_features <- function(dataset){
-    return(which(sapply(dataset,is.numeric)))
-}
-
-get_factor_features <- function(dataset){
-    return(which(sapply(dataset,is.factor)))
-}
-
-get_character_features <- function(dataset){
-    return(which(sapply(dataset,is.character)))
-}
-
 data_preprocessing <- function(homesite){
+    ' Preprocess a dataset. This function:
+    1) Assigns the proper types to the features,
+    2) Cleans and transforms some of the features.
+    '
     # Set numeric and factors
     homesite = assignDataTypes(homesite)
     homesite = transformAndClean(homesite)
@@ -78,14 +68,14 @@ assignDataTypes = function(homesite) {
     # Ensure proper levels for GeographicField10B (Some splits of the data do not have both values)
     levels(homesite$GeographicField10B) = c("-1","25")
     
-    levels(homesite$PropertyField37) = append(levels(homesite$PropertyField37), " ")
-    levels(homesite$PropertyField2B) = append(levels(homesite$PropertyField2B), "-1")
-    levels(homesite$PropertyField7) = append(levels(homesite$PropertyField7), "T")
-    levels(homesite$PersonalField17) = c(levels(homesite$PersonalField17), c("XF", "XZ", "YO", "ZJ"))
-    levels(homesite$PersonalField16) = c(levels(homesite$PersonalField16), c("XG", "YG", "ZM"))
-    levels(homesite$PersonalField18) = c(levels(homesite$PersonalField18), c("XB"))
-    levels(homesite$PersonalField19) = c(levels(homesite$PersonalField19), c("ZS"))
-    
+#     levels(homesite$PropertyField37) = append(levels(homesite$PropertyField37), " ")
+#     levels(homesite$PropertyField2B) = append(levels(homesite$PropertyField2B), "-1")
+#     levels(homesite$PropertyField7) = append(levels(homesite$PropertyField7), "T")
+#     levels(homesite$PersonalField17) = c(levels(homesite$PersonalField17), c("XF", "XZ", "YO", "ZJ"))
+#     levels(homesite$PersonalField16) = c(levels(homesite$PersonalField16), c("XG", "YG", "ZM"))
+#     levels(homesite$PersonalField18) = c(levels(homesite$PersonalField18), c("XB"))
+#     levels(homesite$PersonalField19) = c(levels(homesite$PersonalField19), c("ZS"))
+#     
     ############## NUMERIC ##############
     numericFeatures = c(
         "SalesField8" , "SalesField10", "SalesField11", "SalesField12", 
@@ -192,25 +182,4 @@ binaryze_factor_columns <- function(homesite){
     }
 }
 
-compare_test_vs_train_factors = function(homesite, testData) {
-    ' Function to compare the differences in labels between train data and
-    test data after converting integer values to factors'
-    testColumnNames = names(testData)
-    trainColumnNames = names(homesite)
-    for (columnName in testColumnNames) {
-        print(columnName)
-        if ((columnName %in% trainColumnNames) && is.integer(testData[,get(columnName)])) {
-            trainFactor = as.factor(homesite[,get(columnName)])
-            testFactor = as.factor(testData[,get(columnName)])
-            trainLevels = levels(trainFactor)
-            testLevels = levels(testFactor)
-            loginfo(paste("*******************", columnName, "*******************"))
-            loginfo(paste("TRAIN VALUES:",paste(trainLevels, collapse=" ")))
-            loginfo(paste("TEST  VALUES:",paste(testLevels, collapse=" ")))
-            setDiffTrain = setdiff(trainLevels, testLevels)            
-            setDiffTest = setdiff( testLevels, trainLevels)            
-            loginfo(paste("TRAIN VALUES NOT IN TEST:",paste(setDiffTrain, collapse=" ")))
-            loginfo(paste("TEST VALUES NOT IN TRAIN:",paste(setDiffTest, collapse=" ")))
-        }
-    }
-}
+

@@ -25,8 +25,7 @@
 
 source("initializer.R")
 source("data_explorer.R")
-source("clean.R")
-source("data_preprocessor.R") # data_preprocessing
+source("data_processor2.R") # data_preprocessing
 source("utility.R")
 source("feature_constructor.R") # create_reduced_dataset
 require(data.table)
@@ -36,32 +35,40 @@ interactive_session <- interactive()
 
 
 main <- function(){
+    ' Read the original training dataset provided by Kaggle and 
+    explore/preprocess it.
+    '
     standardInit()
     dataDir = conf$general$data_directory
     fnData = file.path(dataDir, "train.csv")
     homesite <- load_data(fnData)
+
+    # Data exploration    
+    numeric_columns <- which(sapply(homesite,is.numeric))
+    univariate_numerical_exploration(homesite, numeric_columns, "Homesite")
+    univariate_visual_exploration(homesite, numeric_columns, "Homesite")
+    bivariate_numerical_exploration(homesite[,numeric_columns], "Homesite")
+    
+    # Preprocessing    
     homesite <- data_preprocessing(homesite)
 
-    # numeric_columns <- which(sapply(homesite,is.numeric))
-    # univariate_numerical_exploration(homesite, numeric_columns, "Homesite")
-    # univariate_visual_exploration(homesite, numeric_columns, "Homesite")
-    # bivariate_numerical_exploration(homesite[,numeric_columns], "Homesite")
+    # Load test data and compare it to the training data
+    fnTest = file.path(conf$general$data_directory, "test.csv")
+    testData = load_data(fnTest)
+    columnIndices = which(sapply(testData, is.integer))
+    integerColumnNames = names(testData)[columnIndices]  
+    test_as_factors(testData, integerColumnNames, "Test Data")
+    compare_test_vs_train_factors(homesite, testData)    
+    factor_analysis(homesite)
+    new_homesite <- append_reduced_numeric_features(homesite, 42)
 
-    # Explore test data
-#     fnTest = file.path(conf$general$data_directory, "test.csv")
-#     testData = load_data(fnTest)
-#     testData[,QuoteNumber:=NULL]
-
-#     columnIndices = which(sapply(testData, is.integer))
-#     integerColumnNames = names(testData)[columnIndices]  
-    # test_as_factors(testData, integerColumnNames, "Test Data")
-    # compare_test_vs_train_factors(homesite, testData)    
-    #factor_analysis(homesite)
-    #new_homesite <- append_reduced_numeric_features(homesite, 42)
+    
+    # Perform feature selection and dimensionality reduction
     reduced_homesite <- create_reduced_dataset(homesite, 
                        conf$dimension_reduction$n_numeric_features_to_keep, 
                        conf$dimension_reduction$n_categorical_features_to_keep)
 
+    # Split Kaggle's reduced dataset into train, test and cross-validation sets
     splitDataset(reduced_homesite,
                  conf$dataset_splitting$train_fraction, 
                  conf$dataset_splitting$test_fraction, 
@@ -70,8 +77,8 @@ main <- function(){
                  file.path(dataDir, conf$input$fn_reduced_cross_val),
                  writeToRData=TRUE)
     
-    #Not returning new_homesite for now
     return(homesite)
 }
+
 homesite = main()
 
