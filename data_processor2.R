@@ -18,7 +18,9 @@
 # considered as numeric are now made factors.
 # --------------------------------------------
 require(caret)
+require(yaml)
 source("utility.R")
+conf = yaml.load_file("project.conf")
 
 data_preprocessing <- function(homesite) {
     ' Preprocess the training data by cleaning de data, asigning data types
@@ -29,6 +31,7 @@ data_preprocessing <- function(homesite) {
     # Target variable
     homesite[,QuoteConversion_Flag:= as.factor(QuoteConversion_Flag)]
     homesite = removeNearZeroValueNumericColumns(homesite)
+    homesite = preProcessNumericColumns(homesite) #BoxCox, Center, Scale. Saves the tranformations for reuse.
     homesite = fixFactorLevels(homesite)
 
     return(homesite)
@@ -263,11 +266,24 @@ removeNearZeroValueNumericColumns <- function(homesite){
     numFeatures <- get_numeric_features(homesite)
     nzv_result <- as.data.table(nearZeroVar(homesite, saveMetrics = TRUE),keep.rownames = TRUE)
     nzv_features <- nzv_result[nzv == TRUE & rn %in% names(numFeatures),rn]
-    #The following fields shall be removed from the dataset as they have near zero variance
-#     [1] "SalesField13"    "PersonalField23" "PersonalField24" "PersonalField25" "PersonalField26" "PersonalField49"
-#     [7] "PersonalField50" "PersonalField51" "PersonalField52" "PersonalField54" "PersonalField55" "PersonalField56"
-#     [13] "PersonalField57" "PersonalField66" "PersonalField67" "PersonalField69" "PersonalField70" "PersonalField79"
-#     [19] "PersonalField80" "PersonalField81" "PersonalField82"
+    #The following fields shall be removed from the dataset as they have near zero variance:
+    #     [1] "SalesField13"    "PersonalField23" "PersonalField24" "PersonalField25" "PersonalField26" "PersonalField49"
+    #     [7] "PersonalField50" "PersonalField51" "PersonalField52" "PersonalField54" "PersonalField55" "PersonalField56"
+    #     [13] "PersonalField57" "PersonalField66" "PersonalField67" "PersonalField69" "PersonalField70" "PersonalField79"
+    #     [19] "PersonalField80" "PersonalField81" "PersonalField82"
     homesite[,(nzv_features):=NULL]
+    return(homesite)
+}
+
+preProcessNumericColumns <- function(homesite){
+    numFeatures <- get_numeric_features(homesite)
+    preproc_result <- preProcess(homesite[,names(numFeatures),with=FALSE], method = c("BoxCox", "center", "scale"))
+    newds <- as.data.table(predict(preproc_result, homesite[,names(numFeatures), with = FALSE]))
+    homesite <- homesite[,(numFeatures):=NULL]
+    homesite <- cbind(homesite$QuoteConversion_Flag, newds, homesite[,-1,with=FALSE])
+    setnames(homesite, "V1", "QuoteConversion_Flag")
+    preprocDir <- conf$preprocessing$directory
+    fnPreProcResult <- file.path(preprocDir, conf$preprocessing$fn_results)
+    save(preproc_result, file = fnPreProcResult)
     return(homesite)
 }
