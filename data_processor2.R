@@ -17,7 +17,7 @@
 # it was created when refining the algorithms. Some of the features previously
 # considered as numeric are now made factors.
 # --------------------------------------------
-
+require(caret)
 source("utility.R")
 
 data_preprocessing <- function(homesite) {
@@ -26,9 +26,11 @@ data_preprocessing <- function(homesite) {
     '
     homesite = transformAndClean(homesite)
     homesite = assignDataTypes(homesite)
-    homesite = fixFactorLevels(homesite)
     # Target variable
     homesite[,QuoteConversion_Flag:= as.factor(QuoteConversion_Flag)]
+    homesite = removeNearZeroValueNumericColumns(homesite)
+    homesite = fixFactorLevels(homesite)
+
     return(homesite)
 }
 
@@ -255,4 +257,17 @@ apply_chi_square_feature_selection = function(homesite, trainingFraction=0.3) {
     chiSquaredSorted = data.frame("attr_importance"=chis[sortingIndices,])
     row.names(chiSquaredSorted) = row.names(chis)[sortingIndices]
     return(chiSquaredSorted)
+}
+
+removeNearZeroValueNumericColumns <- function(homesite){
+    numFeatures <- get_numeric_features(homesite)
+    nzv_result <- as.data.table(nearZeroVar(homesite, saveMetrics = TRUE),keep.rownames = TRUE)
+    nzv_features <- nzv_result[nzv == TRUE & rn %in% names(numFeatures),rn]
+    #The following fields shall be removed from the dataset as they have near zero variance
+#     [1] "SalesField13"    "PersonalField23" "PersonalField24" "PersonalField25" "PersonalField26" "PersonalField49"
+#     [7] "PersonalField50" "PersonalField51" "PersonalField52" "PersonalField54" "PersonalField55" "PersonalField56"
+#     [13] "PersonalField57" "PersonalField66" "PersonalField67" "PersonalField69" "PersonalField70" "PersonalField79"
+#     [19] "PersonalField80" "PersonalField81" "PersonalField82"
+    homesite[,(nzv_features):=NULL]
+    return(homesite)
 }
