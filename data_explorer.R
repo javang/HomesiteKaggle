@@ -13,7 +13,12 @@
 # Marciano Moreno
 # 
 # --------------------------------------------
+require(corrplot)
+require(caret)
+require(yaml)
+source("utility.R")
 
+conf = yaml.load_file("project.conf")
 
 univariate_numerical_exploration <- function(dataset, col_range, dataset_name){
   loginfo(paste("Univariate numerical exploration for ", dataset_name))
@@ -128,4 +133,10 @@ compare_test_vs_train_factors = function(homesite, testData) {
     }
 }
 
-
+correlation_plot  <- function(homesite, fnCorrelationPlot){
+    numFeatures <- get_numeric_features(homesite)
+    correlations <- cor(homesite[,numFeatures, with = FALSE])
+    png(filename = file.path(conf$general$visualizations_directory, fnCorrelationPlot), height = 1920, width = 1080 )
+    corrplot(correlations, order = "hclust")
+    dev.off()
+}
