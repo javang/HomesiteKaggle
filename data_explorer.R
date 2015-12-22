@@ -134,6 +134,7 @@ compare_test_vs_train_factors = function(homesite, testData) {
 }
 
 correlation_plot  <- function(homesite, fnCorrelationPlot){
+    #Adding correlation plot support...
     numFeatures <- get_numeric_features(homesite)
     correlations <- cor(homesite[,numFeatures, with = FALSE])
     png(filename = file.path(conf$general$visualizations_directory, fnCorrelationPlot), height = 1920, width = 1080 )
