@@ -23,6 +23,7 @@
 require("FactoMineR")
 require(MASS) # write.matrix
 require(FSelector)  # 
+require(caret)
 source("data_processor2.R")
 source("utility.R")
 
@@ -128,3 +129,10 @@ bernoulli_sampling <- function(dt, trainingFraction){
     return(val)
 }
 
+plsda_analysis <- function(homesite){
+    numFeatures <- get_numeric_features(homesite)
+    plsda_result <- plsda(x = as.matrix(homesite[1:1000,names(numFeatures), with = FALSE]), 
+                          y = homesite[1:1000,QuoteConversion_Flag],
+                          ncomp = 10, 
+                          probMethod = "Bayes")
+}
