@@ -30,7 +30,8 @@ data_preprocessing <- function(homesite) {
     homesite = assignDataTypes(homesite)
     # Target variable
     homesite[,QuoteConversion_Flag:= as.factor(QuoteConversion_Flag)]
-    homesite = removeNearZeroValueNumericColumns(homesite)
+    homesite = removeNearZeroVarianceNumericColumns(homesite)
+    homesite = removeCorrelatedFactors(homesite)
     homesite = preProcessNumericColumns(homesite) #BoxCox, Center, Scale. Saves the tranformations for reuse.
     homesite = fixFactorLevels(homesite)
 
@@ -262,7 +263,7 @@ apply_chi_square_feature_selection = function(homesite, trainingFraction=0.3) {
     return(chiSquaredSorted)
 }
 
-removeNearZeroValueNumericColumns <- function(homesite){
+removeNearZeroVarianceNumericColumns <- function(homesite){
     numFeatures <- get_numeric_features(homesite)
     nzv_result <- as.data.table(nearZeroVar(homesite, saveMetrics = TRUE),keep.rownames = TRUE)
     nzv_features <- nzv_result[nzv == TRUE & rn %in% names(numFeatures),rn]
@@ -272,6 +273,19 @@ removeNearZeroValueNumericColumns <- function(homesite){
     #     [13] "PersonalField57" "PersonalField66" "PersonalField67" "PersonalField69" "PersonalField70" "PersonalField79"
     #     [19] "PersonalField80" "PersonalField81" "PersonalField82"
     homesite[,(nzv_features):=NULL]
+    return(homesite)
+}
+
+removeCorrelatedFactors <- function(homesite){
+    numFeatures <- get_numeric_features(homesite)
+    correlations <- cor(homesite[, numFeatures, with = FALSE])
+    highCorr <- findCorrelation(correlations, cutoff = 0.75, names = TRUE)
+    #The following columns shall be removed because they are highly correlated:
+    #     [1] "PersonalField27" "PersonalField47" "PersonalField81" "PersonalField46" "PersonalField80" "PersonalField82" "PersonalField25" "PersonalField33"
+    #     [9] "PersonalField32" "PersonalField76" "PersonalField24" "PersonalField26" "PersonalField79" "PersonalField45" "PersonalField31" "PersonalField56"
+    #     [17] "PersonalField44" "PersonalField57" "Field9"          "PersonalField54" "PersonalField30" "PersonalField51" "PersonalField50" "PersonalField49"
+    #     [25] "SalesField11"    "SalesField14"    "SalesField15"    "PersonalField66" "PersonalField69"
+    homesite[, (highCorr):=NULL]
     return(homesite)
 }
 
