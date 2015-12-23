@@ -272,6 +272,7 @@ removeNearZeroVarianceNumericColumns <- function(homesite){
     #     [7] "PersonalField50" "PersonalField51" "PersonalField52" "PersonalField54" "PersonalField55" "PersonalField56"
     #     [13] "PersonalField57" "PersonalField66" "PersonalField67" "PersonalField69" "PersonalField70" "PersonalField79"
     #     [19] "PersonalField80" "PersonalField81" "PersonalField82"
+    write.csv(nzv_features, file = file.path(conf$preprocessing$directory, conf$pre$fn_nzv_dropped_features))
     homesite[,(nzv_features):=NULL]
     return(homesite)
 }
@@ -285,6 +286,7 @@ removeCorrelatedFactors <- function(homesite){
     #     [9] "PersonalField32" "PersonalField76" "PersonalField24" "PersonalField26" "PersonalField79" "PersonalField45" "PersonalField31" "PersonalField56"
     #     [17] "PersonalField44" "PersonalField57" "Field9"          "PersonalField54" "PersonalField30" "PersonalField51" "PersonalField50" "PersonalField49"
     #     [25] "SalesField11"    "SalesField14"    "SalesField15"    "PersonalField66" "PersonalField69"
+    write.csv(highCorr, file = file.path(conf$preprocessing$directory, conf$preprocessing$fn_high_corr_dropped_features))
     homesite[, (highCorr):=NULL]
     return(homesite)
 }
@@ -297,7 +299,7 @@ preProcessNumericColumns <- function(homesite){
     homesite <- cbind(homesite$QuoteConversion_Flag, newds, homesite[,-1,with=FALSE])
     setnames(homesite, "V1", "QuoteConversion_Flag")
     preprocDir <- conf$preprocessing$directory
-    fnPreProcResult <- file.path(preprocDir, conf$preprocessing$fn_results)
+    fnPreProcResult <- file.path(preprocDir, conf$preprocessing$fn_pre_proc_results)
     save(preproc_result, file = fnPreProcResult)
     return(homesite)
 }
