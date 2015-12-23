@@ -13,6 +13,7 @@
 # utility.R - Common functions
 # --------------------------------------------
 require(data.table)
+require(caret)
 
 load_data <- function(fnData, stringsAsFactors=FALSE) {
     ' Data loading function.
@@ -96,3 +97,33 @@ get_character_features <- function(dataset){
     return(which(sapply(dataset,is.character)))
 }
 
+splitDatasetWithLevels = function(dataTable, trainFraction,
+                        fnTrain, fnTest, fnCrossValidation,
+                        writeToRData=FALSE){
+    ' Splits a dataset using a leveled random splitting on QuoteConversion_Flag
+      with the purpose of balancing the class distributions within the splits.
+      The test and cross validation datasets are split equally, each being (1 - trainFraction)/2
+    '
+
+    train_partition <- createDataPartition(dataTable$QuoteConversion_Flag, times = 1, p = trainFraction, list = TRUE)
+    train_ind <- train_partition$Resample1
+    tmpTestCrossVal <- dataTable[-train_ind, ]
+    test_partition <- createDataPartition(tmpTestCrossVal$QuoteConversion_Flag, times = 1, p = 0.5, list = TRUE)
+    test_ind <- test_partition$Resample1
+    
+    modelTrainData <- dataTable[train_ind, ]
+    modelTestData <- tmpTestCrossVal[test_ind, ]
+    modelXvalidationData <- tmpTestCrossVal[-test_ind,]
+    
+    if(writeToRData){
+        loginfo("Saving datasets to RData files")
+        save(modelTrainData, file = fnTrain)
+        save(modelTestData, file = fnTest)
+        save(modelXvalidationData, file = fnCrossValidation)
+    }else{
+        loginfo("Saving datasets to CSV files")
+        write.csv(modelTrainData, file = fnTrain, row.names = FALSE)
+        write.csv(modelTestData, file = fnTest, row.names = FALSE)
+        write.csv(modelXvalidationData, file = fnCrossValidation, row.names = FALSE)
+    }
+}

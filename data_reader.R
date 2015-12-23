@@ -69,12 +69,11 @@ main <- function(){
                        conf$dimension_reduction$n_categorical_features_to_keep)
 
     # Split Kaggle's reduced dataset into train, test and cross-validation sets
-    splitDataset(reduced_homesite,
+    splitDatasetWithLevels(reduced_homesite,
                  conf$dataset_splitting$train_fraction, 
-                 conf$dataset_splitting$test_fraction, 
-                 file.path(dataDir, conf$input$fn_reduced_training),
-                 file.path(dataDir, conf$input$fn_reduced_testing),
-                 file.path(dataDir, conf$input$fn_reduced_cross_val),
+                 file.path(dataDir, conf$input$fn_reduced_leveled_training),
+                 file.path(dataDir, conf$input$fn_reduced_leveled_testing),
+                 file.path(dataDir, conf$input$fn_reduced_leveled_cross_val),
                  writeToRData=TRUE)
     
     return(homesite)
