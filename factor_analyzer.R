@@ -26,6 +26,7 @@ require(FSelector)  #
 require(caret)
 source("data_processor2.R")
 source("utility.R")
+source("learn_curves.R")
 
 
 factor_analysis <- function(homesite){
@@ -130,9 +131,28 @@ bernoulli_sampling <- function(dt, trainingFraction){
 }
 
 plsda_analysis <- function(homesite){
-    numFeatures <- get_numeric_features(homesite)
-    plsda_result <- plsda(x = as.matrix(homesite[1:1000,names(numFeatures), with = FALSE]), 
-                          y = homesite[1:1000,QuoteConversion_Flag],
-                          ncomp = 10, 
-                          probMethod = "Bayes")
+    dataDir = conf$general$data_directory
+    load(file.path(dataDir, conf$input$fn_reduced_training)) # loads modelTrainData
+    load(file.path(dataDir, conf$input$fn_reduced_testing)) # loads modelTestData
+    nrows = nrow(modelTrainData)
+    dataPointsFraction <- 0.20
+    indices = randomSelect(nrows, dataPointsFraction)
+    numFeatures <- get_numeric_features(modelTrainData)
+    designMatrix <- getSparseModelMatrix(modelTrainData[indices, c("QuoteConversion_Flag", names(numFeatures)), with = FALSE])
+    
+    #numFeatures <- get_numeric_features(homesite)
+    plsda_result <- caret:::plsda(x = designMatrix, 
+                          y = modelTrainData[indices,QuoteConversion_Flag],
+                          probMethod = "Bayes",
+                          ncomp = 10
+                          #type = "prob"
+                          #K = 5,
+                          #eta = 0.9,
+                          #prior = NULL,
+                          )
+    nrow_test <- nrow(modelTestData)
+    indices_test <- randomSelect(nrow_test, dataPointsFraction)
+    designMatrixTest <- getSparseModelMatrix(modelTestData[indices_test, c("QuoteConversion_Flag", names(numFeatures)), with = FALSE])
+    plsda_prediction <- predict(plsda_result, designMatrixTest, modelTestData[indices_test, QuoteConversion_Flag])
+    confusionMatrix(plsda_prediction)
 }
