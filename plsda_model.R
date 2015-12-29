@@ -35,13 +35,13 @@ levels(modelTestData$QuoteConversion_Flag)[levels(modelTestData$QuoteConversion_
 
 
 ctrl <- trainControl(method = "repeatedcv", 
-                     number = 3,
+                     number = 10,
                      repeats  = 3,
                      classProbs = TRUE,
                      summaryFunction = twoClassSummary, 
                      verboseIter = TRUE)
 
-trainIndices <- randomSelect(nrow(modelTrainData), 0.10)
+trainIndices <- randomSelect(nrow(modelTrainData), 0.15)
 
 plsFit <- train(QuoteConversion_Flag ~ ., 
                 data = modelTrainData[trainIndices, ],
@@ -53,9 +53,15 @@ plsFit <- train(QuoteConversion_Flag ~ .,
 
 plsFit
 plot(plsFit)
+plot(plsFit, plotType = "level")
+plsFit$finalModel
+
+plsRoc <- roc(plsFit, modelTestData[1:100]$QuoteConversion_Flag)
 #Saving plsFit
 save(plsFit, file = "plsFit2.RData")
 
 plsClasses <- predict(plsFit, newdata = modelTestData[1:100,])
 plsClasses
-confusionMatrix(data = plsClasses, reference = modelTestData[1:100, "QuoteConversion_Flag"], positive = "yes")
+confusionMatrix(data = plsClasses, 
+                reference = modelTestData[1:100, "QuoteConversion_Flag", with = FALSE], 
+                positive = "yes")
