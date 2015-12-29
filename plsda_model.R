@@ -17,6 +17,7 @@
 require(caret)
 require(yaml)
 require(pROC)
+require(ROCR)
 source("initializer.R")
 source("utility.R")
 conf = yaml.load_file("project.conf")
@@ -34,21 +35,21 @@ levels(modelTestData$QuoteConversion_Flag)[levels(modelTestData$QuoteConversion_
 levels(modelTestData$QuoteConversion_Flag)[levels(modelTestData$QuoteConversion_Flag) == "1"] = "yes"
 
 
-ctrl <- trainControl(method = "repeatedcv", 
-                     number = 3,
+ctrl <- trainControl(method = "repeatedcv",
+                     number = 10,
                      repeats  = 3,
                      classProbs = TRUE,
                      summaryFunction = twoClassSummary, 
                      verboseIter = TRUE)
 
-trainIndices <- randomSelect(nrow(modelTrainData), 0.10)
+trainIndices <- randomSelect(nrow(modelTrainData), 0.005)
 
 plsFit <- train(QuoteConversion_Flag ~ ., 
                 data = modelTrainData[trainIndices, ],
+                #data = modelTrainData,
                 method = "pls",
                 tuneLength = 30,
                 metric = "ROC",
-                
                 trControl = ctrl)
 
 plsFit
@@ -56,6 +57,18 @@ plot(plsFit)
 #Saving plsFit
 save(plsFit, file = "plsFit2.RData")
 
-plsClasses <- predict(plsFit, newdata = modelTestData[1:100,])
+plsClasses <- predict(plsFit, newdata = modelTestData[1:100,-1, with = FALSE])
 plsClasses
-confusionMatrix(data = plsClasses, reference = modelTestData[1:100, "QuoteConversion_Flag"], positive = "yes")
+confusionMatrix(data = plsClasses, 
+                reference = modelTestData[1:100]$QuoteConversion_Flag, 
+                positive = "yes")
+
+levels(plsClasses)[levels(plsClasses) == "no"] = "0"
+levels(plsClasses)[levels(plsClasses) == "yes"] = "1"
+levels(modelTestData$QuoteConversion_Flag)[levels(modelTestData$QuoteConversion_Flag) == "no"] = "0"
+levels(modelTestData$QuoteConversion_Flag)[levels(modelTestData$QuoteConversion_Flag) == "yes"] = "1"
+
+pred = prediction(as.numeric(plsClasses),as.numeric(modelTestData[1:100]$QuoteConversion_Flag))
+perf = performance(pred, measure = "f")
+perf = performance(pred, measure = "auc")
+
