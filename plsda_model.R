@@ -35,7 +35,7 @@ levels(modelTestData$QuoteConversion_Flag)[levels(modelTestData$QuoteConversion_
 
 
 ctrl <- trainControl(method = "repeatedcv", 
-                     number = 5,
+                     number = 3,
                      repeats  = 3,
                      classProbs = TRUE,
                      summaryFunction = twoClassSummary, 
