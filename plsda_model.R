@@ -35,18 +35,22 @@ levels(modelTestData$QuoteConversion_Flag)[levels(modelTestData$QuoteConversion_
 levels(modelTestData$QuoteConversion_Flag)[levels(modelTestData$QuoteConversion_Flag) == "1"] = "yes"
 
 
-ctrl <- trainControl(method = "repeatedcv",
+ctrl <- trainControl(method = "cv",
                      number = 10,
-                     repeats  = 3,
+                     #repeats  = 3,
                      classProbs = TRUE,
                      summaryFunction = twoClassSummary, 
                      verboseIter = TRUE)
 
 trainIndices <- randomSelect(nrow(modelTrainData), 0.005)
 
-plsFit <- train(QuoteConversion_Flag ~ ., 
-                data = modelTrainData[trainIndices, ],
+plsFit <- train(#QuoteConversion_Flag ~ ., 
+                #data = modelTrainData[trainIndices, ],
                 #data = modelTrainData,
+                x = modelTrainData[,-1, with = FALSE],
+                y = modelTrainData$QuoteConversion_Flag,
+                subset = createDataPartition(y = modelTrainData$QuoteConversion_Flag, p = 0.001, list = FALSE),
+                #indices = createFolds(y = modelTrainData$QuoteConversion_Flag, k = 10),
                 method = "pls",
                 tuneLength = 30,
                 metric = "ROC",
