@@ -23,6 +23,13 @@ source("utility.R")
 conf = yaml.load_file("project.conf")
 standardInit()
 
+arguments <- commandArgs(trailingOnly = TRUE)
+
+trainPartitionPercent = as.numeric(arguments[1]) #0.1
+numResamples <- as.numeric(arguments[2])#3
+tuneLength <- as.numeric(arguments[3])#30
+testPartitionPercent <- as.numeric(arguments[4])#0.1
+
 dataDir = conf$general$data_directory
 load(file.path(dataDir, conf$input$fn_reduced_leveled_training)) # loads modelTrainData
 load(file.path(dataDir, conf$input$fn_reduced_leveled_testing)) # loads modelTestData
@@ -35,38 +42,53 @@ levels(modelTestData$QuoteConversion_Flag)[levels(modelTestData$QuoteConversion_
 levels(modelTestData$QuoteConversion_Flag)[levels(modelTestData$QuoteConversion_Flag) == "1"] = "yes"
 
 
+inTrain <- createDataPartition(y = modelTrainData$QuoteConversion_Flag, p = trainPartitionPercent, list = FALSE)
+training <- modelTrainData[as.vector(inTrain),]
 
-ctrl <- trainControl(method = "repeatedcv",
-                     number = 10,
-                     repeats  = 3,
+#trainIndicesList <- createResample(modelTrainData$QuoteConversion_Flag, times = 3)
+#trainIndicesList <- createFolds(modelTrainData$QuoteConversion_Flag, k = 10, times = 3, returnTrain = TRUE)
+#trainIndicesList <- createMultiFolds(modelTrainData$QuoteConversion_Flag, k = 10, times = 3)
+
+
+ctrl <- trainControl(method = "boot",
+                     number = numResamples,
+                     #repeats  = 3,
+                     index = createResample(training$QuoteConversion_Flag, numResamples),
+                     savePredictions = TRUE,
                      classProbs = TRUE,
                      summaryFunction = twoClassSummary, 
-                     verboseIter = TRUE)
+                     verboseIter = TRUE,
+                     returnData = FALSE)
 
-trainIndices <- randomSelect(nrow(modelTrainData), 0.15)
 
-
-plsFit <- train(QuoteConversion_Flag ~ ., 
-                data = modelTrainData[trainIndices, ],
-                #data = modelTrainData,
+plsFit <- train(#QuoteConversion_Flag ~ ., 
+                #data = modelTrainData[trainIndices, ],
+                #data = training,
+		x = training[,-1, with = FALSE],
+		y = training$QuoteConversion_Flag,
                 method = "pls",
-                tuneLength = 30,
+                tuneLength = tuneLength,
                 metric = "ROC",
                 trControl = ctrl)
 
-plsFit
+#plsFit
+png(filename = file.path(conf$plsda$directory, conf$plsda$fn_roc_plot))
 plot(plsFit)
-plot(plsFit, plotType = "level")
-plsFit$finalModel
+dev.off()
+#plot(plsFit, plotType = "level")
+#plsFit$finalModel
 
-plsRoc <- roc(plsFit, modelTestData[1:100]$QuoteConversion_Flag)
 #Saving plsFit
-save(plsFit, file = "plsFit2.RData")
+save(plsFit, file = file.path(conf$plsda$directory, conf$plsda$fn_fit_file))
 
-plsClasses <- predict(plsFit, newdata = modelTestData[1:100,-1, with = FALSE])
+inTest <- createDataPartition(y = modelTestData$QuoteConversion_Flag, p = testPartitionPercent, list = FALSE)
+testing = modelTestData[as.vector(inTest), ]
+
+
+plsClasses <- predict(plsFit, newdata = testing[,-1, with = FALSE])
 plsClasses
 confusionMatrix(data = plsClasses, 
-                reference = modelTestData[1:100]$QuoteConversion_Flag, 
+                reference = testing$QuoteConversion_Flag, 
                 positive = "yes")
 
 levels(plsClasses)[levels(plsClasses) == "no"] = "0"
@@ -74,8 +96,10 @@ levels(plsClasses)[levels(plsClasses) == "yes"] = "1"
 levels(modelTestData$QuoteConversion_Flag)[levels(modelTestData$QuoteConversion_Flag) == "no"] = "0"
 levels(modelTestData$QuoteConversion_Flag)[levels(modelTestData$QuoteConversion_Flag) == "yes"] = "1"
 
-pred = prediction(as.numeric(plsClasses),as.numeric(modelTestData[1:100]$QuoteConversion_Flag))
-perf = performance(pred, measure = "f")
-perf = performance(pred, measure = "auc")
+#pred = prediction(as.numeric(plsClasses),as.numeric(testing$QuoteConversion_Flag))
+#perf = performance(pred, measure = "f")
+#perf = performance(pred, measure = "auc")
 
->>>>>>> e96b4396a4b7ac480e45728be93526293ab84919
+plsRoc <- roc(as.numeric(plsClasses), as.numeric(testing$QuoteConversion_Flag))
+print(plsRoc)
+
