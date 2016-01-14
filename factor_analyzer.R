@@ -119,12 +119,3 @@ apply_mca = function(homesite) {
     }
 }
 
-bernoulli_sampling <- function(dt, trainingFraction){
-    ' Randomly Select rows from a dataframe. The trainingFraction is the fraction of 
-    rows to select
-    '
-    values = runif(nrow(dt))
-    val = dt[values < trainingFraction,]
-    return(val)
-}
-

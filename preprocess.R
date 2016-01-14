@@ -21,16 +21,24 @@
 
 # --------------------------------------------
 
+source("initializer.R") # standardInit
 source("data_processor2.R")
+source("data_explorer.R")
 require(yaml)
 conf = yaml.load_file("project.conf")
 
+standardInit()
 # preprocess the train data
 loginfo(paste("Preprocess training dataset"))
 dataDir = conf$general$data_directory
 fnOriginalTrain = file.path(dataDir, conf$input$whole_train_data)
 originalTrainData = load_data(fnOriginalTrain)
 originalTrainData = data_preprocessing(originalTrainData)
+# explore possible correlations between variables
+suggestedFeaturesToRemove = exploreCorrelations(originalTrainData, definedNumericFeatures)
+# Remove highly correlated features
+originalTrainData[,suggestedFeaturesToRemove:=NULL, with=FALSE]
+
 
 # get the Chi-Squared importance of the categorical variables. Train with 30% of the variables due to 
 # memory limitations
@@ -45,9 +53,11 @@ originalTrainData = as.data.table(cbind(QuoteConversion_Flag=originalTrainData$Q
 # preprocess the test data:
 fnTestData = file.path(dataDir, conf$input$whole_test_data)  
 originalTestData = load_data(fnTestData)
-originalTestData = assignDataTypes(originalTestData)
 originalTestData = transformAndClean(originalTestData)
+originalTestData = assignDataTypes(originalTestData)
+originalTestData[,suggestedFeaturesToRemove:=NULL, with=FALSE]
 numericFeatures = get_numeric_features(originalTestData)
+
 originalTestData = as.data.table(cbind(originalTestData[,numericFeatures, with=FALSE],
                                  originalTestData[,row.names(chiSquaredSortedFeatures), with=FALSE]))
 

@@ -13,7 +13,10 @@
 # Marciano Moreno
 # 
 # --------------------------------------------
-
+require(e1071)
+require(caret)
+require(corrplot)
+require(caret)
 
 univariate_numerical_exploration <- function(dataset, col_range, dataset_name){
   loginfo(paste("Univariate numerical exploration for ", dataset_name))
@@ -129,3 +132,29 @@ compare_test_vs_train_factors = function(homesite, testData) {
 }
 
 
+checkSkewness = function(dataset) {
+    ' Calculate the skewness of the numeric features of a dataset
+    '
+    nFeatures = originalTrainData[,numericFeatures, with=FALSE]
+    sks = sapply(nFeatures, skewness)
+    return(sks)
+}
+
+getNearZero = function(dataset) {
+    nFeatures = originalTrainData[,numericFeatures, with=FALSE]
+    indices = nearZeroVar(nFeatures)
+    names = numericFeatures[indices]
+}
+
+
+exploreCorrelations = function(originalTrainData, featureNames) {
+    ' Calculate and plot correlations between the numeric variables and plot them 
+    '
+    # featureNames = definedNumericFeatures
+    features = originalTrainData[,featureNames, with=FALSE]
+    correlations = cor(features)     
+    corrplot(correlations, order="hclust")
+    # use caret to find the indices of highly correlated variables
+    highCorr <- findCorrelation(correlations, cutoff = 0.90) 
+    return(featureNames[highCorr]) # names of the variables recommended for deletion
+}

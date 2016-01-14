@@ -96,3 +96,12 @@ get_character_features <- function(dataset){
     return(which(sapply(dataset,is.character)))
 }
 
+bernoulli_sampling <- function(dt, trainingFraction){
+    ' Randomly Select rows from a dataframe. The trainingFraction is the fraction of 
+    rows to select
+    '
+    values = runif(nrow(dt))
+    val = dt[values < trainingFraction,]
+    return(val)
+}
+
