@@ -177,15 +177,24 @@ apply_chi_square_feature_selection = function(homesite, trainingFraction=0.3) {
     by importance. 
     '
     loginfo(paste("Applying Chi-Squared feature selection on the categorical variables. Fraction:",trainingFraction))
+    chis = getChiSquaredImportance(homesite, trainingFraction)
+    # sort by importance
+    sortingIndices = order(chis, decreasing = TRUE)
+    chiSquaredSorted = data.frame("attr_importance"=chis[sortingIndices,])
+    row.names(chiSquaredSorted) = row.names(chis)[sortingIndices]
+    return(chiSquaredSorted)
+}
+
+getChiSquaredImportance = function(homesite, trainingFraction=0.3) {
+    ' Apply the chi-square algorithm for dimensionality reduction of categorical
+    values and return the importance values. 
+    '
+    loginfo(paste("Calculating Chi-Squared importance. Fraction:",trainingFraction))
     factorColumns = get_factor_features(homesite)
     factorColumnNames = names(homesite)[factorColumns]
     factorsDataTable = homesite[, c(factorColumnNames), with=FALSE]
     trainingTable = bernoulli_sampling(factorsDataTable, trainingFraction)
     formula = QuoteConversion_Flag ~ .
     chis = chi.squared(formula, trainingTable)
-    # sort by importance
-    sortingIndices = order(chis, decreasing = TRUE)
-    chiSquaredSorted = data.frame("attr_importance"=chis[sortingIndices,])
-    row.names(chiSquaredSorted) = row.names(chis)[sortingIndices]
-    return(chiSquaredSorted)
+    return(chis)
 }

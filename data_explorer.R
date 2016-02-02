@@ -155,6 +155,6 @@ exploreCorrelations = function(originalTrainData, featureNames) {
     correlations = cor(features)     
     corrplot(correlations, order="hclust")
     # use caret to find the indices of highly correlated variables
-    highCorr <- findCorrelation(correlations, cutoff = 0.90) 
+    highCorr = findCorrelation(correlations, cutoff = 0.90) 
     return(featureNames[highCorr]) # names of the variables recommended for deletion
 }
