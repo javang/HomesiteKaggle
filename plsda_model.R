@@ -23,6 +23,13 @@ source("utility.R")
 conf = yaml.load_file("project.conf")
 standardInit()
 
+arguments <- commandArgs(trailingOnly = TRUE)
+
+trainPartitionPercent = as.numeric(arguments[1]) #0.1
+numResamples <- as.numeric(arguments[2])#3
+tuneLength <- as.numeric(arguments[3])#30
+testPartitionPercent <- as.numeric(arguments[4])#0.1
+
 dataDir = conf$general$data_directory
 load(file.path(dataDir, conf$input$fn_reduced_leveled_training)) # loads modelTrainData
 load(file.path(dataDir, conf$input$fn_reduced_leveled_testing)) # loads modelTestData
@@ -34,37 +41,62 @@ levels(modelTrainData$QuoteConversion_Flag)[levels(modelTrainData$QuoteConversio
 levels(modelTestData$QuoteConversion_Flag)[levels(modelTestData$QuoteConversion_Flag) == "0"] = "no"
 levels(modelTestData$QuoteConversion_Flag)[levels(modelTestData$QuoteConversion_Flag) == "1"] = "yes"
 
+inTrain <- createDataPartition(y = modelTrainData$QuoteConversion_Flag, p = trainPartitionPercent, list = FALSE)
+training <- modelTrainData[as.vector(inTrain),]
 
-ctrl <- trainControl(method = "cv",
-                     number = 10,
+
+#trainIndicesList <- createResample(modelTrainData$QuoteConversion_Flag, times = 3)
+#trainIndicesList <- createFolds(modelTrainData$QuoteConversion_Flag, k = 10, times = 3, returnTrain = TRUE)
+#trainIndicesList <- createMultiFolds(modelTrainData$QuoteConversion_Flag, k = 10, times = 3)
+
+ctrl <- trainControl(method = "boot",
+                     number = numResamples,
                      #repeats  = 3,
+                     index = createResample(training$QuoteConversion_Flag, numResamples),
+                     savePredictions = TRUE,
                      classProbs = TRUE,
                      summaryFunction = twoClassSummary, 
-                     verboseIter = TRUE)
-
-trainIndices <- randomSelect(nrow(modelTrainData), 0.005)
+                     verboseIter = TRUE,
+                     returnData = FALSE)
+                     #method = "cv",
+                     #number = 10,
+                     #repeats  = 3,
+                     
 
 plsFit <- train(#QuoteConversion_Flag ~ ., 
                 #data = modelTrainData[trainIndices, ],
                 #data = modelTrainData,
-                x = modelTrainData[,-1, with = FALSE],
-                y = modelTrainData$QuoteConversion_Flag,
-                subset = createDataPartition(y = modelTrainData$QuoteConversion_Flag, p = 0.001, list = FALSE),
-                #indices = createFolds(y = modelTrainData$QuoteConversion_Flag, k = 10),
+                x = training[,-1, with = FALSE],
+                y = training$QuoteConversion_Flag,
                 method = "pls",
-                tuneLength = 30,
+                tuneLength = tuneLength,
                 metric = "ROC",
                 trControl = ctrl)
+                #x = modelTrainData[,-1, with = FALSE],
+                #y = modelTrainData$QuoteConversion_Flag,
+                #indices = createFolds(y = modelTrainData$QuoteConversion_Flag, k = 10),
+                #data = training,
+                #subset = createDataPartition(y = modelTrainData$QuoteConversion_Flag, p = 0.001, list = FALSE),
 
-plsFit
+
+#plsFit
+png(filename = file.path(conf$plsda$directory, conf$plsda$fn_roc_plot))
 plot(plsFit)
-#Saving plsFit
-save(plsFit, file = "plsFit2.RData")
+dev.off()
+#plot(plsFit, plotType = "level")
+#plsFit$finalModel
 
-plsClasses <- predict(plsFit, newdata = modelTestData[1:100,-1, with = FALSE])
+#Saving plsFit
+save(plsFit, file = file.path(conf$plsda$directory, conf$plsda$fn_fit_file))
+
+inTest <- createDataPartition(y = modelTestData$QuoteConversion_Flag, p = testPartitionPercent, list = FALSE)
+testing = modelTestData[as.vector(inTest), ]
+
+
+plsClasses <- predict(plsFit, newdata = testing[,-1, with = FALSE])
 plsClasses
 confusionMatrix(data = plsClasses, 
-                reference = modelTestData[1:100]$QuoteConversion_Flag, 
+                reference = testing$QuoteConversion_Flag, 
                 positive = "yes")
 
 levels(plsClasses)[levels(plsClasses) == "no"] = "0"
@@ -72,7 +104,10 @@ levels(plsClasses)[levels(plsClasses) == "yes"] = "1"
 levels(modelTestData$QuoteConversion_Flag)[levels(modelTestData$QuoteConversion_Flag) == "no"] = "0"
 levels(modelTestData$QuoteConversion_Flag)[levels(modelTestData$QuoteConversion_Flag) == "yes"] = "1"
 
-pred = prediction(as.numeric(plsClasses),as.numeric(modelTestData[1:100]$QuoteConversion_Flag))
-perf = performance(pred, measure = "f")
-perf = performance(pred, measure = "auc")
+#pred = prediction(as.numeric(plsClasses),as.numeric(testing$QuoteConversion_Flag))
+#perf = performance(pred, measure = "f")
+#perf = performance(pred, measure = "auc")
+
+plsRoc <- roc(as.numeric(plsClasses), as.numeric(testing$QuoteConversion_Flag))
+print(plsRoc)
 
