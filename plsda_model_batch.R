@@ -25,7 +25,10 @@ conf = yaml.load_file("project.conf")
 standardInit()
 interactive_session <- interactive()
 
+
 if(!interactive_session) arguments <- commandArgs(trailingOnly = TRUE)
+print(length(arguments))
+print(arguments)
 
 trainPartitionPercent <- ifelse(interactive_session,
                                conf$plsda$train_partition_percent,
@@ -39,7 +42,7 @@ tuneLength <- ifelse(interactive_session,
 testPartitionPercent <- ifelse(interactive_session,
                                conf$plsda$test_partition_percent,
                                as.numeric(arguments[4]))#0.1
-
+print(paste(trainPartitionPercent, numResamples, tuneLength, testPartitionPercent))
 
 dataDir <- conf$general$data_directory
 load(file.path(dataDir, conf$input$fn_reduced_leveled_training)) # loads modelTrainData
@@ -52,16 +55,17 @@ levels(modelTrainData$QuoteConversion_Flag)[levels(modelTrainData$QuoteConversio
 levels(modelTestData$QuoteConversion_Flag)[levels(modelTestData$QuoteConversion_Flag) == "0"] = "no"
 levels(modelTestData$QuoteConversion_Flag)[levels(modelTestData$QuoteConversion_Flag) == "1"] = "yes"
 
+
 inTrain <- createDataPartition(y = modelTrainData$QuoteConversion_Flag, p = trainPartitionPercent, list = FALSE)
 x <- getModelMatrix(modelTrainData[as.vector(inTrain),])
 y <- modelTrainData[as.vector(inTrain)]$QuoteConversion_Flag
 
 #training <- getModelMatrix(modelTrainData[as.vector(inTrain),])
 
-
 #trainIndicesList <- createResample(modelTrainData$QuoteConversion_Flag, times = 3)
 #trainIndicesList <- createFolds(modelTrainData$QuoteConversion_Flag, k = 10, returnTrain = FALSE)
 #trainIndicesList <- createMultiFolds(modelTrainData$QuoteConversion_Flag, k = 10, times = 3)
+
 
 ctrl <- trainControl(method = "boot",
                      number = numResamples,
@@ -73,10 +77,7 @@ ctrl <- trainControl(method = "boot",
                      summaryFunction = twoClassSummary, 
                      verboseIter = TRUE,
                      returnData = FALSE)
-                     #method = "cv",
-                     #number = 10,
-                     #repeats  = 3,
-                     
+
 
 plsFit <- train(#QuoteConversion_Flag ~ ., 
                 #data = modelTrainData[trainIndices, ],
